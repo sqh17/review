@@ -34,24 +34,24 @@
         }
       2.递归方式
 		/**
-			* 
-			* @param {*} arr 已排好的数组
-			* @param {*} low 第一个值的索引
-			* @param {*} high 最后一个值的索引
-			* @param {*} key 想要查找的值
-			*/
-			function binary_search(arr,low,high,key){
-				if (low > high) {
-						return -1;
-				}
-				var mid = parseInt((high + low) / 2);
-				if (arr[mid] == key) {
-						return mid;
-				} else if (arr[mid] > key) {
-						high = mid - 1;
-						return binary_search(arr, low, high, key);
-				} else if (arr[mid] < key) {
-						low = mid + 1;
-						return binary_search(arr, low, high, key);
-				}
+		* 
+		* @param {*} arr 已排好的数组
+		* @param {*} low 第一个值的索引
+		* @param {*} high 最后一个值的索引
+		* @param {*} key 想要查找的值
+		*/
+		function binary_search(arr,low,high,key){
+			if (low > high) {
+					return -1;
 			}
+			var mid = parseInt((high + low) / 2);
+			if (arr[mid] == key) {
+					return mid;
+			} else if (arr[mid] > key) {
+					high = mid - 1;
+					return binary_search(arr, low, high, key);
+			} else if (arr[mid] < key) {
+					low = mid + 1;
+					return binary_search(arr, low, high, key);
+			}
+		}
