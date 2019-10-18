@@ -55,3 +55,115 @@
 					return binary_search(arr, low, high, key);
 			}
 		}
+
+* this的指向有哪些？   
+    1.函数里的this：作为普通函数，this指向window  
+    2.对象的this：当函数作为对象的方法被调用时，this就会指向该对象。  
+    3.call，apply的this：指向调用该方法的对象  
+    4 箭头函数的this：在箭头函数里面，没有this ，箭头函数里面的 this 是继承外面的环境。  
+    5.构造函数的this： 指向new之后的对象。
+
+    请看下面的例子给出答案
+
+        var boss1 = {
+            name: 'boss1',
+            returnThis () {
+                return this
+            }
+        }
+        var boss2 = {
+            name: 'boss2',
+            returnThis () {
+                return boss1.returnThis()
+            }
+        }
+        var boss3 = {
+            name: 'boss3',
+            returnThis () {
+                var returnThis = boss1.returnThis
+                return returnThis()
+            }
+        }
+        boss1.returnThis() // boss1
+        boss2.returnThis() // boss1
+        boss3.returnThis() // window
+        
+        // ----------
+        function returnThis () {
+            return this
+        }
+        var boss1 = { name: 'boss1' }
+        returnThis() // window
+        returnThis.call(boss1) // boss1
+        returnThis.apply(boss1) // boss1
+
+        // -------
+        function returnThis () {
+            return this
+        }
+        var boss1 = { name: 'boss1'}
+        var boss1returnThis = returnThis.bind(boss1)
+        boss1returnThis() // boss1
+        var boss2 = { name: 'boss2' }
+        boss1returnThis.call(boss2) // boss1
+
+        // --------
+        function showThis () {
+            console.log(this)
+        }
+        showThis() // window
+        new showThis() // showThis
+        var boss1 = { name: 'boss1' }
+        showThis.call(boss1) // boss1
+        new showThis.call(boss1) // TypeError
+        var boss1showThis = showThis.bind(boss1)
+        boss1showThis() // boss1
+        new boss1showThis() // showThis
+
+        //---------
+        function callback (cb) {
+            cb()
+        }
+        callback(() => { console.log(this) }) // window
+        var boss1 = {
+        name: 'boss1',
+        callback: callback,
+        callback2 () {
+            callback(() => { console.log(this) })
+        }
+        }
+        boss1.callback(() => { console.log(this) }) // window
+        boss1.callback2(() => { console.log(this) }) // boss1
+
+        // ------
+        var returnThis = () => this
+        returnThis() // window
+        new returnThis() // TypeError
+        var boss1 = {
+            name: 'boss1',
+            returnThis () {
+                var func = () => this
+                return func()
+            }
+        }
+        returnThis.call(boss1) // window
+        var boss1returnThis = returnThis.bind(boss1)
+        boss1returnThis() // window
+        boss1.returnThis() // boss1
+        var boss2 = {
+            name: 'boss2',
+            returnThis: boss1.returnThis
+        }
+        boss2.returnThis() // boss2
+* new实现了哪些步骤？  
+    1.创建一个新对象，  
+    2.将构造函数的作用域赋给新对象（this指向新对象)。   
+    3.执行构造函数的代码（为新对象添加属性或方法)。
+
+* call和apply的区别？
+
+* call和aplly的原生实现
+
+* bind的实现
+
+   
