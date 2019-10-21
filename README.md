@@ -179,6 +179,66 @@ apply最多只能有两个参数——新this对象和一个数组arg，如果ar
 
 call则可以传递多个参数，第一个参数和apply一样，是用来替换的对象，后边是参数列表。
 
-五. call和aplly的原生实现
+五. call和aplly的简单原生实现
 
-六. bind的实现
+* call的实现
+
+		Function.prototype.myCall = function(){
+			let [thisArg,...args] = [...arguments];
+			if(!thisArg){
+				thisArg = typeof window === 'undefined'? global : window;
+			}
+			thisArg.fn = this;
+			let res = thisArg.fn(...args);
+			delete thisArg.fn;
+			return res;
+		}
+
+		let obj = {
+			name:'peter',
+			num:2
+		}
+		function foo(a,b){
+			return `${a + b}, ${this.name}, ${this.num}`
+		}
+		console.log(foo.call(obj,3,4,5)); // 7 peter, 2
+		console.log(foo.myCall(obj,3,4,5)); // 7 peter, 2
+
+* apply的实现
+
+		Function.prototype.myApply = function(context,rest){
+			let res;
+			if(!context){
+				context = typeof window === 'undefined'? global : window;
+			}
+			context.fn = this;
+			if(rest){
+				res = context.fn(...rest)
+			}else{
+				res = context.fn()
+			}
+			delete context.fn;
+			return res;
+		}
+
+		console.log(foo.apply(obj,[3,4])); // 7, peter, 2
+		console.log(foo.myApply(obj,[3,4])) // 7, peter, 2
+
+六. bind的简单实现
+
+	Function.prototype.myBind = function(){
+		let [thisArg,...args] = [...arguments];
+		let res;
+		if(!thisArg){
+			thisArg = typeof window === 'undefined'? global : window;
+		}
+		thisArg.fn = this;
+		return function(){
+			let all = [...args,...arguments]
+			res = thisArg.fn(...all)
+			delete thisArg.fn;
+			return res
+		}
+	}
+	console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
+	console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
