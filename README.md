@@ -261,3 +261,54 @@
 	* clip-path: polygon(0 0, 0 0, 0 0, 0 0); clip-path 裁剪
 * 语义上的隐藏：读屏软件不可读，但正常占据空。
 	* aria-hidden 属性
+
+八 让元素垂直水平居中有哪些方法？
+
+* 元素的宽高已知
+	* text-align + line-height
+
+			.box{
+				width:100px;
+				height:100px;
+				display:inline-block;
+				text-align:center;
+				line-height:100px;
+			}
+	* position
+
+			.box{
+				width:100px;
+				height:100px;
+				position:absolute;
+				left:calc(50% - 50px);
+				top:calc(50% - 50px);
+			}
+
+* 元素的宽高未知
+	* display:flex
+
+			.box{
+				display:flex;
+				justify-content:center;
+				align-items:center;
+			}
+
+	* position + transform
+
+			.box{
+				position:absolute;
+				top:50%;
+				left:50%;
+				transform:translate(-50%,-50%)
+			}
+
+	* display:table
+
+			.box{
+				display:table;
+				text-align:center;
+			}
+			.box .child{
+				display:table-cell;
+				vertical-align: middle;
+			}
