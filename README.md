@@ -167,17 +167,16 @@
 
 四. call和apply的定义和区别？(=>二)
 
-apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
+	apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
 
-call：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.call(A, args1,args2);即A对象调用B对象的方法
+	call：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.call(A, args1,args2);即A对象调用B对象的方法
 
-从定义中可以看出，call和apply都是调用一个对象的一个方法，用另一个对象替换当前对象。
+	从定义中可以看出，call和apply都是调用一个对象的一个方法，用另一个对象替换当前对象。
 
-而不同之处在于传递的参数，
+	而不同之处在于传递的参数，
 
-apply最多只能有两个参数——新this对象和一个数组arg，如果arg不是数组则会报错TypeError；
-
-call则可以传递多个参数，第一个参数和apply一样，是用来替换的对象，后边是参数列表。
+	apply最多只能有两个参数——新this对象和一个数组arg，如果arg不是数组则会报错TypeError；
+	call则可以传递多个参数，第一个参数和apply一样，是用来替换的对象，后边是参数列表。
 
 五. call和aplly的简单原生实现
 
@@ -242,3 +241,23 @@ call则可以传递多个参数，第一个参数和apply一样，是用来替�
 	}
 	console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
 	console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
+
+七. 让元素隐藏有哪些方法？
+
+* 完全隐藏：元素从渲染树中消失，不占据空间。
+
+	* display: none;
+	* \<div hidden>\</div> 
+* 视觉上的隐藏：屏幕中不可见，占据空间。
+
+	* visibility: hidden;
+	* 设置 posoition 为 relative absolute 或 fixed，通过设置 top、left 等值
+	* 设置 margin 负值，将其移出可视区域范围（可视区域占位）。
+	* transform: scale(0)/translateX(-99999px)/rotateY(90deg);
+	* 宽高为0，字体大小为0
+	* 宽高为0，超出隐藏:
+	* opacity: 0;
+	* 层级覆盖，z-index 属性负值
+	* clip-path: polygon(0 0, 0 0, 0 0, 0 0); clip-path 裁剪
+* 语义上的隐藏：读屏软件不可读，但正常占据空。
+	* aria-hidden 属性
