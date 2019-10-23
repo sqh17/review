@@ -312,3 +312,88 @@
 				display:table-cell;
 				vertical-align: middle;
 			}
+
+
+
+九 html5和css3新增了哪些？
+* html5 
+	* 语义化标签
+	* 表单元素
+		* 新增表单元素
+			* \<datalist>\</datalist> 元素规定输入域的选项列表,使用 \<input> 元素的 list 属性与 <datalist> 元素的 id 绑定
+			* \<keygen>\</keygen> 提供一种验证用户的可靠方法,标签规定用于表单的密钥对生成器字段。
+			* \<output> 用于不同类型的输出,比如计算或脚本输出
+		* input type值
+			* color | date | datetime | email | number | tel | url | search
+		* input 属性
+			* placehoder 属性，简短的提示在用户输入值前会显示在输入域上。即我们常见的输入框默认提示，在用户输入后消失。
+			* required  属性，是一个 boolean 属性。要求填写的输入域不能为空
+			* pattern 属性，描述了一个正则表达式用于验证\<input> 元素的值。
+			* min 和 max 属性，设置元素最小值与最大值。
+			* step 属性，为输入域规定合法的数字间隔。
+			* height 和 width 属性，用于 image 类型的 \<input> 标签的图像高度和宽度。
+			* autofocus 属性，是一个 boolean 属性。规定在页面加载时，域自动地获得焦点。
+			* multiple 属性 ，是一个 boolean 属性。规定\<input> 元素中可选择多个值。
+	* 新增标签
+		* 音频和视频
+			* \<audio>\</audio> 
+
+					<audio controls>
+						<source src="horse.ogg" type="audio/ogg">
+						<source src="horse.wav" type="audio/ogg">
+						<source src="horse.mp3" type="audio/mpeg">您的浏览器不支持 audio 元素。
+					</audio>
+
+			1. control 属性供添加播放、暂停和音量控件。  
+			2. 在\<audio> 与 \</audio> 之间你需要插入浏览器不支持的\<audio>元素的提示文本。  
+			3. \<audio> 元素允许使用多个 \<source> 元素. \<source> 元素可以链接不同的音频文件，浏览器将使用第一个支持的音频文件。  
+			4. 目前, \<audio>元素支持三种音频格式文件: MP3, Wav, 和 Ogg
+
+			* \<video>\</video>
+
+						<video width="320" height="240" controls>
+							<source src="movie.mp4" type="video/mp4">
+							<source src="movie.ogg" type="video/ogg">
+						您的浏览器不支持Video标签。
+						</video>
+				
+			1. control 提供了 播放、暂停和音量控件来控制视频。也可以使用dom操作来控制视频的播放暂停，如 play() 和 pause() 方法.
+			2. 同时 video 元素也提供了 width 和 height 属性控制视频的尺寸.如果设置的高度和宽度，所需的视频空间会在页面加载时保留。如果没有设置这些属性，浏览器不知道大小的视频，浏览器就不能再加载时保留特定的空间，页面就会根据原始视频的大小而改变。
+			3. 与标签之间插入的内容是提供给不支持 video 元素的浏览器显示的。
+			4. video 元素支持多个source 元素. 元素可以链接不同的视频文件。浏览器将使用第一个可识别的格式（ MP4, WebM, 和 Ogg）
+		* canvas 画布
+
+				<canvas id="myCanvas" width="200" height="100"></canvas>
+
+				var c=document.getElementById("myCanvas");
+				var ctx=c.getContext("2d");
+				ctx.moveTo(0,0); // 定义线条开始坐标
+				ctx.lineTo(200,100); // 划线
+				ctx.stroke(); // 闭合
+				ctx.font="30px Arial";
+				ctx.fillText("Hello World",10,50); // 绘制实心的文本
+				ctx.fillText("Hello World",10,50); // 绘制空心的文本
+				var img=document.getElementById("scream");
+				ctx.drawImage(img,10,10); // 放置图像
+
+		* svg 矢量图  
+			可以类似于dom操作
+
+
+
+十 html5标签语义化（=》九）
+* 什么是标签语义化  
+	用正确的标签做正确的事，把适当的标签用在合适的地方。是页面结构更加的清晰。
+* 标签语义化的作用  
+	1. 使用html语义化，能使页面结构更清晰，便于解析。
+	2. 有利于SEO。搜索引擎爬虫依赖于html标签来确定上下文和关键字权重。
+  3. 使用html语义化，在没有css样式的时候页面也能正确清晰的呈现
+  4. 有利于各种设备的解析，如盲人阅读器，屏幕阅读器
+  5. 有利于团队合作开发与维护。
+* html5标签有哪些？  
+	* \<title>\</title>  页面的标题，具有唯一性，标题的取名尽量包含网页几个关键字。
+	* \<header>\</header>  网站的标志，主导航，搜索框等　
+	* \<nav>\</nav> 网站的导航。　
+	* \<mian>\</mian> 网页的主要内容，一个网页只能有一个
+	* \<aside>\</aside>　　附注栏，比如侧栏，引述，产品列表，链接等。
+	* \<footer>\</footer> 页脚
