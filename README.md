@@ -377,9 +377,27 @@
 				ctx.drawImage(img,10,10); // 放置图像
 
 		* svg 矢量图  
-			可以类似于dom操作
+			SVG是指可伸缩的矢量图形。  
+			可以进行类似于dom操作，通过ps合成svg，代码里面就是dom。
 
+		* drag 和 drop 拖拽  
+			1. 即抓取对象以后拖到另一个位置。在 HTML5 中，拖放是标准的一部分，任何元素都能够拖放。即将元素添加 draggable，就变成可拖动元素。  
+			2. 拖放的过程分为源对象和目标对象。源对象是指你即将拖动元素，而目标对象则是指拖动之后要放置的目标位置。
+			3. 对源对象操作的方法：I. ondragstart（用户开始拖动元素时触发）II.<font color='purple'> ondrag（ 元素正在拖动时触发）</font>III. ondragend （用户完成元素拖动后触发）
+			4. 放置目标对象的方法：I. ondragenter （当被鼠标拖动的对象进入其容器范围内时触发此事件）II. ondragover (当某被拖动的对象在另一对象容器范围内拖动时触发此事件) III. ondragleave (当被鼠标拖动的对象离开其容器范围内时触发此事件) IIII <font color="purple">ondrop (在一个拖动过程中，释放鼠标键时触发此事件)</font>
+			5. 通过 ev.dataTransfer.getData("Text") 方法获得被拖的数据。该方法将返回在 ev.dataTransfer.setData("Text",xxx)方法中设置为相同类型的任何数据。
+			6. 例子参考  'https://www.runoob.com/html/html5-draganddrop.html'
 
+		* Geolocation 地理定位  
+		用于定位用户的位置
+
+		* Web Worker   
+		运行在后台的 JavaScript，不会影响页面的性能
+		* Web Storage
+			* sessionStrage
+			* localStrage
+
+		* WebSocket
 
 十 html5标签语义化（=》九）
 * 什么是标签语义化  
@@ -397,3 +415,10 @@
 	* \<mian>\</mian> 网页的主要内容，一个网页只能有一个
 	* \<aside>\</aside>　　附注栏，比如侧栏，引述，产品列表，链接等。
 	* \<footer>\</footer> 页脚
+
+十一 svg和canvas的区别（=》九）
+* SVG 是一种使用 XML 描述 2D 图形的语言。
+* Canvas 通过 JavaScript 来绘制 2D 图形。
+* SVG 基于 XML，这意味着 SVG DOM 中的每个元素都是可用的。您可以为某个元素附加 JavaScript 事件处理器。
+* 在 SVG 中，每个被绘制的图形均被视为对象。如果 SVG 对象的属性发生变化，那么浏览器能够自动重现图形。
+* Canvas 是逐像素进行渲染的。在 canvas 中，一旦图形被绘制完成，它就不会继续得到浏览器的关注。如果其位置发生变化，那么整个场景也需要重新绘制，包括任何或许已被图形覆盖的对象。
