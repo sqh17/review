@@ -268,21 +268,85 @@
 	* text-align + line-height
 
 			.box{
-				width:100px;
-				height:100px;
+				width:200px;
+				height:200px;
 				display:inline-block;
 				text-align:center;
 				line-height:100px;
 			}
-	* position
+			.children-box {
+				width: 100px;
+				height: 100px;
+			}
+
+	* position + calc
 
 			.box{
-				width:100px;
-				height:100px;
+				width:200px;
+				height:200px;
 				position:absolute;
-				left:calc(50% - 50px);
-				top:calc(50% - 50px);
+				left:calc(50% - 100px);
+				top:calc(50% - 100px);
 			}
+			.children-box {
+				width: 100px;
+				height: 100px;
+			}
+
+	* position + margin负值
+
+			.box {
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				position: relative;
+			}
+			.children-box {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				background: yellow;
+				left: 50%;
+				top: 50%;
+				margin-left: -50px;
+				margin-top: -50px; 
+			}
+
+	* 绝对定位 + left/right/bottom/top + margin
+
+			.box {
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				position: relative;
+			}
+			.children-box {
+				position: absolute;
+				display: inline;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0px;
+				background: yellow;
+				margin: auto;
+				height: 100px;
+				width: 100px;
+			}
+
+	* grid 
+
+		.box {
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				display: grid;
+		}
+		.children-box {
+				width: 100px;
+				height: 100px;
+				background: yellow;
+				margin: auto;
+		}
 
 * 元素的宽高未知
 	* display:flex
@@ -307,14 +371,36 @@
 			.box{
 				display:table;
 				text-align:center;
-			}
-			.box .child{
 				display:table-cell;
 				vertical-align: middle;
 			}
 
+	* grid + flex
 
+			.box {
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				display: grid;
+			}
+			.children-box {
+				background: yellow;
+				align-self: center;
+				justify-self: center;
+			}
 
+	* gird + margin布局
+
+			.box {
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				display: grid;
+			}
+			.children-box {
+				background: yellow;
+				margin: auto;
+			}
 九 html5和css3新增了哪些？
 * html5 
 	* 语义化标签
@@ -445,6 +531,10 @@
 			在 WebSocket API 中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送
 
 * css3
+	* 选择器
+		1. querySelector()/querySelectorAll()
+		2. ele:nth-child()/ele:first-child/ele:last-child/ele:nth-child(odd/even)/ele::before/ele::after/ele:not(选择器)选择没有该选择器的元素/\[attribute^=value]
+		3. box-sizing/border-radius/box-shadow/text-shadow/background-image:linear-gradient (方向 , 颜色 位置 , 颜色 位置)/background-image:radial-gradient(半径 at 位置 ,颜色 位置,颜色 位置)/background-clip/background-origin: padding-box/border-box/content-box/transition/transform:translate,rotato,scale,skew/calc()/animation:name动画名称  动画总时间 动画延迟 动画速度/@font-face/@media/display:flex
 
 十 html5标签语义化（=>九）
 * 什么是标签语义化  
@@ -482,3 +572,29 @@
 1. token就是令牌，比如你授权(登录)一个程序时,他就是个依据,判断你是否已经授权该软件（最好的身份认证，安全性好，且是唯一的）用户身份的验证方式
 2. cookie是写在客户端一个txt文件，里面包括登录信息之类的，这样你下次在登录某个网站，就会自动调用cookie自动登录用户名服务器生成，发送到浏览器、浏览器保存，下次请求再次发送给服务器（存放着登录信息）
 3. session是一类用来客户端和服务器之间保存状态的解决方案，会话完成被销毁（代表的就是服务器和客户端的一次会话过程）cookie中存放着sessionID，请求会发送这个id。sesion因为request对象而产生。
+
+十四 display:flex的项目的各个属性
+1. order 项目的排列顺序。数值越小，排列越靠前，默认为0（按代码书写的顺序来。）
+2. flex-grow 项目的放大比例，默认为0（即如果存在剩余空间，也不放大。）   
+   如果item都为1，则均等平摊整个空间。  
+	 如果有一个item和其他的item不相等，则按照比例放大。
+3. flex-shrink 项目的缩小比例，默认为1（即如果空间不足，该项目将缩小。）  
+  如果item都相等，则均等平摊空间，若空间不足，则都等比例缩小。  
+  如果有一个item为0；当空间不足时，其不缩小。  
+	ps：负值无效。
+4. flex-basis 在分配多余空间之前，项目占据的水平上的空间。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+5. flex 是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。  
+优先级：auto (1 1 auto) 或者 none （0 0 auto);
+6. align-self 允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+十五 防抖和节流
+
+十六 浅拷贝和深拷贝
+
+十七 实现深拷贝
+
+十八 实现一个promise
+
+十九 缓存
+
+二十 移动端如何做适配？
