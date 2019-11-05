@@ -1,7 +1,7 @@
 #### 开头
-为了备战面试，从其他的面试题或者想到的问题总结如下，最低一天一个题。
+为了备战面试，从其他的面试题或者想到的问题总结如下。
 
-  一. 什么是二分查找，思路是什么？实现方式有哪些？
+### 什么是二分查找，思路是什么？实现方式有哪些？
 
    * 二分查找：就是在一个已排序的数组中通过值去查找索引。 
    * 思路：  
@@ -60,7 +60,7 @@
 				}
 			}
 
-二. this的指向有哪些？   
+### this的指向有哪些？   
 1. 函数里的this：作为普通函数，this指向window。
 2. 对象的this：当函数作为对象的方法被调用时，this就会指向该对象.  
 3. call，apply的this：指向调用该方法的对象
@@ -160,12 +160,12 @@
 		}
 		boss2.returnThis() // boss2
 
-三. new实现了哪些步骤？(=>二)  
+### new实现了哪些步骤？(=>二)  
 1. 创建一个新对象，  
 2. 将构造函数的作用域赋给新对象（this指向新对象)。   
 3. 执行构造函数的代码（为新对象添加属性或方法)。
 
-四. call和apply的定义和区别？(=>二)
+### call和apply的定义和区别？(=>二)
 
 	apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
 
@@ -178,7 +178,7 @@
 	apply最多只能有两个参数——新this对象和一个数组arg，如果arg不是数组则会报错TypeError；
 	call则可以传递多个参数，第一个参数和apply一样，是用来替换的对象，后边是参数列表。
 
-五. call和aplly的简单原生实现
+### call和aplly的简单原生实现
 
 * call的实现
 
@@ -223,7 +223,7 @@
 		console.log(foo.apply(obj,[3,4])); // 7, peter, 2
 		console.log(foo.myApply(obj,[3,4])) // 7, peter, 2
 
-六. bind的简单实现
+### bind的简单实现
 
 	Function.prototype.myBind = function(){
 		let [thisArg,...args] = [...arguments];
@@ -242,7 +242,7 @@
 	console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
 	console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
 
-七. 让元素隐藏有哪些方法？
+### 让元素隐藏有哪些方法？
 
 * 完全隐藏：元素从渲染树中消失，不占据空间。
 
@@ -262,7 +262,7 @@
 * 语义上的隐藏：读屏软件不可读，但正常占据空。
 	* aria-hidden 属性
 
-八 让元素垂直水平居中有哪些方法？
+### 让元素垂直水平居中有哪些方法？
 
 * 元素的宽高已知
 	* text-align + line-height
@@ -335,18 +335,18 @@
 
 	* grid 
 
-		.box {
-				width: 200px;
-				height: 200px;
-				border: 1px solid red;
-				display: grid;
-		}
-		.children-box {
-				width: 100px;
-				height: 100px;
-				background: yellow;
-				margin: auto;
-		}
+			.box {
+					width: 200px;
+					height: 200px;
+					border: 1px solid red;
+					display: grid;
+			}
+			.children-box {
+					width: 100px;
+					height: 100px;
+					background: yellow;
+					margin: auto;
+			}
 
 * 元素的宽高未知
 	* display:flex
@@ -401,7 +401,7 @@
 				background: yellow;
 				margin: auto;
 			}
-九 html5和css3新增了哪些？
+### html5和css3新增了哪些？
 * html5 
 	* 语义化标签
 	* 表单元素
@@ -536,7 +536,7 @@
 		2. ele:nth-child()/ele:first-child/ele:last-child/ele:nth-child(odd/even)/ele::before/ele::after/ele:not(选择器)选择没有该选择器的元素/\[attribute^=value]
 		3. box-sizing/border-radius/box-shadow/text-shadow/background-image:linear-gradient (方向 , 颜色 位置 , 颜色 位置)/background-image:radial-gradient(半径 at 位置 ,颜色 位置,颜色 位置)/background-clip/background-origin: padding-box/border-box/content-box/transition/transform:translate,rotato,scale,skew/calc()/animation:name动画名称  动画总时间 动画延迟 动画速度/@font-face/@media/display:flex
 
-十 html5标签语义化（=>九）
+### html5标签语义化（=>九）
 * 什么是标签语义化  
 	用正确的标签做正确的事，把适当的标签用在合适的地方。是页面结构更加的清晰。
 * 标签语义化的作用  
@@ -553,14 +553,14 @@
 	* \<aside>\</aside>　　附注栏，比如侧栏，引述，产品列表，链接等。
 	* \<footer>\</footer> 页脚
 
-十一 svg和canvas的区别（=>九）
+### svg和canvas的区别（=>九）
 * SVG 是一种使用 XML 描述 2D 图形的语言。
 * Canvas 通过 JavaScript 来绘制 2D 图形。
 * SVG 基于 XML，这意味着 SVG DOM 中的每个元素都是可用的。您可以为某个元素附加 JavaScript 事件处理器。
 * 在 SVG 中，每个被绘制的图形均被视为对象。如果 SVG 对象的属性发生变化，那么浏览器能够自动重现图形。
 * Canvas 是逐像素进行渲染的。在 canvas 中，一旦图形被绘制完成，它就不会继续得到浏览器的关注。如果其位置发生变化，那么整个场景也需要重新绘制，包括任何或许已被图形覆盖的对象。
 
-十二 sessionStorage，sessopnStorage，cookie的区别(=>九)
+### sessionStorage，sessopnStorage，cookie的区别(=>九)
 1. cookie，sessionStorage，localStorage是存放在客户端，session对象数据是存放在服务器上,session存储数据更安全一些，一般存放用户信息，浏览器只适合存储一般的数据
   2. cookie数据始终在同源的http请求中携带，在浏览器和服务器来回传递,sessionStorage，localStorage仅在本地保存
   3. 大小限制区别，cookie数据不超过4kb，localStorage在谷歌浏览中2.6MB
@@ -568,12 +568,12 @@
       sessionStorage仅在当前浏览器窗口关闭前有效，关闭即销毁（临时存储）
       localStorage始终有效
 
-十三 token、cookie、session三者的理解
+### token、cookie、session三者的理解
 1. token就是令牌，比如你授权(登录)一个程序时,他就是个依据,判断你是否已经授权该软件（最好的身份认证，安全性好，且是唯一的）用户身份的验证方式
 2. cookie是写在客户端一个txt文件，里面包括登录信息之类的，这样你下次在登录某个网站，就会自动调用cookie自动登录用户名服务器生成，发送到浏览器、浏览器保存，下次请求再次发送给服务器（存放着登录信息）
 3. session是一类用来客户端和服务器之间保存状态的解决方案，会话完成被销毁（代表的就是服务器和客户端的一次会话过程）cookie中存放着sessionID，请求会发送这个id。sesion因为request对象而产生。
 
-十四 display:flex的项目的各个属性
+### display:flex的项目的各个属性
 1. order 项目的排列顺序。数值越小，排列越靠前，默认为0（按代码书写的顺序来。）
 2. flex-grow 项目的放大比例，默认为0（即如果存在剩余空间，也不放大。）   
    如果item都为1，则均等平摊整个空间。  
@@ -587,15 +587,17 @@
 优先级：auto (1 1 auto) 或者 none （0 0 auto);
 6. align-self 允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
-十五 防抖和节流
+### 防抖和节流
 
-十六 浅拷贝和深拷贝
+### 浅拷贝和深拷贝
 
-十七 实现深拷贝
+### 实现深拷贝
 
-十八 实现一个promise
+### 实现一个promise
 
-十九 浏览器缓存
+### 从浏览器地址栏输入url到显示页面的步骤
+
+### 浏览器缓存
 
 * 强制缓存：  缓存在未过有效期时，不需要请求资源
 	* expires &nbsp;&nbsp;&nbsp; http1.0  
@@ -617,9 +619,9 @@
 	* Etag  --- If-None-Match
 		1. Etag存储的是文件的特殊标识(一般都是hash生成的)，服务器存储着文件的Etag字段，可以在与每次客户端传送If-no-match的字段进行比较，如果相等，则表示未修改，响应304；反之，则表示已修改，响应200状态码，返回数据。
 
-二十 浏览器行为会引起缓存的变化
+### 浏览器行为会引起缓存的变化
 1. 刷新网页 => 如果缓存没有失效，浏览器会直接使用缓存；反之，则向服务器请求数据
 2. 手动刷新（F5） => 浏览器会认为缓存失效，在请求服务器时加上Cache-Control: max-age=0字段，然后询问服务器数据是否更新。
 3. 强制刷新（Ctrl + F5） => 浏览器会直接忽略缓存，在请求服务器时加上Cache-Control: no-cache字段，然后重新向服务器拉取文件。
 
-二十一 移动端如何做适配？
+### 移动端如何做适配？ 
