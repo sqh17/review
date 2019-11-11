@@ -571,7 +571,7 @@
 ### token、cookie、session三者的理解
 1. token就是令牌，比如你授权(登录)一个程序时,他就是个依据,判断你是否已经授权该软件（最好的身份认证，安全性好，且是唯一的）用户身份的验证方式
 2. cookie是写在客户端一个txt文件，里面包括登录信息之类的，这样你下次在登录某个网站，就会自动调用cookie自动登录用户名服务器生成，发送到浏览器、浏览器保存，下次请求再次发送给服务器（存放着登录信息）
-3. session是一类用来客户端和服务器之间保存状态的解决方案，会话完成被销毁（代表的就是服务器和客户端的一次会话过程）cookie中存放着sessionID，请求会发送这个id。sesion因为request对象而产生。
+3. session是一类用来客户端和服务器之间保存状态的解决方案，会话完成被销毁（代表的就是服务器和客户端的一次会话过程）
 
 ### display:flex的项目的各个属性
 1. order 项目的排列顺序。数值越小，排列越靠前，默认为0（按代码书写的顺序来。）
@@ -590,8 +590,95 @@
 ### 防抖和节流
 
 ### 浅拷贝和深拷贝
+* 浅拷贝是指创建一个对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，那么拷贝的就是基本类型的值，如果属性是引用类型，那么拷贝的就是内存地址，所以如果其中一个对象修改了某些属性，那么另一个对象就会受到影响。
+* 深拷贝是指从内存中完整地拷贝一个对象出来，并在堆内存中为其分配一个新的内存区域来存放，并且修改该对象的属性不会影响到原来的对象。
+### 如何实现浅拷贝和深拷贝
+* 浅拷贝的实现（引用类型）：
+	* Object.assign(newObj,oldObj) 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象
 
-### 实现深拷贝
+			let oldObj = {
+				name:'peter',
+				age:26
+			}
+			let oldArr = [1,2,3,4,5]
+			let newObj = Object.assign({},oldObj)
+			let newArr = Object.assign([],oldArr)
+
+	* 通过扩展运算符
+
+			let {...newObj} = oldObj
+			let [...newArr] = oldArr
+
+	* 通过数组的slice方法(适用与数组)
+
+			let newArr = oldArr.slice()
+
+	* 通过数组的concat方法(适用与数组)
+
+			let newArr = oldArr.concat()
+
+* 深拷贝的实现
+	* 通过JSON.stringify()和JSON.parse()
+
+			let oldObj = {
+				name:'peter',
+				age:26
+			}
+			let oldArr = [1,2,3,4,5]
+			let newObj = JSON.parse(JSON.stringify(oldObj))	
+			let newArr = JSON.parse(JSON.stringify(oldArr))			
+
+		使用之前考虑的坑：
+		* 如果json里面有时间对象，则序列化结果：时间对象=>字符串的形式
+		* 如果json里有RegExp、Error对象，则序列化的结果将只得到空对象 RegExp、Error => {}
+		* 如果json里有 function,undefined,symbol，则序列化的结果会把 function,undefined 丢失
+		* 如果json里有NaN、Infinity和-Infinity，则序列化的结果会变成null
+		* 如果json里有对象是由构造函数生成的，则序列化的结果会丢弃对象的 constructor
+		* 如果对象中存在循环引用的情况也无法实现深拷贝（类似于递归嵌套）
+
+	* 原生实现递归拷贝
+		* 方法一
+
+				function deepClone(obj){
+					if(obj instanceof RegExp) return new RegExp(obj);
+					if(obj instanceof Date) return new Date(obj);
+					let objClone = Array.isArray(obj)?[]:{};
+					if(obj && typeof obj==="object"){
+							for(key in obj){
+									if(obj.hasOwnProperty(key)){
+									//判断ojb子元素是否为对象，如果是，递归复制
+											if(obj[key]&&typeof obj[key] ==="object"){
+													objClone[key] = deepClone(obj[key]);
+											}else{
+													//如果不是，简单复制
+													objClone[key] = obj[key];
+											}
+									}
+							}
+					}
+					return objClone;
+				}
+
+		* 方法二
+
+				function deepClone(obj,hash = new WeakMap()){
+					if(obj instanceof RegExp) return new RegExp(obj);
+					if(obj instanceof Date) return new Date(obj);
+					if(obj == null || typeof obj !== 'object'){
+						return obj;// 如果不是复杂数据类型直接返回obj
+					}
+					if(hash.has(obj)){
+						return hash.get(obj);
+					}
+					let t = new obj.constructor();
+					hash.set(obj,t);
+					for(let key in obj){
+						if(obj.hasOwnPropetry(key)){
+							t[key] = deepClone(obj[key],hash)
+						}
+					}
+					return t;
+				}
 
 ### 实现一个promise
 
