@@ -588,6 +588,58 @@
 6. align-self 允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
 ### 防抖和节流
+* 防抖  
+就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+
+		function debounce(func, wait) {
+			let timeout;
+			return function () {
+				let context = this;
+				let args = arguments;
+				if (timeout) clearTimeout(timeout);
+				timeout = setTimeout(() => {
+						func.apply(context, args)
+				}, wait);
+			}
+		}
+
+	适用场景：  
+
+	1. 搜索框输入查询
+	2. 按钮提交事件
+	3. 浏览器窗口缩放，resize事件(如窗口停止改变大小之后重新计算布局)等
+
+* 节流  
+节流函数的作用是规定一个单位时间，在这个单位时间内最多只能触发一次函数执行，如果这个单位时间内多次触发函数，只能有一次生效。
+
+		//	时间戳方式
+		function throttle(func, wait) {
+			let previous = 0;
+			return function() {
+				let now = Date.now();
+				let context = this;
+				let args = arguments;
+				if (now - previous > wait) {
+						func.apply(context, args);
+						previous = now;
+				}
+			}
+		}
+
+		// 定时器方式
+		function throttle(func,wait){
+			let timer;
+			return function(){
+				let context = this;
+				let args = arguments;
+				if(!timer){
+					timer = setTimeout(()=>{
+						func.apply(context,args);
+						timer = null;
+					},wait)
+				}
+			}
+		}
 
 ### 浅拷贝和深拷贝
 * 浅拷贝是指创建一个对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，那么拷贝的就是基本类型的值，如果属性是引用类型，那么拷贝的就是内存地址，所以如果其中一个对象修改了某些属性，那么另一个对象就会受到影响。
@@ -631,7 +683,7 @@
 		使用之前考虑的坑：
 		* 如果json里面有时间对象，则序列化结果：时间对象=>字符串的形式
 		* 如果json里有RegExp、Error对象，则序列化的结果将只得到空对象 RegExp、Error => {}
-		* 如果json里有 function,undefined,symbol，则序列化的结果会把 function,undefined 丢失
+		* 如果json里有 function,undefined,symbol，则序列化的结果会把 function,undefined,symbol 丢失
 		* 如果json里有NaN、Infinity和-Infinity，则序列化的结果会变成null
 		* 如果json里有对象是由构造函数生成的，则序列化的结果会丢弃对象的 constructor
 		* 如果对象中存在循环引用的情况也无法实现深拷贝（类似于递归嵌套）
