@@ -762,7 +762,7 @@
 ### 三次握手
 (转载与http://blog.itpub.net/31442725/viewspace-2645992/)  
 
-[![三次握手]](https://github.com/sqh17/review/blob/master/images/connect.png)
+![三次握手](/images/connect.png)
 1. 第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。
 
 2. 第二次握手： Server 收到数据包后由标志位 SYN=1 知道 Client 请求建立连接， Server 将标志位 SYN 和 ACK 都置为 1 ， ack=J+1 ，随机产生一个值 seq=K ，并将该数据包发送给 Client 以确认连接请求， Server 进入 SYN_RCVD 状态。
@@ -779,7 +779,7 @@
 
 ### 四次挥手
 (转载与http://blog.itpub.net/31442725/viewspace-2645992/)  
-[![四次挥手]](https://github.com/sqh17/review/blob/master/images/close.png)
+![四次挥手](/images/close.png)
 1. 第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态。
 
 2. 第二次挥手： Server 收到 FIN 后，发送一个 ACK 给 Client ，确认序号为收到序号 +1 （与 SYN 相同，一个 FIN 占用一个序号）， Server 进入 CLOSE_WAIT 状态。
