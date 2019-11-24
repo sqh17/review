@@ -109,7 +109,7 @@
 		var boss1returnThis = returnThis.bind(boss1)
 		boss1returnThis() // boss1
 		var boss2 = { name: 'boss2' }
-		boss1returnThis.call(boss2) // boss1
+		boss1returnThis.call(boss2) // boss1  通过一个新函数来提供永久的绑定
 
 		// --------
 		function showThis () {
@@ -322,7 +322,6 @@
 			}
 			.children-box {
 				position: absolute;
-				display: inline;
 				top: 0;
 				left: 0;
 				right: 0;
@@ -641,6 +640,11 @@
 			}
 		}
 
+	适用场景
+	1. 按钮点击事件
+	2. 拖拽事件
+	3. onscroll
+	4. 计算鼠标移动的距离(mousemove)
 ### 浅拷贝和深拷贝
 * 浅拷贝是指创建一个对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，那么拷贝的就是基本类型的值，如果属性是引用类型，那么拷贝的就是内存地址，所以如果其中一个对象修改了某些属性，那么另一个对象就会受到影响。
 * 深拷贝是指从内存中完整地拷贝一个对象出来，并在堆内存中为其分配一个新的内存区域来存放，并且修改该对象的属性不会影响到原来的对象。
@@ -736,6 +740,19 @@
 
 ### 从浏览器地址栏输入url到显示页面的步骤
 
+1. 查询NDS(域名解析),获取域名对应的IP地址  查询浏览器缓存
+2. 浏览器与服务器建立tcp链接（三次握手）
+3. 浏览器向服务器发送http请求(请求和传输数据）
+4. 服务器接受到这个请求后，根据路经参数，经过后端的一些处理生成html代码返回给浏览器
+5. 浏览器拿到完整的html页面代码，解析HTML文档，构件DOM树，下载资源，构造CSSOM树，执行js脚本，这些操作没有严格的先后顺序
+6. 浏览器根据拿到的资源对页面进行渲染，把一个完整的页面呈现出来
+
+### 三次握手
+
+### 四次挥手
+
+### 浏览器渲染原理及流程
+
 ### 浏览器缓存
 
 * 强制缓存：  缓存在未过有效期时，不需要请求资源
@@ -764,3 +781,14 @@
 3. 强制刷新（Ctrl + F5） => 浏览器会直接忽略缓存，在请求服务器时加上Cache-Control: no-cache字段，然后重新向服务器拉取文件。
 
 ### 移动端如何做适配？ 
+
+### 实现一个函数判断数据类型
+
+	function getType(obj) {
+		if (obj === null) return String(obj);
+		return typeof obj === 'object' 
+		? Object.prototype.toString.call(obj).replace('[object ', '').replace(']', '').toLowerCase()
+		: typeof obj;
+	}
+
+### 图片的懒加载和预加载
