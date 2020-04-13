@@ -187,6 +187,7 @@
 			if(!thisArg){
 				thisArg = typeof window === 'undefined'? global : window;
 			}
+			const fn = Symbol('fn')  // 声明一个独有的Symbol属性, 防止fn覆盖已有属性
 			thisArg.fn = this;
 			let res = thisArg.fn(...args);
 			delete thisArg.fn;
@@ -210,6 +211,7 @@
 			if(!context){
 				context = typeof window === 'undefined'? global : window;
 			}
+			const fn = Symbol('fn') 
 			context.fn = this;
 			if(rest){
 				res = context.fn(...rest)
@@ -830,6 +832,171 @@
 
 ### 图片的懒加载和预加载
 * 预下载
-
+#
 * 懒下载
 
+
+### doctype 
+
+document type（文档类型）的简写，doctype是一种标准通用标记语言的文档类型声明，目的是告诉浏览器要使用什么样的文档类型定义(DTD)来解析文档。XHTML1.0 提供了三种DTD声明可供选择，分别是：strict（严格模式）,frameset（框架模式）,tranisitional（混杂模式）  
+doctype在html中的作用是触发浏览器的标准模式，如果html中省略了doctype，浏览器会进入到混杂模式的状态也称之为兼容模式。在这种模式下有些样式，布局会和标准模式（或称严格模式）存在差异。标准，DOM标准只规定了标准模式下的行为，没有对兼容模式做出规定，因此不同浏览器在兼容模式下的处理也是不同的，应用兼容模式比较困难，所以需要慎用。
+过渡的(Transitional，也叫混杂模式)：要求比较宽松，允许继续使用HTML4.01的标识  
+完整声明为   \<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-tranisitional.dtd"\> '
+严格的(Strict)：要求严格的DTD，不能使用任何表现层的标识和属性  
+完整声明为\<!DOCTYPE html PUBLIC "-W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"\>  
+框架的(Frameset)：专门针对框架页面设计使用的DTD，如果页面中包含有框架，可以采用DTD  
+完整声明为\<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"\>
+
+
+### meta的作用，包含什么？
+
+帮助主页被各大搜索引擎，定义页面的使用语言，自动刷新并指向新的页面，响应式页面指定。
+* charset 指定字符编码
+
+	\<meta charset="utf-8"\>  
+	GB2312 == 简体中文  
+	BIG5 == 繁体中文  
+	iso-2022-jp == 日文  
+	ks_c_5601 == 韩文
+	ISO-8859-1 == 英文
+	UTF-8 == 世界通用的语言编码
+
+* http-equiv 相当于http的文件头作用，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为content，content中的内容其实就是各个参数的变量值。
+	
+	语法格式是：\<meta http-equiv="参数" content="参数变量值"\> ；其中http-equiv属性主要有以下几种	
+		
+	参数：  
+	A、Expires(期限)  
+	说明：可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。   
+	用法：\<meta http-equiv="expires" content="Fri, 12 Jan 2001 18:18:18 GMT"\>   
+	注意：必须使用GMT的时间格式。
+
+	B、Pragma(cache模式)  
+	说明：禁止浏览器从本地计算机的缓存中访问页面内容。  
+	用法：\<meta http-equiv="Pragma" content="no-cache"\>  
+	注意：这样设定，访问者将无法脱机浏览。
+
+	C、Refresh(刷新)   
+	说明：自动刷新并指向新页面。    
+	用法：\<meta http-equiv="Refresh" content="2；URL=http://www.root.net"\>   
+	注意：其中的2是指停留2秒钟后自动刷新到URL网址。  
+
+	D、Set-Cookie(cookie设定)  
+	说明：如果网页过期，那么存盘的cookie将被删除。  
+	用法：\<meta http-equiv="Set-Cookie" content="cookievalue=xxx; expires=Friday, 12-Jan-2001 18:18:18 GMT； path=/"\>  
+	注意：必须使用GMT的时间格式。
+	
+	E、Window-target(显示窗口的设定)  
+	说明：强制页面在当前窗口以独立页面显示。  
+	用法：\<meta http-equiv="Window-target" content="_top"\> 
+	注意：用来防止别人在框架里调用自己的页面。
+	
+	F、content-Type(显示字符集的设定)  
+	说明：设定页面使用的字符集。  
+	用法：\<meta http-equiv="content-Type" content="text/html; charset=gb2312"\>
+
+	G、X-UA-Compatible  
+	X-UA-Compatible是自从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。 通过在meta中设置X-UA-Compatible的值，可以指定网页的兼容性模式设置。  
+	\<meta http-equiv="X-UA-Compatible" content="IE=7"\>  通俗点说代表告诉IE浏览器，无论是否用DTD声明文档标准，IE8/9都会以IE7引擎来渲染页面。如果IE=8或者9也是如此，以IE8或者IE9渲染页面  
+	常见的是 \<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"\>   这里的chrome=1不是说IE的技术增强了可以模拟Chrome浏览器，而是与谷歌开发的Google Chrome Frame(谷歌内嵌浏览器框架GCF)有关。这个插件可以让用户的IE浏览器外观不变，但用户在浏览网页时实际上使用的是Chrome的内核，并且支持Windows XP及以上系统的IE6/7/8。而上文提到的那个meta标记，则是在是安装了GCF后，用来指定页面使用chrome内核来渲染。
+* name 方便seo，告知搜索引擎该网页的信息  
+
+	A、keywords 关键字  
+	说明：keywords用来告诉搜索引擎你网页的关键字是什么。  
+	举例：\<meta name ="keywords" content="science,education,culture"\>
+	B、description(网站内容描述)  
+	说明：description用来告诉搜索引擎你的网站主要内容。  
+	举例：\<meta name="description" content="这是一个xxxxx网页"\>
+	C、robots(机器人向导)  
+	说明：robots用来告诉搜索机器人哪些页面需要索引，哪些页面不需要索引。  
+	content的参数有all,none,index,noindex,follow,nofollow。默认是all。  
+	举例：\<meta name="robots" content="none"\>
+	D、author(作者)  
+	说明：标注网页的作者  
+	举例：\<meta name="author" content="sqh17@foxmail.com"\>
+
+
+### es5实现let
+
+	function _let(const){
+		(function(){
+			for(var i = 0; i < count; i ++){
+				console.log(i) // 0,1,2,3,4
+			}
+		})();
+		console.log(i) // ReferenceError: i is not defined
+	}
+	_let(5)
+
+
+### es5实现const
+
+	var _const = function(data,value){
+		var _window = typeof window === 'undefined'? global : window; // 判断当前的环境
+		_window[data] = value; // 把要定义的data挂载到_window下，并赋值value
+		Object.defineProperty(_window,data,{
+			enumerable:false,
+			configurable:false,
+			get:function(){
+				return value
+			},
+			set:function(val){
+				if(val != value){
+					throw new TypeError('Assignment to constant variable')
+				}else{
+					return value
+				}
+			}
+		})
+	}
+	_const('a', 10)
+	console.log(a)
+	a = 20
+
+
+### 数组实现偏平化
+
+* ES6的flat()
+
+		let arr = [1,2,3,[4,5,6,[7,8,9]]]
+		let res = arr.flat(Infinity) 
+		console.log(res) // [1,2,3,4,5,6,7,8,9]
+
+* 序列化+正则
+
+		let arr = [1,2,3,[4,5,6,[7,8,9]]]
+		let res = `[${JSON.stringify(arr).replace(/(\[|\])/g,'')}]`
+		console.log(res) // [1,2,3,4,5,6,7,8,9]
+
+* 递归
+
+		let arr = [1,2,3,[4,5,6,[7,8,9]]]
+		function flat(arr){
+			let res = [];
+			for(const item of arr){
+				item instanceof Array ? res = res.concat(flat(item)):res.push(item)
+			}
+			return res
+		}
+		console.log(flat(arr)) // [1,2,3,4,5,6,7,8,9]
+
+* reduce式递归
+
+		let arr = [1,2,3,[4,5,6,[7,8,9]]]
+		function flat(arr){
+			return arr.reduce((prev, cur)=>{
+				return prev.concat(cur instanceof Array?flat(cur):cur)
+			},[])
+		}
+		console.log(flat(arr)) // [1,2,3,4,5,6,7,8,9]
+
+* 迭代+展开运算符
+
+		let arr = [1,2,3,[4,5,6,[7,8,9]]]
+		while (arr.some(Array.isArray)) {
+			arr = [].concat(...arr);
+		}
+		console.log(arr) // [1,2,3,4,5,6,7,8,9]
+
+
+### promise的简易实现
