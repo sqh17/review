@@ -1001,23 +1001,29 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 
 ### promise的简易实现
 
+	//Promise/A+规定的三种状态
 	let PENDING = 'pending';  
   	let FULLFILLED = 'fullfilled';
   	let REJECTED = 'rejected';
 
-
 	class myPromise {
+		// 构造方法接收一个回调
 		constructor (executor){
-			this._status = PENDING;
-			this.resolveQueue = [];
-			this.rejectQueue = [];
-			this.value = null;
+			this._status = PENDING;  // Promise状态
+			this.resolveQueue = []; // 成功队列, resolve时触发
+			this.rejectQueue = []; // 失败队列, reject时触发
+			this.value = null; // 储存then回调return的值
 
+			// 由于resolve/reject是在executor内部被调用, 因此需要使用箭头函数固定this指向, 否则找不到this.resolveQueue
 			let resolveFn = (value)=>{
+				//把resolve执行回调的操作封装成一个函数,放进setTimeout里,以兼容executor是同步代码的情况
 				let run = ()=>{
+					// 对应规范中的"状态只能由pending到fulfilled或rejected"
 					if(this._status !== PENDING) return
-					this._status = FULLFILLED;
-					this.value = value;
+					this._status = FULLFILLED; // 变更状态
+					this.value = value; // 储存当前value
+					// 这里之所以使用一个队列来储存回调,是为了实现规范要求的 "then 方法可以被同一个 promise 调用多次"
+					// 如果使用一个变量而非队列来储存回调,那么即使多次p1.then()也只会执行一次回调
 					while(this.resolveQueue.length){
 						let callback = this.resolveQueue.shift();
 						callback(value)
@@ -1025,7 +1031,7 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 				}
 				setTimeout(run)
 			}
-
+			// 实现同resolve
 			let rejectedFn = (value)=>{
 				let run = ()=>{
 					if(this._status !== PENDING) return 
@@ -1039,28 +1045,33 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 				setTimeout(run)
 			}
 
-
+			// new Promise()时立即执行executor,并传入resolve和reject
 			executor(resolveFn,rejectedFn)
 		}
 
+		// then方法,接收一个成功的回调和一个失败的回调
 		then(_resolve,_rejected){
+			// 根据规范，如果then的参数不是function，则我们需要忽略它, 让链式调用继续往下执行
 			typeof _resolve !== 'function' ? _resolve = val=>val:null;
 			typeof _rejected !== 'function' ? _rejected = val=>{
 				throw new Error(val)
 			} : null ;
 
+			// return一个新的promise
 			return new myPromise((resolve,rejected)=>{
-
+				// 把resolve_Fn重新包装一下,再push进resolve执行队列,这是为了能够获取回调的返回值进行分类讨论
 				let resolve_Fn = function(value){
 					try{
+						// 执行第一个(当前的)Promise的成功回调,并获取返回值
 						let x = _resolve(value);
+						// 分类讨论返回值,如果是Promise,那么等待Promise状态变更,否则直接resolve
 						x instanceof myPromise ? x.then(resolve,rejected):resolve(x)
 					}catch(err){
 						rejected(err)
 					}
 				}
 				
-
+				// reject同理
 				let rejected_Fn = function(value){
 					try{
 						let x = _rejected(value);
@@ -1073,10 +1084,12 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 				
 
 				switch(this._status){
+					// 当状态为pending时,把then回调push进resolve/reject执行队列,等待执行
 					case PENDING :
 						this.resolveQueue.push(resolve_Fn);
 						this.rejectQueue.push(rejected_Fn);
 						break
+					// 当状态已经变为resolve/reject时,直接执行then回调
 					case FULLFILLED : 
 						resolve_Fn(this.value)
 						break
@@ -1088,6 +1101,7 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			})
 		}
 
+		//catch方法其实就是执行一下then的第二个回调
 		catch(value){
 			return this.then(undefined,value)
 		}
@@ -1108,15 +1122,18 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			let result = []
 			return new myPromise((resolve,reject)=>{
 				arr.forEach((p,i)=>{
+					//Promise.resolve(p)用于处理传入值不为Promise的情况
 					myPromise.resolve(p).then(
 						val=>{
 							index++;
 							result[i] = val;
+							//所有then执行后, resolve结果
 							if(index == arr.length){
 								resolve(arr)
 							}
 						},
 						err=>{
+							//有一个Promise被reject时，myPromise的状态变为reject
 							reject(err)
 						}
 					)
