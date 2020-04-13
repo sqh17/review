@@ -1000,3 +1000,151 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 
 
 ### promise的简易实现
+
+	let PENDING = 'pending';  
+  	let FULLFILLED = 'fullfilled';
+  	let REJECTED = 'rejected';
+
+
+	class myPromise {
+		constructor (executor){
+			this._status = PENDING;
+			this.resolveQueue = [];
+			this.rejectQueue = [];
+			this.value = null;
+
+			let resolveFn = (value)=>{
+				let run = ()=>{
+					if(this._status !== PENDING) return
+					this._status = FULLFILLED;
+					this.value = value;
+					while(this.resolveQueue.length){
+						let callback = this.resolveQueue.shift();
+						callback(value)
+					}
+				}
+				setTimeout(run)
+			}
+
+			let rejectedFn = (value)=>{
+				let run = ()=>{
+					if(this._status !== PENDING) return 
+					this._status = REJECTED;
+					this.value = value;
+					while(this.rejectQueue.length){
+						let callback = this.rejectQueue.shift();
+						callback(value)
+					}
+				}
+				setTimeout(run)
+			}
+
+
+			executor(resolveFn,rejectedFn)
+		}
+
+		then(_resolve,_rejected){
+			typeof _resolve !== 'function' ? _resolve = val=>val:null;
+			typeof _rejected !== 'function' ? _rejected = val=>{
+				throw new Error(val)
+			} : null ;
+
+			return new myPromise((resolve,rejected)=>{
+
+				let resolve_Fn = function(value){
+					try{
+						let x = _resolve(value);
+						x instanceof myPromise ? x.then(resolve,rejected):resolve(x)
+					}catch(err){
+						rejected(err)
+					}
+				}
+				
+
+				let rejected_Fn = function(value){
+					try{
+						let x = _rejected(value);
+						x instanceof myPromise ? x.then(resolve,rejected):resolve(x)
+					}catch(err){
+						rejected(err)
+					}
+				}
+				
+				
+
+				switch(this._status){
+					case PENDING :
+						this.resolveQueue.push(resolve_Fn);
+						this.rejectQueue.push(rejected_Fn);
+						break
+					case FULLFILLED : 
+						resolve_Fn(this.value)
+						break
+					case REJECTED : 
+						rejected_Fn(this.value)
+						break;
+				}
+		
+			})
+		}
+
+		catch(value){
+			return this.then(undefined,value)
+		}
+
+		resolve(value){
+			if(value instanceof myPromise) return value;
+			return new myPromise((resolve,reject)=>{resolve(value)})
+		}
+
+		reject(value){
+			return new myPromise((resolve,reject)=>{
+				reject(value)
+			})
+		}
+
+		all(arr){
+			let index = 0
+			let result = []
+			return new myPromise((resolve,reject)=>{
+				arr.forEach((p,i)=>{
+					myPromise.resolve(p).then(
+						val=>{
+							index++;
+							result[i] = val;
+							if(index == arr.length){
+								resolve(arr)
+							}
+						},
+						err=>{
+							reject(err)
+						}
+					)
+				})
+			})
+		}
+
+		race(arr){
+			return new myPromise((resolve, reject) => {
+				//同时执行Promise,如果有一个Promise的状态发生改变,就变更新MyPromise的状态
+				for (let p of arr) {
+					myPromise.resolve(p).then(  //Promise.resolve(p)用于处理传入值不为Promise的情况
+						value => {
+							resolve(value)        //注意这个resolve是上边new MyPromise的
+						},
+						err => {
+							reject(err)
+						}
+					)
+				}
+			})
+		}
+
+
+		finally(callback){
+			return this.then(
+				value => myPromise.resolve(callback()).then(() => value),             //执行回调,并returnvalue传递给后面的then
+				reason => myPromise.resolve(callback()).then(() => { throw reason })  //reject同理
+			)
+		}
+	}
