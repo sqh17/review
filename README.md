@@ -834,8 +834,41 @@
 ### 图片的懒加载和预加载
 * 预下载
 
-* 懒下载
+	1. 利用缓存的形式
 
+			function loadImage(url, callback) {     
+				var img = new Image(); //创建一个Image对象，实现图片的预下载         
+				img.onload = function () { //图片下载完毕时将img.onload设为null，并异步调用callback函数。         
+					img.onload = null;    
+					callback(img);     
+				};  
+				img.src = url;     
+			}
+	2. css 方式
+
+			function preloader() {  
+				if (document.getElementById) {  
+					document.getElementById("preload-01").style.background = "url(http://domain.tld/image-01.png) no-repeat -9999px -9999px";  
+					document.getElementById("preload-02").style.background = "url(http://domain.tld/image-02.png) no-repeat -9999px -9999px";  
+					document.getElementById("preload-03").style.background = "url(http://domain.tld/image-03.png) no-repeat -9999px -9999px";  
+				}  
+			}  
+			function addLoadEvent(func) {  
+				var oldonload = window.onload;  
+				if (typeof window.onload != 'function') {  
+					window.onload = func;  
+				} else {  
+					window.onload = function() {  
+						if (oldonload) {  
+							oldonload();  
+						}  
+						func();  
+					}  
+				}  
+			}  
+			addLoadEvent(preloader);
+* 懒下载
+将页面里所有img属性src属性用data-xx代替，当页面滚动直至此图片出现在可视区域时，用js取到该图片的data-xx的值赋给src。
 
 ### doctype 
 
