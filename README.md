@@ -286,13 +286,14 @@
 			.box{
 				width:200px;
 				height:200px;
-				position:absolute;
-				left:calc(50% - 100px);
-				top:calc(50% - 100px);
+				position:relative;
 			}
 			.children-box {
 				width: 100px;
 				height: 100px;
+				position:absolute;
+				left:calc(50% - 50px);
+				top:calc(50% - 50px);
 			}
 
 	* position + margin负值
@@ -370,7 +371,6 @@
 	* display:table
 
 			.box{
-				display:table;
 				text-align:center;
 				display:table-cell;
 				vertical-align: middle;
@@ -761,6 +761,7 @@
 * 终止FIN：用来释放一个连接。FIN=1表示：此报文段的发送方的数据已经发送完毕，并要求释放运输连接
 
 * PS：ACK、SYN和FIN这些大写的单词表示标志位，其值要么是1，要么是0；ack、seq小写的单词表示序号。
+
 ### 三次握手
 (转载与http://blog.itpub.net/31442725/viewspace-2645992/)  
 
@@ -832,7 +833,7 @@
 
 ### 图片的懒加载和预加载
 * 预下载
-#
+
 * 懒下载
 
 
@@ -1165,3 +1166,5 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			)
 		}
 	}
+
+### 继承
