@@ -807,7 +807,7 @@
 		* load事件触发时，页面上所有的DOM，样式表，脚本，图片都已加载完成，简称页面资源加载完成
 
 	* 参考文献：（https://www.jianshu.com/p/e6252dc9be32）
-	
+
 ### 浏览器缓存
 
 * 强制缓存：  缓存在未过有效期时，不需要请求资源
@@ -836,6 +836,37 @@
 3. 强制刷新（Ctrl + F5） => 浏览器会直接忽略缓存，在请求服务器时加上Cache-Control: no-cache字段，然后重新向服务器拉取文件。
 
 ### 移动端如何做适配？ 
+1. html文件添加meta 
+	
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+2. head添加script
+
+		// 初始化
+		setHtmlFontSize(1920,1024,19.2);
+		// 当屏幕宽度发生变化时，触发
+		if(window.addEventListener){
+			window.addEventListener('resize',function(){
+				setHtmlFontSize(1920,1024,19.2);
+			},false);
+		}
+		/**
+		* 
+		* @param {*} maxWidth 最大宽度
+		* @param {*} minWidth 最小宽度
+		* @param {*} piex 适配比例
+		*/
+		function setHtmlFontSize(maxWidth,minWidth,piex) {
+			var screenWidth = document.documentElement.clientWidth,
+					deviceWidth;
+			if(screenWidth >= 1500){
+				deviceWidth = maxWidth;
+			}else if(screenWidth < minWidth){
+				deviceWidth = minWidth;
+			}else {
+				deviceWidth = screenWidth;
+			}
+			document.getElementsByTagName("html")[0].style.cssText = 'font-size:' + deviceWidth / piex + 'px !important';
+		}
 
 ### 实现一个函数判断数据类型
 
