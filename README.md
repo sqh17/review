@@ -1331,3 +1331,39 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			})
 		})
 	}
+
+### 如何使 a==1 && a==2 && a==3的值为true
+
+* 隐式转换 
+	Symbol.toPrimitive 是一个内置的 Symbol 值，它是作为对象的函数值属性存在的，当一个对象转换为对应的原始值时，会调用此函数。
+	valueOf/toString/Symbol.toPrimitive方法都适用,只要一次返回1，2，3即可
+
+		let a = {
+			[Symbol.toPrimitive]:(function(hint){ 
+				let i = 1;
+				return function(){ // 闭包的特性，i不会被回收
+					return i++
+				}
+			})()
+		}
+
+		let a = {
+			i:1,
+			toString:function(){
+				return this.i++;
+			}
+		}
+* 利用数据劫持(Proxy/Object.definedProperty）
+
+		let i = 1;
+		let a = new Proxy({},{
+			i:1,
+			get:function(){
+				return ()=>this.i++;
+			}
+		})
+
+* 数组的 toString 接口默认调用数组的 join 方法，重新 join 方法
+
+		let a = [1,2,3];
+		a.join = a.shift
