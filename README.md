@@ -1395,3 +1395,10 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 				eval(xhr.responeText)
 			}
 		}
+
+### Event Loop
+
+### 内存中的栈和堆
+
+* 栈内存主要用于存储各种基本类型的变量，包括Boolean、Number、String、Undefined、Null，**以及对象变量的指针。
+* 堆内存主要负责像对象Object这种变量类型的存储。
