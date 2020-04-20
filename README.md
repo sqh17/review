@@ -1367,3 +1367,31 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 
 		let a = [1,2,3];
 		a.join = a.shift
+
+### 异步下载js的方式
+	* async和defer
+		<script> 标签中增加 async(html5) 或者 defer(html4) 属性,脚本就会异步加载。  
+		
+		defer 和 async 的区别在于：  
+
+		1. defer 要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），在window.onload 之前执行；
+		2. async 一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。
+		3. 如果有多个 defer 脚本，会按照它们在页面出现的顺序加载
+		4. 多个 async 脚本不能保证加载顺序
+
+	* 动态添加js
+
+		let script = document.createElement('script');
+		script.src = 'a.js';
+		document.body.append(script);
+
+	* xhr异步下载js
+
+		let xhr = new XMLHttpRequest();
+		xhr.open('get','a.js',true);
+		xhr.send();
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				eval(xhr.responeText)
+			}
+		}
