@@ -1397,7 +1397,7 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 		}
 
 ### Event Loop
-	![Event Loop](/images/eventLoop.png)
+![Event Loop](/images/eventLoop.png)
 * macro-task(宏任务)：包括整体代码script，setTimeout，setInterval
 * micro-task(微任务)：Promise，process.nextTick
 
