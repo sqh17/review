@@ -1285,52 +1285,52 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 		function defineReactive(data, key, val, fn) {
 				let subs = [] // 新增
 				Object.defineProperty(data, key, {
-					configurable: true,
-					enumerable: true,
-					get: function() {
-						// 新增
-				if (data.$target) {
-					subs.push(data.$target)
-				}
-				return val
-			},
-			set: function(newVal) {
-				if (newVal === val) return
-				fn && fn(newVal)
-				// 新增
-				if (subs.length) {
-					// 用 setTimeout 因为此时 this.data 还没更新
-					setTimeout(() => {
-						subs.forEach(sub => sub())
-					}, 0)
-				}
-				val = newVal
-			},
-		})
-	}
-	function computed(ctx, obj) {
-		let keys = Object.keys(obj)
-		let dataKeys = Object.keys(ctx.data)
-		dataKeys.forEach(dataKey => {
-			defineReactive(ctx.data, dataKey, ctx.data[dataKey])
-		})
-		let firstComputedObj = keys.reduce((prev, next) => {
-			ctx.data.$target = function() {
-				ctx.setData({ [next]: obj[next].call(ctx) })
-			}
-			prev[next] = obj[next].call(ctx)
-			ctx.data.$target = null
-			return prev
-		}, {})
-		ctx.setData(firstComputedObj)
-	}
-	function watch(ctx, obj) {
-		Object.keys(obj).forEach(key => {
-			defineReactive(ctx.data, key, ctx.data[key], function(value) {
-				obj[key].call(ctx, value)
+						configurable: true,
+						enumerable: true,
+						get: function() {
+							// 新增
+					if (data.$target) {
+						subs.push(data.$target)
+					}
+					return val
+				},
+				set: function(newVal) {
+					if (newVal === val) return
+					fn && fn(newVal)
+					// 新增
+					if (subs.length) {
+						// 用 setTimeout 因为此时 this.data 还没更新
+						setTimeout(() => {
+							subs.forEach(sub => sub())
+						}, 0)
+					}
+					val = newVal
+				},
 			})
-		})
-	}
+		}
+		function computed(ctx, obj) {
+			let keys = Object.keys(obj)
+			let dataKeys = Object.keys(ctx.data)
+			dataKeys.forEach(dataKey => {
+				defineReactive(ctx.data, dataKey, ctx.data[dataKey])
+			})
+			let firstComputedObj = keys.reduce((prev, next) => {
+				ctx.data.$target = function() {
+					ctx.setData({ [next]: obj[next].call(ctx) })
+				}
+				prev[next] = obj[next].call(ctx)
+				ctx.data.$target = null
+				return prev
+			}, {})
+			ctx.setData(firstComputedObj)
+		}
+		function watch(ctx, obj) {
+			Object.keys(obj).forEach(key => {
+				defineReactive(ctx.data, key, ctx.data[key], function(value) {
+					obj[key].call(ctx, value)
+				})
+			})
+		}
 
 ### 如何使 a==1 && a==2 && a==3的值为true
 
@@ -1410,4 +1410,23 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 
 * 栈内存主要用于存储各种基本类型的变量，包括Boolean、Number、String、Undefined、Null，**以及对象变量的指针。
 * 堆内存主要负责像对象Object这种变量类型的存储。
+
+### 十大排序算法
+
+* 冒泡排序(O(n*n))
+
+		function sort(arr){
+			for(var i = 0;i<arr.length - 1;i++){
+				var isSort = true; // 用来是否排序的标示 
+				for(Var j = 0;j<arr.length - 1 - i;j++){
+					if(arr[j] < arr[j+1]){
+						[arr[j],arr[j+1]] = [arr[j+1],arr[j]]
+						isSort = false;
+					}
+				}
+				if(isSort){ // 如果当前是排好的直接break
+					break;
+				}
+			}
+		}
 
