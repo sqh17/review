@@ -1459,6 +1459,7 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 					}
 				}
 			}
+			return newArr
 		}
 
 		function sort(arr){
@@ -1466,12 +1467,33 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 				var value = arr[i];
 				for(var j = i+1;j>=0;j--){
 					if(arr[j]>value){
-						arr[j+1] = arr[j]
+						arr[j] = arr[j-1]
 					}else{
 						break
 					}
 				}
-				arr[j+1] = value;
+				arr[j] = value;
+			}
+			return arr
+		}
+
+* 希尔排序
+
+		function sort(arr){
+			let len = arr.length,
+					temp,
+					gap = 1;
+			while(gap < len/5){
+				gap = gap * 5 + 1
+			}
+			for(gap;gap > 0;gap = Math.floor(gap / 5)){
+				for(var i = gap;i<len;i++){
+					temp = arr[i];
+					for(var j = i - gap;j>=0 && arr[j] > temp;j -= gap){
+						arr[j+gap] = arr[j]
+					}
+					arr[j+gap] = temp
+				}
 			}
 			return arr
 		}
