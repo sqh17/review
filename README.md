@@ -1430,3 +1430,18 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			}
 		}
 
+* 选择排序(O(n*n))
+
+		function sort(arr){
+			for(var i = 0;i<arr.length;i++){
+				var min = i;
+				for(var j = i + 1;j<arr.length;j++){
+					if(arr[min]>arr[j]){
+						min = j
+					}
+				}
+				[arr[i],arr[min]] = [arr[min],arr[i]]
+			}
+			return arr
+		}
+
