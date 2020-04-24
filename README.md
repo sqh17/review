@@ -1497,3 +1497,33 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			}
 			return arr
 		}
+
+* 归并排序
+
+		function sort(arr){
+			let len = arr.length;
+			if(len<2){
+				return arr;
+			}
+			let middle = Math.floor(len/2);
+			let left = arr.slice(0,middle);
+			let right = arr.slice(middle);
+			return merge(left,right);
+		}
+		function merge(left,right){
+			let res = [];
+			while(left.length&&right.length){
+				if(left[0] <= right[0]){
+					res.push(left.shift())
+				}else{
+					res.push(right.shift())
+				}
+			}
+			while(left.length){
+				res.push(left.shift())
+			}
+			while(right.length){
+				res.push(right.shift())
+			}
+			return res
+		}
