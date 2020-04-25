@@ -1527,3 +1527,21 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			}
 			return res
 		}
+
+* 快速排序
+
+		function sort(arr){
+			let left = [];
+			let right = [];
+			let middle = arr.splice(Math.floor(arr.length/2),1)[0];
+			for(var i = 0;i<arr.length;i++){
+				if(arr[i] > middle){
+					right.push(arr[i])
+				}else{
+					left.push(arr[i])
+				}
+			}
+			return sort(left).concat([middle],sort(right))
+		}
+	
+### 前端优化
