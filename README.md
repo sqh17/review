@@ -1545,3 +1545,18 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 		}
 	
 ### 前端优化
+
+* content方面
+	1. 减少HTTP请求：合并文件、CSS精灵、inline Image
+	2. 减少DNS查询：DNS缓存、将资源分布到恰当数量的主机名
+	3. 优化图片，对于小图片可以使用base64，能用css实现的就少用图片
+* Server方面
+	1. 使用CDN
+	2. 开启缓存
+	3. 对组件使用Gzip压缩
+* js或者css方面
+	1. 将样式表放到页面顶部，脚本放到页面底部
+	2. 将javascript和css从外部引入。
+	3. 压缩javascript和css
+  4. 删除不需要的脚本，资源按需引入，路由按需下载
+  5. 避免使用css表达式，减少DOM访问
