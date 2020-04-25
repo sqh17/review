@@ -1274,8 +1274,6 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 		}
 	}
 
-### 继承
-
 ### vue的computed和watch的区别
 * ①从属性名上，computed是计算属性，也就是依赖其它的属性计算所得出最后的值。watch是去监听一个值的变化，然后执行相对应的函数。
 * ②从实现上，computed的值在getter执行后是会缓存的，只有在它依赖的属性值改变之后，下一次获取computed的值时才会重新调用对应的getter来计算。watch在每次监听的值变化时，都会执行回调。其实从这一点来看，都是在依赖的值变化之后，去执行回调。很多功能本来就很多属性都可以用，只不过有更适合的。如果一个值依赖多个属性（多对一），用computed肯定是更加方便的。如果一个值变化后会引起一系列操作，或者一个值变化会引起一系列值的变化（一对多），用watch更加方便一些。
@@ -1585,3 +1583,171 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 高程：无论什么时候，只要创建了一个函数，就会根据一组特定的规则为该函数创建一个prototype属性，这个属性指向函数的原型对象。在默认情况下，所有的原型对象都会自动获得一个constructor（构造函数）属性，这个属性包含一个指向prototype属性所在函数的指针。
 * 原型链
 当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的__proto__（即它的构造函数的prototype）中寻找，如果该__proto__上没有这个属性，就去__proto__的属性上去找（\_\_proto\_\_ .\_\_proto\_\_),依次往下找，找到就使用，找不到就继续往下找，到最上层都没有找到就返回null。这样的就叫原型链。
+
+### es5的继承
+
+* 原型链继承
+		采用原型链的形式实现继承
+
+		function Animal(){
+			this.type = 'animal';
+		}
+		Animal.prototype.feature = function(){
+			alert(this.type);
+		}
+		function Cat(name,color){
+			this.name = name;
+			this.color = color;
+		} 
+		Cat.prototype = new Animal();
+
+		var tom = new Cat('tom','blue');
+		console.log(tom.name);  // 'tom'
+		console.log(tom.color); // 'blue'
+		console.log(tom.type);  // 'animal'
+		tom.feature()    // 'animal'
+
+	缺点：  
+	1. 在原型链继承中，包含引用类型值的原型属性会被所有实例共享，如果某一个实例更改了属性或方法，会影响到原型属性，进而影响所有的实例
+	2. 没有办法在不影响所有对象实例的情况下，给超类型（Animal）的构造函数传递参数
+
+* 借用构造函数继承
+		就是在子类型构造函数的内部使用 apply() 和 call() 方法调用超类型构造函数里的属性或方法。
+
+		function Animal(name){
+			this.name = name;
+			this.size = ["large", "small"];
+		}
+		Animal.prototype.say = function(){
+			alert(this.name);
+		}
+		function Cat(name,age){
+			Animal.call(this,name);
+			this.age = age;
+
+		}
+		var tom = new Cat('tom',18);
+		var peter = new Cat('peter',22);
+		console.log(tom); // {name: "tom", size: Array[2], age: 18};
+		console.log(peter); // {name: "peter", size: Array[2], age: 22};
+
+		tom.size.push('middle');
+		console.log(tom.size);  // ["large", "small", "middle"]
+		console.log(peter.size); // ["large", "small"]
+		tom.say();  // Uncaught TypeError: tom.say is not a function
+
+	缺点：
+		1. 由于每个子类型声明自己属性或方法，而且别人不能使用，所以不能复用。
+		2. 无法调用超类型的原型上的方法。
+
+* 组合继承
+		原型链继承实现对原型属性和方法的继承，借用构造函数继承实现对实例属性的继承
+
+		function Animal(name){
+			this.name = name;
+			this.size = ["large", "small"];
+		}
+		Animal.prototype.say = function(){
+			alert(this.name);
+		}
+		function Cat(name,age){
+			Animal.call(this,name); // 调用Animal的属性
+			this.age = age;
+		}
+		Cat.prototype = new Animal(name); // 调用Ainaml的原型上的方法。
+		Cat.prototype.constructor = Cat;  // 保证Cat的原型上的构造器对象还是指向Cat。
+		Cat.prototype.skill = function(){
+				alert('running');
+		}
+		var tom = new Cat('tom',18);
+		var peter = new Cat('peter',22);
+		console.log(tom); // {name: "tom", size: Array[2], age: 18};
+		console.log(peter); // {name: "peter", size: Array[2], age: 22};
+
+		tom.size.push('middle');
+		console.log(tom.size);  // ["large", "small", "middle"]
+		console.log(peter.size); // ["large", "small"]
+
+		tom.say(); // tom
+		peter.say(); // peter
+
+	缺点
+		无论什么情况下都会调用两次超类型构造函数：1 在创建子类型原型的时候，2 在子类型构造函数内部。
+
+* 原型式继承
+		此模式就是新对象是利用原要继承的对象挂载到原型上的原理，去使用原型上的属性和方法，然后修改其属性和方法。同样如果不修改属性值，会被所有实例共享。
+
+		function object(o){
+			function F(){};
+			F.prototype = o;
+			return new F();
+		} // 等价于 Oject.create()
+		var peter = {
+			name:'peter',
+			age:18,
+			say:function(){
+					alert(this.name);
+			}
+		}
+		var tom = object(peter); // var tom = Object.create(peter)
+		console.log(tom);  // F {}
+		tom.say();  // peter
+
+		tom.name = 'tom';
+		tom.age = 22;
+		console.log(tom);  // F {name: "tom", age: 22}
+		tom.say();  // tom
+
+* 寄生式继承
+		即创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后返回这个对象。该继承方式最大的特点就是封装成一个函数，在内部扩展对象的属性或方法。
+
+		function inherit(o){
+			var clone = Object.create(o);  // 通过调用函数创建一个对象
+			clone.type = 'people';    // 扩展对象属性或方法
+			clone.say=function(){
+					alert(this.name);
+			}
+			return clone;
+		}
+		var peter = {
+				name:'peter'
+		}
+		var perterSon = inherit(peter);
+		console.log(perterSon.type);    // people
+		perterSon.say();  // peter
+
+	扩展方法已经写死了，所以不能不复用，进而降低效率。使用情况：在主要考虑对象而不是自定义类型和构造函数的情况下，可以采用寄生式继承。
+
+* 寄生组合式继承
+		通过借用构造函数来继承属性，用原型链的混成形式来继承方法。不必为了指定子类型的原型而调用超类型的构造函数。
+
+		function inheritPrototype(sub,supers){
+			var clone = Object.create(supers.prototype);
+			clone.constructor = sub;
+			sub.prototype = clone;
+		}
+
+	这个函数实现了三个步骤：（先传两个参数，一个子类型构造函数sub，一个超类型构造函数super。）  
+	1. 创建超类型原型的一个副本。
+	2. 为创建的副本添加constructor属性，从而弥补重写原型而失去的默认的constructor属性。
+	3. 将新创建的对象（副本）赋值给子类型的原型。
+
+			function Animal(name){
+				this.name = name;
+				this.size = ["large", "small"];
+			}
+			Animal.prototype.say = function(){
+				alert(this.name);
+			}
+			function Cat(name,age){
+				Animal.call(this,name);
+				this.age = age;
+			}
+			inheritPrototype(Cat,Animal);
+			Cat.prototype.skill = function(){
+				alert('running')
+			}
+			var tom = new Cat('tom',18);
+			console.log(tom); // Cat {name: "tom", size: Array(2), age: 18}
+			tom.say();   // tom
+			tom.skill();  // running
