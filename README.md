@@ -1711,6 +1711,10 @@ js是个单线程，主要的任务是处理用户的交互，使用事件队列
 			3. 待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
 		* MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果
 
+	代码实现：
+
+
+
 ### vue的生命周期
 
 	* beforeCreate： data对象为undefined，dom未渲染，$el为undefined
@@ -1777,3 +1781,17 @@ js是个单线程，主要的任务是处理用户的交互，使用事件队列
 				})
 			})
 		}
+
+### vue的路由钩子(守卫)
+* 全局守卫
+	1. router.beforeEach 全局前置守卫 进入路由之前
+	2. router.beforeResolve 全局解析守卫(2.5.0+) 在beforeRouteEnter调用之后调用
+	3. router.afterEach 全局后置钩子 进入路由之后
+* 路由独享守卫
+	1. beforeEnter 与全局前置守卫的方式一样，只不过只运用与一个路由 
+* 路由组建内守卫
+	1. beforeRouteEnter 进入路由前, 在路由独享守卫后调用 不能 获取组件实例 this，组件实例还没被创建
+	2. beforeRouteUpdate (2.2) 路由复用同一个组件时, 在当前路由改变，但是该组件被复用时调用 可以访问组件实例 this
+	3. beforeRouteLeave 离开当前路由时, 导航离开该组件的对应路由时调用，可以访问组件实例 this
+
+
