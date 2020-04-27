@@ -1713,6 +1713,19 @@ js是个单线程，主要的任务是处理用户的交互，使用事件队列
 
 	代码实现：
 
+			<input id="input"/>
+
+			const data = {};
+			const input = document.getElementById('input');
+			Object.defineProperty(data, 'text', {
+				set(value) {
+					input.value = value;
+					this.value = value;
+				}
+			});
+			input.onchange = function(e) {
+				data.text = e.target.value;
+			}
 
 
 ### vue的生命周期
