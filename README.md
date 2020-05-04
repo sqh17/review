@@ -596,11 +596,9 @@
 		function debounce(func, wait) {
 			let timeout;
 			return function () {
-				let context = this;
-				let args = arguments;
 				if (timeout) clearTimeout(timeout);
 				timeout = setTimeout(() => {
-						func.apply(context, args)
+						func.apply(this, arguments)
 				}, wait);
 			}
 		}
@@ -632,11 +630,9 @@
 		function throttle(func,wait){
 			let timer;
 			return function(){
-				let context = this;
-				let args = arguments;
 				if(!timer){
 					timer = setTimeout(()=>{
-						func.apply(context,args);
+						func.apply(this,arguments);
 						timer = null;
 					},wait)
 				}
@@ -1860,9 +1856,16 @@ CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害�
 * mkdir 目录名 创建目录
 * touch 文件名.后缀名  添加文件
 * rm (-rf) 删除文件（目录）
-* cat 文件名 查勘文件的内容
+* cat (-n) 文件名 查勘文件的内容 （显示行号）
 * vim 文件名 编辑文件的内容
 	* i 切换到输入模式，以输入字符
 	* : 切换到底线命令模式，以在最底一行输入命令；
 	* a 切换到输入文字模式；
-	* 按esc之后 :q 退出程序；:q! 放弃对文件内容的修改并退出；:w 保存文件；:w /root/xx 另存为；:wq 保存文件并退出；
+	* 按esc之后 
+		* :q 退出程序；
+		* :q! 放弃对文件内容的修改并退出；
+		* :w 保存文件；
+		* :w /root/xx 另存为；
+		* :wq 保存文件并退出；
+
+### 
