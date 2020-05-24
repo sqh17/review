@@ -1110,6 +1110,23 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 			}
 		}
 
+### 手写函数柯里化
+
+		const curry = fn=>{
+			if (typeof fn !== "function") {
+				throw Error("No function provided");
+			}
+			return function curriedFn(...args) {
+				if (args.length < fn.length) {
+					return function() {
+						// let all = [...args,...arguments]
+						return curriedFn.apply(null, args.concat([].slice.call(arguments)));
+					};
+				}
+				return fn.apply(null, args);
+			};
+		}
+
 ### 数组实现偏平化
 
 * ES6的flat()
