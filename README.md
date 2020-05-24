@@ -165,6 +165,16 @@
 2. 将构造函数的作用域赋给新对象（this指向新对象)。   
 3. 执行构造函数的代码（为新对象添加属性或方法)。
 
+		function _new(Fn){
+			let obj = {}
+			var arg = Array.prototype.slice.call(arguments, 1); // 将类数组转化为数组，调用数组的方法，等价于 下面的写法
+			// var arg = Array.prototype.slice.call(argument);arg.shift()
+			obj.__proto__ = Fn.prototype; // 将obj的原型链__proto__指向构造函数的原型prototype
+			obj.__proto__.constructor = Fn; // 在原型链 __proto__上设置构造函数的构造器constructor，为了实例化Fn
+			Fn.apply(obj, arg); // 执行Fn，并将构造函数Fn执行obj
+			return obj; // 返回结果
+		}
+
 ### call和apply的定义和区别？(=>二)
 
 	apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
@@ -1868,12 +1878,20 @@ vue的dom渲染是虚拟dom，数据发生变化时，diff算法会只比较更�
 
 ### 安全
 * xss
-XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
-	* 存储型xss
-	* 反射型xss
-	* dom型xss
+	1. XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
+		* 存储型xss
+		* 反射型xss
+		* dom型xss
+	2. 预防措施
+		* 转义字符过滤html代码
+		* 过滤 SQL 代码
 * CSRF
-CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的
+	1. CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的
+	2. 预防措施
+		* 验证 HTTP Referer 字段
+		* token
+		* Get 请求不对数据进行修改
+		* 接口防跨域处理
 * 点击劫持
 点击劫持是指在一个Web页面中隐藏了一个透明的iframe，用外层假页面诱导用户点击，实际上是在隐藏的frame上触发了点击事件进行一些用户不知情的操作。
 * SQL 注入
