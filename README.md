@@ -1095,6 +1095,20 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 	console.log(a)
 	a = 20
 
+### 手写instanceof 
+
+		function _instanceOf(left,right){
+			let proto = left.__proto;
+			let prototype = right.prototype;
+			while(true){
+				if(proto == null){
+					return false;
+				}else if (proto === prototype){
+					return true
+				}
+				proto = proto.__proto__;
+			}
+		}
 
 ### 数组实现偏平化
 
