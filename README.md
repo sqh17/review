@@ -1363,7 +1363,8 @@ doctype在html中的作用是触发浏览器的标准模式，如果html中省�
 		}
 
 ### Event Loop
-js是个单线程，主要的任务是处理用户的交互，使用事件队列的形式，一次事件循环只处理一个事件响应，使得脚本执行相对连续，所以有了事件队列，用来储存待执行的事件，那么事件队列的事件从哪里被push进来的呢。那就是另外一个线程叫事件触发线程做的事情了，他的作用主要是在定时触发器线程、异步HTTP请求线程满足特定条件下的回调函数push到事件队列中，等待js引擎空闲的时候去执行，当然js引擎执行过程中有优先级之分，首先js引擎在一次事件循环中，会先执行js线程的主任务，然后会去查找是否有微任务microtask（promise），如果有那就优先执行微任务，如果没有，在去查找宏任务macrotask（setTimeout、setInterval）进行执行
+js是个单线程，主要任务是为了处理用户的交互，一次事件循环职能处理一个事件响应，在事件循环中，若遇到像异步交互，定时器之类的，会压入事件队列中，等待js引擎空闲的时候去执行，当然js引擎执行过程中有优先级之分，首先js引擎在一次事件循环中，会先执行js线程的主任务，然后会去查找是否有微任务microtask（promise），如果有那就优先执行微任务，如果没有，在去查找宏任务macrotask（setTimeout、setInterval）进行执行
+
 
 ![Event Loop](/images/eventLoop.png)
 * macro-task(宏任务)：包括整体代码script，setTimeout，setInterval，I/O，UI rendering
