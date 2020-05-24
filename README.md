@@ -1928,3 +1928,33 @@ CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害�
 		console.log('前置 ','i',i,'_i',_i); // 前置  i 2 _i 2
 		console.log('后置 ','j',j,'_j',_j); 后置  j 2 _j 1
 
+### request和response返回的header有哪些
+* 请求(客户端->服务端\[request])
+  1. Accept: */*(客户端能接收的资源类型)
+  2. Accept-Language: en-us(客户端接收的语言类型)
+	3. Connection: Keep-Alive(维护客户端和服务端的连接关系)
+	4. Host: localhost:8080(连接的目标主机和端口号)
+	5. Referer: http://localhost/links.asp(告诉服务器我来自于哪里)
+	6. User-Agent: Mozilla/4.0(客户端版本号的名字)
+	7. Accept-Encoding: gzip, deflate(客户端能接收的压缩数据的类型)
+	8. If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT(缓存时间) 
+	10. Cookie(客户端暂存服务端的信息) xxxxx
+* 响应(服务端->客户端\[response])
+	1. HTTP/1.1(响应采用的协议和版本号) 200(状态码) OK(描述信息)
+  2. Location:http://www.baidu.com(服务端需要客户端访问的页面路径) 
+  3. Server:apache tomcat(服务端的Web服务端名)
+  4. Content-Encoding:gzip(服务端能够发送压缩编码类型) 
+  5. Content-Length: 80(服务端发送的压缩数据的长度) 
+	6. Content-Language: zh-cn(服务端发送的语言类型) 
+  7. Content-Type:text/html; charset=GB2312(服务端发送的类型及采用的编码方式)
+  8. Last-Modified:Tue, 11 Jul 2000 18:23:51 GMT(服务端对该资源最后修改的时间)
+  9. Refresh: 1;url=http://www.it315.org(服务端要求客户端1秒钟后，刷新，然后访问指定的页面路径)
+  10. Content-Disposition: attachment;filename=aaa.zip(服务端要求客户端以下载文件的方式打开该文件)
+  11. Transfer-Encoding:chunked(分块传递数据到客户端）  
+  12. Set-Cookie:SS=Q0=5Lb_nQ; path=/search(服务端发送到客户端的暂存数据)
+  13. Expires: -1//3种(服务端禁止客户端缓存页面数据)
+  14. Cache-Control:no-***(服务端禁止客户端缓存页面数据)  
+  15. Pragma: no-***(服务端禁止客户端缓存页面数据) 
+	16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)  
+	17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
+	在服务器响应客户端的时候，带上Access-Control-Allow-Origin头信息，解决跨域的一种方法。
