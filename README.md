@@ -862,33 +862,6 @@
 2. 手动刷新（F5） => 浏览器会认为缓存失效，在请求服务器时加上Cache-Control: max-age=0字段，然后询问服务器数据是否更新。
 3. 强制刷新（Ctrl + F5） => 浏览器会直接忽略缓存，在请求服务器时加上Cache-Control: no-cache字段，然后重新向服务器拉取文件。
 
-### 常见的请求头和响应头有哪些
-* 请求头
-	Accept \*/*(客户端能接收的资源类型)
-	Accept-Encoding gzip, deflate(客户端能接收的压缩数据的类型)
-	Accept-Language en-us(客户端接收的语言类型)
-	Referer (告诉服务器我来自于哪里)
-	Host localhost:8080(连接的目标主机和端口号)
-	Connection: Keep-Alive(维护客户端和服务端的连接关系)
-	Content-Type: application/json; charset=UTF-8 解析类型
-	User-Agent: Mozilla/4.0(客户端版本号的名字)
-	Cookie (客户端暂存服务端的信息)
-	If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT(缓存时间) 
-* 响应头
-	Server (服务端的Web服务端名）
-	Content-Encoding: gzip(服务端能够发送压缩编码类型) 
-  Content-Length: 80(服务端发送的压缩数据的长度) 
-	Content-Language: zh-cn(服务端发送的语言类型) 
-	Connection 维护客户端和服务端的连接关系
-	Content-Type: application/json; charset=utf-8 解析类型
-	access-control-allow-headers: 
-	access-control-allow-methods: GET, OPTIONS, HEAD, PUT, POST
-	access-control-allow-origin: * 
-	access-control-max-age: 1800
-	Access-Control-Max-Age: 86400
-	expires 0
-	cache-control no-store, no-cache, must-revalidate
-
 
 ### 移动端如何做适配？ 
 1. html文件添加meta 
@@ -1414,7 +1387,6 @@ js是个单线程，主要任务是为了处理用户的交互，一次事件循
 1. 先执行整体代码script
 2. 整体代码的微任务
 3. 事件队列里的宏任务
-
 
 ### 内存中的栈和堆
 
