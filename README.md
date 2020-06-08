@@ -1772,6 +1772,9 @@ js是个单线程，主要任务是为了处理用户的交互，一次事件循
 ### Vue3.x响应式数据原理
 	Vue3.x改用Proxy替代Object.defineProperty。因为Proxy可以直接监听对象和数组的变化，并且有多达13种拦截方法。并且作为新标准将受到浏览器厂商重点持续的性能优化。
 
+### vue的data为什么是个函数
+一个组件被复用多次的话，也就会创建多个实例。本质上，这些实例用的都是同一个构造函数。如果data是对象的话，对象属于引用类型，会影响到所有的实例。所以为了保证组件不同的实例之间data不冲突，data必须是一个函数。
+
 ### vue的生命周期
 
 	* beforeCreate： data对象为undefined，dom未渲染，$el为undefined
@@ -1886,6 +1889,24 @@ vue的dom渲染是虚拟dom，数据发生变化时，diff算法会只比较更�
 		2、通过后端异步请求的数据
 		比如做加入购物车、登录状态等都可以使用Vuex来管理数据状态。
 
+### 做过哪些Vue的性能优化
+* 编码阶段
+	* 尽量减少data中的数据，data中的数据都会增加getter和setter，会收集对应的watcher
+	* v-if和v-for不能连用，如果需要使用v-for给每项元素绑定事件时使用事件代理
+	* SPA 页面采用keep-alive缓存组件在更多的情况下，使用v-if替代v-show
+	* key保证唯一
+	* 使用路由懒加载、异步组件
+	* 防抖、节流
+	* 第三方模块按需导入
+	* 长列表滚动到可视区域动态加载图片
+	* 懒加载
+* 打包优化
+	* 压缩代码
+	* Tree Shaking/Scope Hoisting
+	* 使用cdn加载第三方模块
+	* 多线程打包happypack
+	* splitChunks抽离公共文件
+	* sourceMap优化
 ### 安全
 * xss
 	1. XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
