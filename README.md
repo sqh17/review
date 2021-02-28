@@ -384,6 +384,10 @@
 				text-align:center;
 				display:table-cell;
 				vertical-align: middle;
+				text-align:center;
+			}
+			.children-box{
+				display:inline-block;
 			}
 
 	* grid + flex
