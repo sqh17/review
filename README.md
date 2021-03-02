@@ -2012,3 +2012,24 @@ vue的dom渲染是虚拟dom，数据发生变化时，diff算法会只比较更�
 	16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)  
 	17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
 	在服务器响应客户端的时候，带上Access-Control-Allow-Origin头信息，解决跨域的一种方法。
+
+
+### GC 垃圾回收
+JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。
+- 标记清除法
+- 引用计数法
+
+### Tree Shaking
+- 定义：Tree Shaking是一种通过清除多余代码方式来优化项目打包体积的技术，专业术语叫 Dead code elimination
+
+- 原理：
+	- ES6 Module引入进行静态分析，故而编译的时候正确判断到底加载了那些模块。
+	- 静态分析程序流，判断那些模块和变量未被使用或者引用，进而删除对应代码。
+
+### common.js 和 es6 中模块引入的区别
+CommonJS 是一种模块规范，最初被应用于 Nodejs，成为 Nodejs 的模块规范。运行在浏览器端的 JavaScript 由于也缺少类似的规范，在 ES6 出来之前，前端也实现了一套相同的模块规范 (例如: AMD)，用来对前端模块进行管理。自 ES6 起，引入了一套新的 ES6 Module 规范，在语言标准的层面上实现了模块功能，而且实现得相当简单，有望成为浏览器和服务器通用的模块解决方案。但目前浏览器对 ES6 Module 兼容还不太好，我们平时在 Webpack 中使用的 export 和 import，会经过 Babel 转换为 CommonJS 规范。在使用上的差别主要有：
+1. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+2. CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+3. CommonJs 是单个值导出，ES6 Module可以导出多个
+4. CommonJs 是动态语法可以写在判断里，ES6 Module 静态语法只能写在顶层
+5. CommonJs 的 this 是当前模块，ES6 Module的 this 是 undefined
