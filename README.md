@@ -1911,6 +1911,7 @@ vue的dom渲染是虚拟dom，数据发生变化时，diff算法会只比较更�
 	* 多线程打包happypack
 	* splitChunks抽离公共文件
 	* sourceMap优化
+
 ### 安全
 * xss
 	1. XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
@@ -2033,3 +2034,36 @@ CommonJS 是一种模块规范，最初被应用于 Nodejs，成为 Nodejs 的�
 3. CommonJs 是单个值导出，ES6 Module可以导出多个
 4. CommonJs 是动态语法可以写在判断里，ES6 Module 静态语法只能写在顶层
 5. CommonJs 的 this 是当前模块，ES6 Module的 this 是 undefined
+
+### Virtual Dom 的优势在哪里
+DOM 引擎、JS 引擎 相互独立，但又工作在同一线程（主线程）
+JS 代码调用 DOM API 必须 挂起 JS 引擎、转换传入参数数据、激活 DOM 引擎，DOM 重绘后再转换可能有的返回值，最后激活 JS 引擎并继续执行若有频繁的 DOM API 调用，且浏览器厂商不做“批量处理”优化，
+引擎间切换的单位代价将迅速积累若其中有强制重绘的 DOM API 调用，重新计算布局、重新绘制图像会引起更大的性能消耗。
+其次是 VDOM 和真实 DOM 的区别和优化：
+- 虚拟 DOM 不会立马进行排版与重绘操作
+- 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
+- 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
+
+### event.target/event.currentTarget
+- event.target 当前点击的元素
+- event.currentTarget 事件绑定的元素
+
+```javascript
+<body>
+	<div onclick="clickFunc(event)" style="text-align:center;margin:15px;border:1px solid red;border-radius:3px;">
+		<div style="margin: 25px; border:1px solid royalblue;border-radius:3px;">
+			<div style="margin:25px;border:1px solid skyblue;border-radius:3px;">
+				<button style="margin:10px">
+					Button
+				</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		function clickFunc(event) {
+			console.log(event.target);
+			console.log(event.currentTarget);
+		}
+	</script>
+</body>
+```
