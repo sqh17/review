@@ -2067,3 +2067,38 @@ JS 代码调用 DOM API 必须 挂起 JS 引擎、转换传入参数数据、激
 	</script>
 </body>
 ```
+
+### 深冻结对象
+由于引用类型是指向一个指针，所以不管用const还是Object.freeze();都无法冻结对象中的对象的值改变，所以创建一个递归函数来冻结对象类型的每个属性
+```javascript
+// 没有深冻结
+let person = {
+	name: "拾柒",
+	profession: {
+		name: "front-end-developer"
+	}
+};
+Object.freeze(person); 
+person.profession.name = "doctor";
+console.log(person); //output { name: 'Leonardo', profession: { name: 'doctor' } }
+
+// 深冻结
+function deepFreeze(object) {
+	let propNames = Object.getOwnPropertyNames(object);
+	for (let name of propNames) {
+		let value = object[name];
+		object[name] = value && typeof value === "object" ?
+			deepFreeze(value) : value;
+	}
+	return Object.freeze(object);
+}
+let person = {
+	name: "拾柒",
+	profession: {
+		name: "front-end-developer"
+	}
+};
+deepFreeze(person);
+person.profession.name = "doctor"; // TypeError: Cannot assign to read only property 'name' of object
+
+```
