@@ -2147,3 +2147,7 @@ deepFreeze(person);
 person.profession.name = "doctor"; // TypeError: Cannot assign to read only property 'name' of object
 
 ```
+
+### react vs vue
+
+### webpack
