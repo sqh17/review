@@ -624,19 +624,21 @@
 * 防抖  
 就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
 
-		function debounce(func, wait) {
-			let timeout;
-			return function () {
-				if (timeout) clearTimeout(timeout);
-				timeout = setTimeout(() => {
-					func.apply(this, arguments)
-				}, wait);
-			}
+	```javascript
+	function debounce(func, wait) {
+		let timeout;
+		return function () {
+			if (timeout) clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				func.apply(this, arguments)
+			}, wait);
 		}
+	}
 
-		// 用debounce来包装scroll的回调
-		const better_scroll = debounce(() => console.log('触发了滚动事件'), 1000)
-		document.addEventListener('click', better_scroll)
+	// 用debounce来包装scroll的回调
+	const better_scroll = debounce(() => console.log('触发了滚动事件'), 1000)
+	document.addEventListener('click', better_scroll)
+	```
 		
 	适用场景：  
 
@@ -644,6 +646,38 @@
 	2. 按钮提交事件
 	3. 浏览器窗口缩放，resize事件(如窗口停止改变大小之后重新计算布局)等
 
+* 防抖+立即执行
+
+	```javascript
+	function debouce(fn,wait,isImmediate){
+	  let timer = null,
+	      flag = true;
+		if(isImmediate){
+		  return function(){
+		    clearTimeout(timer);
+		    if(flag){
+		      fn.apply(this,arguments);
+		      flag = false;
+		    }
+		    timer = setTimeout(()=>{
+		      flag = true
+	      },wait)
+	    }
+	  }
+	  return function(){
+	    if(timer) clearTimeout(timer);
+	      timer = setTimeout(()=>{
+	        fn.apply(this,arguments)
+	      },wait)
+	  }
+
+
+		/* cancel = function () {
+				console.log("立即取消等待");
+				clearTimeout(timer);
+		} */
+	}
+	```
 * 节流  
 节流函数的作用是规定一个单位时间，在这个单位时间内最多只能触发一次函数执行，如果这个单位时间内多次触发函数，只能有一次生效。
 
@@ -652,10 +686,8 @@
 			let previous = 0;
 			return function() {
 				let now = Date.now();
-				let context = this;
-				let args = arguments;
 				if (now - previous > wait) {
-						func.apply(context, args);
+						func.apply(this, arguments);
 						previous = now;
 				}
 			}
@@ -683,44 +715,86 @@
 	2. 拖拽事件
 	3. onscroll
 	4. 计算鼠标移动的距离(mousemove)
-
+* throttle+立即执行
+	```javascript
+	// 方法1
+	function throttle(fn,wait,isImmediate){
+		let timer,
+				flag = true;
+		if(isImmediate){
+			return function (){
+				if(timer){
+					if(flag){
+						fn.apply(this,arguments);
+						flag = false;
+					}
+					timer = setTimeout(()=>{
+						flag = true;
+						timer = null;
+					},wait)
+				}
+			}
+		}
+		return function(){
+			if(!timer){
+				timer = setTimeout(()=>{
+					fn.apply(this,arguments);
+					timer = null;
+				},wait)
+			}
+		}
+	}
+	// 方法2
+	function throttle(fn,wait,isImmediate){
+		var timer;
+		return function(){
+			if(!timer){
+				isImmediate && fn.apply(this,arguments)
+				setTimeout(() => {
+					!isImmediate && fn.apply(this,arguments)
+					flag = null;
+				},wait)
+			}
+		}
+	}
+	```
 * dobounce+throttle
-debounce 的问题在于它“太有耐心了”。试想，如果用户的操作十分频繁——他每次都不等 debounce 设置的 delay 时间结束就进行下一次操作，于是每次 debounce 都为该用户重新生成定时器，回调函数被延迟了不计其数次。频繁的延迟会导致用户迟迟得不到响应，用户同样会产生“这个页面卡死了”的观感。
+	debounce 的问题在于它“太有耐心了”。试想，如果用户的操作十分频繁——他每次都不等 debounce 设置的 delay 时间结束就进行下一次操作，于是每次 debounce 都为该用户重新生成定时器，回调函数被延迟了不计其数次。频繁的延迟会导致用户迟迟得不到响应，用户同样会产生“这个页面卡死了”的观感。
 
-为了避免弄巧成拙，我们需要借力 throttle 的思想，打造一个“有底线”的 debounce——等你可以，但我有我的原则：delay 时间内，我可以为你重新生成定时器；但只要delay的时间到了，我必须要给用户一个响应。这个 throttle 与 debounce “合体”思路。
-```javascript
-// fn是我们需要包装的事件回调, delay是时间间隔的阈值
-function throttle(fn, delay) {
-  // last为上一次触发回调的时间, timer是定时器
-  let last = 0, timer = null
-  // 将throttle处理结果当作函数返回
-  return function () { 
-    // 保留调用时的this上下文
-    let context = this
-    // 保留调用时传入的参数
-    let args = arguments
-    // 记录本次触发回调的时间
-    let now = +new Date()
+	为了避免弄巧成拙，我们需要借力 throttle 的思想，打造一个“有底线”的 debounce——等你可以，但我有我的原则：delay 时间内，我可以为你重新生成定时器；但只要delay的时间到了，我必须要给用户一个响应。这个 throttle 与 debounce “合体”思路。
+	```javascript
+	// fn是我们需要包装的事件回调, delay是时间间隔的阈值
+	function throttleDebounce(fn, delay) {
+		// last为上一次触发回调的时间, timer是定时器
+		let last = 0, timer = null
+		// 将throttle处理结果当作函数返回
+		return function () { 
+			// 保留调用时的this上下文
+			let context = this
+			// 保留调用时传入的参数
+			let args = arguments
+			// 记录本次触发回调的时间
+			let now = +new Date()
 
-    // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
-    if (now - last < delay) {
-    // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
-       clearTimeout(timer)
-       timer = setTimeout(function () {
-          last = now
-          fn.apply(context, args)
-        }, delay)
-    } else {
-        // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
-        last = now
-        fn.apply(context, args)
-    }
-  }
-}
-// 用新的throttle包装scroll的回调
-const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-document.addEventListener('scroll', better_scroll)
-```
+			// 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+			if (now - last < delay) {
+			// 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
+				clearTimeout(timer)
+				timer = setTimeout(function () {
+						last = now
+						fn.apply(context, args)
+					}, delay)
+			} else {
+					// 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
+					last = now
+					fn.apply(context, args)
+			}
+		}
+	}
+	// 用新的throttle包装scroll的回调
+	const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+	document.addEventListener('scroll', better_scroll)
+	```
 ### 浅拷贝和深拷贝
 * 浅拷贝是指创建一个对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，那么拷贝的就是基本类型的值，如果属性是引用类型，那么拷贝的就是内存地址，所以如果其中一个对象修改了某些属性，那么另一个对象就会受到影响。
 * 深拷贝是指从内存中完整地拷贝一个对象出来，并在堆内存中为其分配一个新的内存区域来存放，并且修改该对象的属性不会影响到原来的对象。
