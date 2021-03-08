@@ -2242,3 +2242,14 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 ### react vs vue
 
 ### webpack
+
+### 一道经典面试题
+```javascript
+var a = {n : 1}; //变量a指向地址A;
+var b = a; //变量b也指向地址A;
+a.x = a = { n : 2};//(1.获取变量a指向的地址A
+              		 // 2.变量a指向了新的地址B  
+              		 // 3.地址A的x指向内存B)
+console.log(a.x); // undefined
+console.log(b.x); // {n:2}
+```
