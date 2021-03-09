@@ -2150,7 +2150,21 @@ vue的dom渲染是虚拟dom，数据发生变化时，diff算法会只比较更�
 	17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
 	在服务器响应客户端的时候，带上Access-Control-Allow-Origin头信息，解决跨域的一种方法。
 
-
+### content-type
+- 前端提交数据方式
+	- application/xxx-form-urlencoded
+	- mulitpart/form-data
+	- application/json
+	- application/xml
+- response返回的格式
+	- text/plain 纯文本
+	- text/html
+	- text/xml
+	- image/gif
+	- image/jpeg
+	- image/png
+	- application/json
+	- ……
 ### GC 垃圾回收
 JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。
 - 标记清除法
