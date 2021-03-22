@@ -2354,3 +2354,12 @@ console.log(b.x); // {n:2}
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
 ### vue3 新特性
+
+
+### http与https的区别
+
+### http2.0的新特性
+- 多路复用
+- 首部压缩
+- 二进制分帧
+- 服务端推送
