@@ -2267,3 +2267,8 @@ a.x = a = { n : 2};//(1.获取变量a指向的地址A
 console.log(a.x); // undefined
 console.log(b.x); // {n:2}
 ```
+
+### Async/Await 如何通过同步的方式实现异步？
+async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过generator的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
+
+### vue3新特性
