@@ -2206,12 +2206,35 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
   10. Content-Disposition: attachment;filename=aaa.zip(服务端要求客户端以下载文件的方式打开该文件)
   11. Transfer-Encoding:chunked(分块传递数据到客户端）
   12. Set-Cookie:SS=Q0=5Lb_nQ; path=/search(服务端发送到客户端的暂存数据)
+      <<<<<<< HEAD
   13. Expires: -1//3 种(服务端禁止客户端缓存页面数据)
   14. Cache-Control:no-\*\*\*(服务端禁止客户端缓存页面数据)
   15. Pragma: no-\*\*\*(服务端禁止客户端缓存页面数据)
   16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)
   17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
       在服务器响应客户端的时候，带上 Access-Control-Allow-Origin 头信息，解决跨域的一种方法。
+
+======= 13. Expires: -1//3 种(服务端禁止客户端缓存页面数据) 14. Cache-Control:no-**_(服务端禁止客户端缓存页面数据)  
+ 15. Pragma: no-_**(服务端禁止客户端缓存页面数据) 16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)  
+ 17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
+在服务器响应客户端的时候，带上 Access-Control-Allow-Origin 头信息，解决跨域的一种方法。
+
+### content-type
+
+- 前端提交数据方式
+  - application/xxx-form-urlencoded
+  - mulitpart/form-data
+  - application/json
+  - application/xml
+- response 返回的格式
+  - text/plain 纯文本
+  - text/html
+  - text/xml
+  - image/gif
+  - image/jpeg
+  - image/png
+  - application/json
+  - ……
 
 ### GC 垃圾回收
 
@@ -2313,3 +2336,21 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 ### react vs vue
 
 ### webpack
+
+### 一道经典面试题
+
+```javascript
+var a = { n: 1 }; //变量a指向地址A;
+var b = a; //变量b也指向地址A;
+a.x = a = { n: 2 }; //(1.获取变量a指向的地址A
+// 2.变量a指向了新的地址B
+// 3.地址A的x指向内存B)
+console.log(a.x); // undefined
+console.log(b.x); // {n:2}
+```
+
+### Async/Await 如何通过同步的方式实现异步？
+
+async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
+
+### vue3 新特性
