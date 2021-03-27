@@ -275,6 +275,25 @@
     console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
     console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
 
+    Function.prototype.myBind = function(){
+    	let [thisArg,...args] = [...arguments];
+      let self = this;
+    	if(!thisArg){
+    		thisArg = typeof window === 'undefined'? global : window;
+    	}
+    	return function(){
+        return self.apply(thisArg,[...args,...arguments]);
+      }
+    }
+    console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
+    console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
+
+### 检测是否是数组的方法
+- [] instanceof Array
+- [].__proto__.constructor === Array
+- Object.prototype.toString.call([]) === ['object Array']
+- Array.isArray([])
+
 ### 让元素隐藏有哪些方法？
 
 - 完全隐藏：元素从渲染树中消失，不占据空间。
@@ -415,7 +434,7 @@
         	display:inline-block;
         }
 
-  - grid + flex
+  - grid
 
         .box {
         	width: 200px;
