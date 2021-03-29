@@ -978,6 +978,10 @@
 
 4. 第四次挥手： Client 收到 FIN 后， Client 进入 TIME_WAIT 状态，接着发送一个 ACK 给 Server ，确认序号为收到序号 +1 ， Server 进入 CLOSED 状态，完成四次挥手。
 
+### 为什么需要三次握手和四次挥手，而不是二次握手，三次挥手
+
+由于全双工链接，三次握手保证了双方的发送和接受能力，四次挥手是因为客户端发送资源完成给服务端之后，服务端必须返回ack确认，但是服务端关闭资源需要处理时间，所以再次发送关闭。
+
 ### HTTP 状态码以及含义
 
 1. 1xx 信息状态码
@@ -2381,3 +2385,5 @@ console.log(b.x); // {n:2}
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
 ### vue3 新特性
+
+
