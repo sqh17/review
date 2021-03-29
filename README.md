@@ -2393,8 +2393,12 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
       2. Vue递归监听data的所有属性,直接修改。
       3. 当数据改变时，自动找到引用组件重新渲染。
     - React基于状态机，手动优化，数据不可变，需要setState驱动新的state替换老的state。当数据改变时，以组件为根目录，默认全部重新渲染, 所以 React 中会需要 shouldComponentUpdate 这个生命周期函数方法来进行控制
-### webpack
 
+### webpack
+- 作用
+  - 模块打包
+  - 编译兼容
+  - 能力扩展
 ### 一道经典面试题
 
 ```javascript
