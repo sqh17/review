@@ -2,6 +2,15 @@
 
 为了备战面试，从其他的面试题或者想到的问题总结如下。
 
+### BFC
+一个独立的区域，外部影响不了内部。
+浮动元素和绝对定位素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）
+* BFC触发条件
+  * 根元素
+  * 浮动元素：float 不为none的属性值
+  * 绝对定位元素：position (absolute、fixed)
+  * display为： inline-block、table-cells、flex
+  * overflow 除了visible以外的值 (hidden、auto、scroll)
 ### 什么是二分查找，思路是什么？实现方式有哪些？
 
 - 二分查找：就是在一个已排序的数组中通过值去查找索引。
@@ -661,6 +670,8 @@
    优先级：auto (1 1 auto) 或者 none （0 0 auto);
 6. align-self 允许单个项目有与其他项目不一样的对齐方式，可覆盖 align-items 属性。默认值为 auto，表示继承父元素的 align-items 属性，如果没有父元素，则等同于 stretch。
 
+7. flex:1  => flex:1 1 0%;
+
 ### 防抖和节流
 
 - 防抖  
@@ -766,7 +777,7 @@
       flag = true;
     if (isImmediate) {
       return function () {
-        if (timer) {
+        if (!timer) {
           if (flag) {
             fn.apply(this, arguments);
             flag = false;
@@ -1081,7 +1092,9 @@
   - Last-Modified --- If-Modified-Since
     1. Last-Modified 是 服务器告知客户端，资源最后一次被修改的时间
     2. If-Modified-Since：再次请求时，请求头中带有该字段，服务器会将 If-Modified-Since 的值与 Last-Modified 字段进行对比，如果相等，则表示未修改，响应 304；反之，则表示修改了，响应 200 状态码，返回数据。
-    3. 缺点：_ 如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。_ 如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
+    3. 缺点：
+      - 如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。
+      - 如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
   - Etag --- If-None-Match
     1. Etag 存储的是文件的特殊标识(一般都是 hash 生成的)，服务器存储着文件的 Etag 字段，可以在与每次客户端传送 If-no-match 的字段进行比较，如果相等，则表示未修改，响应 304；反之，则表示已修改，响应 200 状态码，返回数据。
 
@@ -2382,6 +2395,11 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 ### react vs vue
 
 ### webpack
+- entry
+- output
+- loader
+- plugin
+
 
 ### 一道经典面试题
 
@@ -2400,3 +2418,9 @@ console.log(b.x); // {n:2}
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
 ### vue3 新特性
+- ref() recieve() toRefs()
+- setup(props,context) { ... return {}}
+- fragement
+- composition API
+- watch/watchEffect
+
