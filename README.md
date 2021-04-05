@@ -1008,6 +1008,10 @@
 
 4. 第四次挥手： Client 收到 FIN 后， Client 进入 TIME_WAIT 状态，接着发送一个 ACK 给 Server ，确认序号为收到序号 +1 ， Server 进入 CLOSED 状态，完成四次挥手。
 
+### 为什么需要三次握手和四次挥手，而不是二次握手，三次挥手
+
+由于全双工链接，三次握手保证了双方的发送和接受能力，四次挥手是因为客户端发送资源完成给服务端之后，服务端必须返回ack确认，但是服务端关闭资源需要处理时间，所以再次发送关闭。
+
 ### HTTP 状态码以及含义
 
 1. 1xx 信息状态码
@@ -2393,6 +2397,34 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 ```
 
 ### react vs vue
+- 共同点
+  1. 数据驱动视图
+  2. 组件化
+  3. 虚拟dom树
+
+- 不同点
+  1. 核心思想不同
+    - vue：灵活易用的渐进式框架，进行数据拦截/代理，它对侦测数据的变化更敏感、更精确。
+    - react：推崇函数式编程（纯组件），数据不可变以及单向数据流。（虽然可以双向，使用setState）
+  2. 组件写法差异
+    - Vue 推荐的做法是 template 的单文件组件格式(简单易懂，从传统前端转过来易于理解),即 html,css,JS 写在同一个文件(vue也支持JSX写法)
+    - React推荐的做法是JSX + inline style, 也就是把 HTML 和 CSS 全都写进 JavaScript 中,即 all in js; 
+  3. diff算法不同
+    - Vue：updateChildren是vue diff的核心, 过程可以概括为：
+      - 旧children和新children各有两个头尾的变量StartIdx和EndIdx，它们的2个变量相互比较，一共有4种比较方式。
+      - 如果4种比较都没匹配，如果设置了key，就会用key进行比较，在比较的过程中，变量会往中间靠，一旦StartIdx>EndIdx表明旧children和新children至少有一个已经遍历完了，就会结束比较。
+    - react首先对新集合进行遍历，for( name in nextChildren)。
+      - 通过唯一key来判断老集合中是否存在相同的节点。如果没有的话创建
+      - 如果有的话，if (preChild === nextChild )
+        - 会将节点在新集合中的位置和在老集合中lastIndex进行比较
+        - 如果if (child._mountIndex < lastIndex) 进行移动操作，否则不进行移动操作。
+      - 如果遍历的过程中，发现在新集合中没有，但在老集合中有的节点，会进行删除操作。
+  4. 响应式原理不同
+    - Vue：
+      1. Vue依赖收集，自动优化，数据可变。
+      2. Vue递归监听data的所有属性,直接修改。
+      3. 当数据改变时，自动找到引用组件重新渲染。
+    - React基于状态机，手动优化，数据不可变，需要setState驱动新的state替换老的state。当数据改变时，以组件为根目录，默认全部重新渲染, 所以 React 中会需要 shouldComponentUpdate 这个生命周期函数方法来进行控制
 
 ### webpack
 - entry
@@ -2401,6 +2433,10 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 - plugin
 
 
+- 作用
+  - 模块打包
+  - 编译兼容
+  - 能力扩展
 ### 一道经典面试题
 
 ```javascript
