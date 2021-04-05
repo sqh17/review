@@ -1392,174 +1392,225 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
       }
       console.log(arr) // [1,2,3,4,5,6,7,8,9]
 
-### promise 的简易实现
+### promise 的实现
 
-    //Promise/A+规定的三种状态
-    let PENDING = 'pending';
-
+```javascript
+let PENDING = 'pending';
 let FULLFILLED = 'fullfilled';
 let REJECTED = 'rejected';
 
-    class myPromise {
-    	// 构造方法接收一个回调
-    	constructor (executor){
-    		this._status = PENDING;  // Promise状态
-    		this.resolveQueue = []; // 成功队列, resolve时触发
-    		this.rejectQueue = []; // 失败队列, reject时触发
-    		this.value = null; // 储存then回调return的值
+const isFunction = function(fun) {
+  return typeof fun === "function";
+};
+const isObject = function(value) {
+  return value && typeof value === "object";
+};
 
-    		// 由于resolve/reject是在executor内部被调用, 因此需要使用箭头函数固定this指向, 否则找不到this.resolveQueue
-    		let resolveFn = (value)=>{
-    			//把resolve执行回调的操作封装成一个函数,放进setTimeout里,以兼容executor是同步代码的情况
-    			let run = ()=>{
-    				// 对应规范中的"状态只能由pending到fulfilled或rejected"
-    				if(this._status !== PENDING) return
-    				this._status = FULLFILLED; // 变更状态
-    				this.value = value; // 储存当前value
-    				// 这里之所以使用一个队列来储存回调,是为了实现规范要求的 "then 方法可以被同一个 promise 调用多次"
-    				// 如果使用一个变量而非队列来储存回调,那么即使多次p1.then()也只会执行一次回调
-    				while(this.resolveQueue.length){
-    					let callback = this.resolveQueue.shift();
-    					callback(value)
-    				}
-    			}
-    			setTimeout(run)
-    		}
-    		// 实现同resolve
-    		let rejectedFn = (value)=>{
-    			let run = ()=>{
-    				if(this._status !== PENDING) return
-    				this._status = REJECTED;
-    				this.value = value;
-    				while(this.rejectQueue.length){
-    					let callback = this.rejectQueue.shift();
-    					callback(value)
-    				}
-    			}
-    			setTimeout(run)
-    		}
-
-    		// new Promise()时立即执行executor,并传入resolve和reject
-    		executor(resolveFn,rejectedFn)
-    	}
-
-    	// then方法,接收一个成功的回调和一个失败的回调
-    	then(_resolve,_rejected){
-    		// 根据规范，如果then的参数不是function，则我们需要忽略它, 让链式调用继续往下执行
-    		typeof _resolve !== 'function' ? _resolve = val=>val:null;
-    		typeof _rejected !== 'function' ? _rejected = val=>{
-    			throw new Error(val)
-    		} : null ;
-
-    		// return一个新的promise
-    		return new myPromise((resolve,rejected)=>{
-    			// 把resolve_Fn重新包装一下,再push进resolve执行队列,这是为了能够获取回调的返回值进行分类讨论
-    			let resolve_Fn = function(value){
-    				try{
-    					// 执行第一个(当前的)Promise的成功回调,并获取返回值
-    					let x = _resolve(value);
-    					// 分类讨论返回值,如果是Promise,那么等待Promise状态变更,否则直接resolve
-    					x instanceof myPromise ? x.then(resolve,rejected):resolve(x)
-    				}catch(err){
-    					rejected(err)
-    				}
-    			}
-
-    			// reject同理
-    			let rejected_Fn = function(value){
-    				try{
-    					let x = _rejected(value);
-    					x instanceof myPromise ? x.then(resolve,rejected):resolve(x)
-    				}catch(err){
-    					rejected(err)
-    				}
-    			}
-
-
-
-    			switch(this._status){
-    				// 当状态为pending时,把then回调push进resolve/reject执行队列,等待执行
-    				case PENDING :
-    					this.resolveQueue.push(resolve_Fn);
-    					this.rejectQueue.push(rejected_Fn);
-    					break
-    				// 当状态已经变为resolve/reject时,直接执行then回调
-    				case FULLFILLED :
-    					resolve_Fn(this.value)
-    					break
-    				case REJECTED :
-    					rejected_Fn(this.value)
-    					break;
-    			}
-
-    		})
-    	}
-
-    	//catch方法其实就是执行一下then的第二个回调
-    	catch(value){
-    		return this.then(undefined,value)
-    	}
-
-    	resolve(value){
-    		if(value instanceof myPromise) return value;
-    		return new myPromise((resolve,reject)=>{resolve(value)})
-    	}
-
-    	reject(value){
-    		return new myPromise((resolve,reject)=>{
-    			reject(value)
-    		})
-    	}
-
-    	all(arr){
-    		let index = 0
-    		let result = []
-    		return new myPromise((resolve,reject)=>{
-    			arr.forEach((p,i)=>{
-    				//Promise.resolve(p)用于处理传入值不为Promise的情况
-    				myPromise.resolve(p).then(
-    					val=>{
-    						index++;
-    						result[i] = val;
-    						//所有then执行后, resolve结果
-    						if(index == arr.length){
-    							resolve(arr)
-    						}
-    					},
-    					err=>{
-    						//有一个Promise被reject时，myPromise的状态变为reject
-    						reject(err)
-    					}
-    				)
-    			})
-    		})
-    	}
-
-    	race(arr){
-    		return new myPromise((resolve, reject) => {
-    			//同时执行Promise,如果有一个Promise的状态发生改变,就变更新MyPromise的状态
-    			for (let p of arr) {
-    				myPromise.resolve(p).then(  //Promise.resolve(p)用于处理传入值不为Promise的情况
-    					value => {
-    						resolve(value)        //注意这个resolve是上边new MyPromise的
-    					},
-    					err => {
-    						reject(err)
-    					}
-    				)
-    			}
-    		})
-    	}
-
-
-    	finally(callback){
-    		return this.then(
-    			value => myPromise.resolve(callback()).then(() => value),             //执行回调,并returnvalue传递给后面的then
-    			reason => myPromise.resolve(callback()).then(() => { throw reason })  //reject同理
-    		)
-    	}
+class Promise {
+  constructor(excutor){
+    if(!this || this.constructor !== Promise){
+      throw new TypeError("Promise must be called new ")
+    }
+    if(!isFunction(excutor)){
+      throw new TypeError("Promise constructor's argument must be a function")
     }
 
+    this.onFulfilledCallbacks = [];
+    this.onRejectedCallbacks = [];
+    this.value = null;
+    this.status = PENDING;
+
+    let resolve = (value) => {
+      resolutionProduce(this,value)
+    }
+    let resolutionProduce = function(promise, x)  {
+      if(x === promise){
+        return reject(new TypeError("Promise can not resolved with it seft"));
+      }
+      if (isObject(x) || isFunction(x)) {
+        let called = false;
+        try{
+          let then = x.then;
+          if(isFunction(then)){
+            then.call(x, y=>{
+              if(called) return;
+              called = true;
+              resolutionProduce(promise, y);
+            }, err=>{
+              if(called) return;
+              called = true;
+              reject(err);
+            })
+          }
+        }
+        catch(err){
+          if(called) return;
+          called = true;
+          reject(err);
+        }
+      }
+    }
+    let reject = (value) => {
+      if(this.status !== PENDING) return 
+      this.status = REJECTED;
+      this.value = value;
+      this.onRejectedCallbacks.forEach(callback=>{
+        callback();
+      })
+    }
+
+    try{
+      excutor(resolve, reject);
+    }catch(err){
+      reject(err);
+    }
+  }
+
+  then(onFulfilled, onRejected){
+    onFullfilled = isFunction(onFullfilled) ? onFullfilled : value => value;
+    onRejected = isFunction(onRejected) ? onRejected : err => throw err;
+
+    return new Promise((resolve,reject)=>{
+      let wrapOnFulfilled = () => {
+        let run = () => {
+          try{
+            let x = onFullfilled(this.value);
+            resolve(x);
+          }
+          catch(err){
+            reject(err);
+          }
+        }
+        setTimeout(run,10)
+      }
+      let wrapOnRejected = () => {
+        let run = () => {
+          try{
+            let x = onRejected(this.value);
+            resolve(x);
+          }
+          catch(err){
+            reject(err);
+          }
+        }
+        setTimeout(run,10)
+      }
+
+      switch this.status {
+        case FULLFILLED:
+          wrapOnFulfilled();
+          break;
+        case REJECTED:
+          wrapOnRejected();
+          break;
+        default :
+          this.onFulfilledCallbacks.push(wrapOnFulfilled);
+          this.onRejectedCallbacks.push(wrapOnRejected);
+          break;
+      }
+    })
+  }
+
+  resolve(value){
+    return value instanceof Promise ? value : new Promise(resolve=>resolve(value));
+  }
+  reject(reason){
+    return new Promise((resolve, reject) => reject(reason));
+  }
+  catch(err){
+    return this.then((resovle,reject)=>reject(err))
+  }
+  finally(callback){
+    return this.then(data=>{
+      callback();
+      return data;
+    },err=>{
+      callback();
+      return err
+    })
+  }
+  all(promises){
+    return new Promise((resolve,reject)=>{
+      if(!promises.length) resolve([]);
+
+      let result = [];
+      let index = 0;
+      
+      promises.forEach((item,i)=>{
+        this.resolve(item).then(data=>{
+          result[i] = data;
+
+          if(++index === promises.length){
+            resolve(result);
+          }
+        },err=>{
+          reject(err)
+        })
+      })
+
+    })
+  }
+  race(promises){
+    return new Promise((resolve,reject)=>{
+      promises.forEach(item=>{
+        this.resolve(item).then(resolve,reject);
+      })
+    })
+  }
+}
+```
+
+### 基于Promise实现一个限制并发请求的函数
+
+```javascript
+Promise.control = function (promises, limit) {
+  let len = promises.length
+  limit = limit ? limit : 4
+  let ress = []
+  let running = 0,
+    index = -1,
+    count = 0
+  return new Promise((resolve, reject) => {
+    function next() {
+      while (running < limit && promises.length) { // 这个wile循环保证 一直有limit个请求在进行
+        running++
+        let i = ++index // 保存当前index
+        let task = promises.shift()
+        task()
+          .then((res) => {
+            ress[i] = res
+            count++
+          })
+          .finally(() => {
+            if (count === len) resolve(ress)
+            running--
+            next()
+          })
+      }
+    }
+    next()
+  })
+}
+// 测试限制并发请求
+let sleep = function(time){
+  return ()=>{
+    return new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        resolve(time)
+      }, time);
+    })
+  }
+} // 执行函数可返回一个自定义请求事件的函数，用来模拟请求
+
+//创建模拟请求任务
+let tasks = [sleep(4000),sleep(2000),sleep(3000),sleep(2000)];
+// 发送请求 并发数为4
+console.time();
+Promise.control(tasks,4).then((value)=>{
+    console.log(value)
+    console.timeEnd();
+})
+```
 ### 如何使 a==1 && a==2 && a==3 的值为 true
 
 - 隐式转换
@@ -2028,6 +2079,11 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 
 使用了函数劫持的方式，重写了数组的方法，Vue 将 data 中的数组进行了原型链重写，指向了自己定义的数组原型方法。这样当调用数组 api 时，可以通知依赖更新。如果数组中包含着引用类型，会对数组中的引用类型再次递归遍历进行监控。这样就实现了监测数组变化。
 
+### nextTick 原理
+- 能力检测
+- 将传入cb压入callbacks数组中，同时接受第一个回调函数时执行能力检测，遍历数组，调用相应的回调函数。
+
+
 ### Vue3.x 响应式数据原理
 
     Vue3.x改用Proxy替代Object.defineProperty。因为Proxy可以直接监听对象和数组的变化，并且有多达13种拦截方法。并且作为新标准将受到浏览器厂商重点持续的性能优化。
@@ -2103,6 +2159,10 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
       		})
       	})
       }
+
+### vue 的路由模式
+- hash
+- history
 
 ### vue 的路由钩子(守卫)
 
@@ -2276,19 +2336,12 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
   10. Content-Disposition: attachment;filename=aaa.zip(服务端要求客户端以下载文件的方式打开该文件)
   11. Transfer-Encoding:chunked(分块传递数据到客户端）
   12. Set-Cookie:SS=Q0=5Lb_nQ; path=/search(服务端发送到客户端的暂存数据)
-      <<<<<<< HEAD
   13. Expires: -1//3 种(服务端禁止客户端缓存页面数据)
   14. Cache-Control:no-\*\*\*(服务端禁止客户端缓存页面数据)
   15. Pragma: no-\*\*\*(服务端禁止客户端缓存页面数据)
   16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)
   17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
       在服务器响应客户端的时候，带上 Access-Control-Allow-Origin 头信息，解决跨域的一种方法。
-
-======= 13. Expires: -1//3 种(服务端禁止客户端缓存页面数据) 14. Cache-Control:no-**_(服务端禁止客户端缓存页面数据)  
- 15. Pragma: no-_**(服务端禁止客户端缓存页面数据) 16. Connection: close(1.0)/(1.1)Keep-Alive(维护客户端和服务端的连接关系)  
- 17. Date: Tue, 11 Jul 2000 18:23:51 GMT(服务端响应客户端的时间)
-在服务器响应客户端的时候，带上 Access-Control-Allow-Origin 头信息，解决跨域的一种方法。
-
 ### content-type
 
 - 前端提交数据方式
