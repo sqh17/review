@@ -2527,3 +2527,38 @@ async/await 是参照 Generator 封装的一套异步处理方案，可以理解
 - composition API
 - watch/watchEffect
 
+### 写一个方法，求一个数组长度m,值是n
+```javascript
+function fn(m,n){
+  var arr = [];
+  for(var i = 0;i<n;i++){
+    arr.push(m);
+  }
+  return arr;
+}
+```
+```javascript
+function fn(m,n){
+  return Array(n).fill(m);
+}
+```
+```javascript
+function fn(m,n){
+  return Array(n).join(',').split(',').map(()=>{
+    return m
+  })
+}
+```
+```javascript
+function fn(m,n){
+  var arr = [];
+  function foo(m,n){
+    if(n === arr.length){
+      return arr;
+    }
+    arr.push(m);
+    return foo(m,n);
+  }
+  return foo(m,n)
+}
+```
