@@ -2162,8 +2162,15 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 
 ### vue 的路由模式
 - hash
+  - 带#
+  - window.localtion.hash获取
+  - window.addEventListener('hashchange', this.onHashChange.bind(this))
+  - 单页面标配，只改变前端路由，服务器端无用
 - history
-
+  - 不带#
+  - H5的新api
+  - window.history.pushState(stateObject, title, URL)/window.history.replaceState(stateObject, title, URL)
+  - 需要服务端配置，否则会404
 ### vue 的路由钩子(守卫)
 
 - 全局守卫
