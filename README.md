@@ -2521,12 +2521,12 @@ console.log(b.x); // {n:2}
 ```
 
 ### Async/Await 如何通过同步的方式实现异步？
-
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
 ### promise和async-await的区别
 - promise 是异步编程的解决方案，减少了代码量，提高了代码的可读性，有效的解决了异步的回调地狱的情况，可以链式调用。
 - async的用法，就是作为一个关键字放在函数名前面，调用该函数时会返回一个promise对象，可以使用then回调来返回，当遇到await的时候就先返回，等待异步操作完成，在实行后面的语句。async-await实际上是生成器generator的语法糖，async可以理解为星号，await为yield返回而已。
+
 ### vue3 新特性
 - ref() recieve() toRefs()
 - setup(props,context) { ... return {}}
@@ -2569,3 +2569,27 @@ function fn(m,n){
   return foo(m,n)
 }
 ```
+
+### es6的新特性
+- let/const
+- symbol
+- 解构赋值
+- promise/生成器/async-await
+- proxy
+- class
+- Set/WeakSet/Map/WeakMap
+- 模板字符串
+- 函数默认值
+- 扩展运算符
+- Array.from/Array.of/arr.find/arr.map/arr.forEach/arr.reduce/arr.includes/arr.fill/arr.flat
+- Object.assign/Object.entries/Object.keys/Object.values
+
+### Map与WeakMap的区别
+- Map 
+  - Map键值对的集合，键可以是多个类型。
+  - 会计入gc
+- WeakMap
+  - WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名
+  - 键名不会记入到gc，键名都是弱引用，gc不会考虑在内，只要所引用的对象的其他引用被清除，gc就会释放该内存，也就是说一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。
+
+weakSet只能接受对象，set类似于数组一样。
