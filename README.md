@@ -2103,6 +2103,8 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
     * beforeDestroy：在实例销毁之前调用。实例仍然完全可用
     * destroyed： 在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
+  keep-alive的情况下
+
 ### vue 的 computed 和 watch 的区别
 
 - ① 从属性名上，computed 是计算属性，也就是依赖其它的属性计算所得出最后的值。watch 是去监听一个值的变化，然后执行相对应的函数。
@@ -2171,6 +2173,7 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   - H5的新api
   - window.history.pushState(stateObject, title, URL)/window.history.replaceState(stateObject, title, URL)
   - 需要服务端配置，否则会404
+
 ### vue 的路由钩子(守卫)
 
 - 全局守卫
@@ -2504,6 +2507,7 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
   - 模块打包
   - 编译兼容
   - 能力扩展
+
 ### 一道经典面试题
 
 ```javascript
@@ -2520,6 +2524,9 @@ console.log(b.x); // {n:2}
 
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
+### promise和async-await的区别
+- promise 是异步编程的解决方案，减少了代码量，提高了代码的可读性，有效的解决了异步的回调地狱的情况，可以链式调用。
+- async的用法，就是作为一个关键字放在函数名前面，调用该函数时会返回一个promise对象，可以使用then回调来返回，当遇到await的时候就先返回，等待异步操作完成，在实行后面的语句。async-await实际上是生成器generator的语法糖，async可以理解为星号，await为yield返回而已。
 ### vue3 新特性
 - ref() recieve() toRefs()
 - setup(props,context) { ... return {}}
