@@ -2104,7 +2104,10 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
     * destroyed： 在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
   keep-alive的情况下
-
+  - actived
+  - deactived
+  第一次走：created=>mounted=>actived
+  走了缓存后：actived
 ### vue 的 computed 和 watch 的区别
 
 - ① 从属性名上，computed 是计算属性，也就是依赖其它的属性计算所得出最后的值。watch 是去监听一个值的变化，然后执行相对应的函数。
