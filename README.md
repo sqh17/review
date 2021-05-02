@@ -1026,6 +1026,9 @@
    - 302 Found 临时性重定向
    - 303 See Other 临时性重定向，且总是使用 GET 请求新的 URI
    - 304 Not Modified 自从上次请求后，请求的网页未修改过。
+   - 307 的定义实际上和 302 是一致的，唯一的区别在于，307 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
+   - 308 的定义实际上和 301 是一致的，唯一的区别在于，308 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
+
 4. 4xx 客户端错误
    - 400 Bad Request 服务器无法理解请求的格式，客户端不应当尝试再次使用相同的内容发起请求。
    - 401 Unauthorized 请求未授权
@@ -2617,6 +2620,7 @@ let xhr = new XMLHttpRequest();
 xhr.open('get/post',url);
 xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 // xhr.setRequestHeader('Content-Type','application/json');
+// 必须要有send，否则发送不过去
 xhr.send('name=peter&age=18') // post
 // xhr.send(null) // get
 xhr.onreadyStateChange = function(){
@@ -2625,3 +2629,33 @@ xhr.onreadyStateChange = function(){
   }
 }
 ```
+### 307/308
+- 307
+307 的定义实际上和 302 是一致的，唯一的区别在于，307 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
+- 308
+308 的定义实际上和 301 是一致的，唯一的区别在于，308 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
+
+### 清除浮动
+- 兄弟之间 添加额外标签
+  - clear:both
+  - 缺点：增加额外的不必要的标签
+- 父元素
+  - 通过触发BFC
+    - overflow:hidden
+    - 缺点：内容增多的时候容易造成不会自动换行导致内容被隐藏掉，无法显示要溢出的元素
+
+  - 双伪元素
+    - clearfix::after/:before
+      content:''; display:block; height:0; clear:both; visibility: hidden
+    - clearfix
+      zoom:1;// 触发haslayout
+
+### 伪类/伪元素
+- 伪类
+  伪类用于当已有元素处于的某个状态时，为其添加对应的样式
+- 伪元素
+  伪元素用于创建一些不在文档树中的元素，并为其添加样式
+  - ::before
+  - ::after
+  - ::first-letter 该伪元素向文本的第一个字母添加特殊样式
+  - ::first-line 该伪元素向文本的首行添加特殊样式
