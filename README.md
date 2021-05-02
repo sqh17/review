@@ -40,9 +40,7 @@
       							low = mid + 1;
       					} else if (key < arr[mid]) {
       							high = mid - 1;
-      					} else {
-      							return -1;
-      					}
+      					} 
       			}
       	}
 
@@ -194,6 +192,7 @@
 1.  创建一个新对象，
 2.  将构造函数的作用域赋给新对象（this 指向新对象)。
 3.  执行构造函数的代码（为新对象添加属性或方法)。
+4.  返回新的对象。
 
         function _new(Fn){
         	let obj = {}
@@ -2610,3 +2609,19 @@ weakSet只能接受对象，set类似于数组一样。
 
 ### webpack的魔法注释
 主要为了实现懒下载，在打包的时候会根据chunkName来打成一个块的文件，这样就达到了分割的效果，实现了按需下载。
+
+### 手写ajax
+
+```javascript
+let xhr = new XMLHttpRequest();
+xhr.open('get/post',url);
+xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+// xhr.setRequestHeader('Content-Type','application/json');
+xhr.send('name=peter&age=18') // post
+// xhr.send(null) // get
+xhr.onreadyStateChange = function(){
+  if(xhr.status === 200){
+    console.log(xhr.responseText)
+  }
+}
+```
