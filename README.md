@@ -1,16 +1,6 @@
 #### 开头
 
 为了备战面试，从其他的面试题或者想到的问题总结如下。
-
-### BFC
-一个独立的区域，外部影响不了内部。
-浮动元素和绝对定位素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）
-* BFC触发条件
-  * 根元素
-  * 浮动元素：float 不为none的属性值
-  * 绝对定位元素：position (absolute、fixed)
-  * display为： inline-block、table-cells、flex
-  * overflow 除了visible以外的值 (hidden、auto、scroll)
 ### 什么是二分查找，思路是什么？实现方式有哪些？
 
 - 二分查找：就是在一个已排序的数组中通过值去查找索引。
@@ -2635,6 +2625,15 @@ xhr.onreadyStateChange = function(){
 - 308
 308 的定义实际上和 301 是一致的，唯一的区别在于，308 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
 
+### BFC
+一个独立的区域，外部影响不了内部。
+浮动元素和绝对定位素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）
+* BFC触发条件
+  * 根元素
+  * 浮动元素：float 不为none的属性值
+  * 绝对定位元素：position (absolute、fixed)
+  * display为： inline-block、table-cells、flex
+  * overflow 除了visible以外的值 (hidden、auto、scroll)
 ### 清除浮动
 - 兄弟之间 添加额外标签
   - clear:both
@@ -2659,3 +2658,12 @@ xhr.onreadyStateChange = function(){
   - ::after
   - ::first-letter 该伪元素向文本的第一个字母添加特殊样式
   - ::first-line 该伪元素向文本的首行添加特殊样式
+
+### position
+  - static 静态定位的元素不受 top、bottom、left 和 right 属性的影响,正常流
+  - relative 相对定位，受top、bottom、left 和 right 属性的影响
+  - absolute 绝对定位，元素相对于最近的定位祖先（除 static 以外的任何元素）进行定位。如果绝对定位的元素没有祖先，它将使用文档主体（body），并随页面滚动一起移动
+  - fixed 相对于视口定位的，这意味着即使滚动页面，它也始终位于同一位置
+  - sticky 粘性定位，结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景
+    - 元素先按照普通文档流定位，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位。而后，元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
+    - 这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同
