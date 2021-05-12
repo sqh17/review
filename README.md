@@ -2798,3 +2798,12 @@ xhr.onreadyStateChange = function(){
   - 返回使用 Object.defineProperty 在 实例上computed 属性，所以可以直接访问，createComputedGetter 包装返回 get 函数
   - 如果 computed 依赖的数据变化，dirty 会变成true，从而重新计算，然后更新缓存值 watcher.value
   - Watcher
+
+### 置换元素/非置换元素
+* 置换元素
+  1. 一个内容 不受CSS视觉格式化模型控制，CSS渲染模型并不考虑对此内容的渲染，且元素本身一般拥有固有尺寸（宽度，高度，宽高比）的元素，被称之为置换元素。 
+  2. 置换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。 
+  3. 例如浏览器会根据img标签的src属性的值来读取图片信息并显示出来，而如果查看(X)HTML代码，则看不到图片的实际内容；又例如根据input标签的type属性来决定是显示输入框，还是单选按钮等。 
+  4. HTML中的img、input、textarea、select、object都是置换元素。这些元素往往没有实际的内容，即是一个空元素。
+* 非置换元素
+  HTML 的大多数元素是不可替换元素，即其内容直接表现给用户端（例如浏览器\<\span> hello world </\span>)
