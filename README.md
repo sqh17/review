@@ -1655,7 +1655,7 @@ class Promise {
 }
 ```
 
-### 基于Promise实现一个限制并发请求的函数
+### 基于Promise实现一个限制并发请求的函数1
 
 ```javascript
 Promise.control = function (promises, limit = 4) {
@@ -1705,7 +1705,64 @@ Promise.control(tasks,4).then((value)=>{
     console.timeEnd();
 })
 ```
+### 基于Promise实现一个限制并发请求的函数2
+```javascript
+// 并发请求限制
+function multiRequest(arr = [], maxNum) {
+    // 请求总数量
+    const len = arr.length;
+    // 根据请求数量创建一个数组来保存请求的结果
+    const result = new Array(len).fill(false);
+    // 当前完成的数量
+    let count = 0;
 
+    return new Promise((resolve, reject) => {
+      // 请求maxNum个
+        while (count < maxNum) {
+            next();
+        }
+        function next() {
+            let current = count++;
+            // 处理边界条件
+            if (current >= len) {
+                // 请求全部完成就将promise置为成功状态, 然后将result作为promise值返回
+                !result.includes(false) && resolve(result);
+                return;
+            }
+            const url = arr[current];
+            console.log(`开始 ${current}`, new Date().toLocaleString());
+            fetch(query)
+            .then((res) => {
+                // 保存请求结果
+                result[current] = {
+                    num: url.num,
+                    comp: url.comp,
+                    img: res
+                };
+                console.log(`完成 ${current}`, new Date().toLocaleString());
+                // 请求没有全部完成, 就递归
+                if (current < len) {
+                    next();
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                console.log(`结束 ${current}`, new Date().toLocaleString());
+                result[current] = {
+                    num: url.num,
+                    comp: url.comp,
+                    img: ''
+                };
+                // 请求没有全部完成, 就递归
+                if (current < len) {
+                    next();
+                }
+            });
+        }
+    });
+}
+
+```
 ### 如何使 a==1 && a==2 && a==3 的值为 true
 
 - 隐式转换
@@ -1787,8 +1844,14 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 
 ### 内存中的栈和堆
 
-- 栈内存主要用于存储各种基本类型的变量，包括 Boolean、Number、String、Undefined、Null，\*\*以及对象变量的指针。
-- 堆内存主要负责像对象 Object 这种变量类型的存储。
+- 栈内存主要用于存储各种基本类型的变量，包括 Boolean、Number、String、Undefined、Null，\*\*以及对象变量的指针。按值访问
+- 堆内存主要负责像对象 Object 这种变量类型的存储。按引用访问
+
+- 栈为自动分配的内存空间，它由系统自动释放
+- 堆是动态分配的内存，大小不定也不会自动释放
+
+- 栈遵遁后进先出的原则
+- 堆是无序的
 
 ### 十大排序算法
 
