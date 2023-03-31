@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-  - [开头](#%E5%BC%80%E5%A4%B4)
+- [开头](#%E5%BC%80%E5%A4%B4)
 - [什么是二分查找，思路是什么？实现方式有哪些？](#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%80%9D%E8%B7%AF%E6%98%AF%E4%BB%80%E4%B9%88%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B)
 - [this 的指向有哪些？](#this-%E7%9A%84%E6%8C%87%E5%90%91%E6%9C%89%E5%93%AA%E4%BA%9B)
 - [箭头函数](#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0)
@@ -104,6 +104,7 @@
 #### 开头
 
 为了备战面试，从其他的面试题或者想到的问题总结如下。
+
 ### 什么是二分查找，思路是什么？实现方式有哪些？
 
 - 二分查找：就是在一个已排序的数组中通过值去查找索引。
@@ -118,24 +119,24 @@
   1.while 方式
 
       /**
-      	*
-      	* @param {*} arr 已排好的数组
-      	* @param {*} key 想要查找的值
-      	*/
-      	function binary_search(arr, key) {
-      			var low = 0,
-      					high = arr.length - 1;
-      			while (low <= high) {
-      					var mid = parseInt((high + low) / 2);
-      					if (key == arr[mid]) {
-      							return mid;
-      					} else if (key > arr[mid]) {
-      							low = mid + 1;
-      					} else if (key < arr[mid]) {
-      							high = mid - 1;
-      					} 
-      			}
-      	}
+       *
+       * @param {*} arr 已排好的数组
+       * @param {*} key 想要查找的值
+       */
+       function binary_search(arr, key) {
+         var low = 0,
+           high = arr.length - 1;
+         while (low <= high) {
+           var mid = parseInt((high + low) / 2);
+           if (key == arr[mid]) {
+             return mid;
+           } else if (key > arr[mid]) {
+             low = mid + 1;
+           } else if (key < arr[mid]) {
+             high = mid - 1;
+           } 
+         }
+       }
 
   2.递归方式
 
@@ -147,49 +148,49 @@
       * @param {*} key 想要查找的值
       */
       function binary_search(arr,low,high,key){
-      	if (low > high) {
-      			return -1;
-      	}
-      	var mid = parseInt((high + low) / 2);
-      	if (arr[mid] == key) {
-      			return mid;
-      	} else if (arr[mid] > key) {
-      			high = mid - 1;
-      			return binary_search(arr, low, high, key);
-      	} else if (arr[mid] < key) {
-      			low = mid + 1;
-      			return binary_search(arr, low, high, key);
-      	}
+       if (low > high) {
+         return -1;
+       }
+       var mid = parseInt((high + low) / 2);
+       if (arr[mid] == key) {
+         return mid;
+       } else if (arr[mid] > key) {
+         high = mid - 1;
+         return binary_search(arr, low, high, key);
+       } else if (arr[mid] < key) {
+         low = mid + 1;
+         return binary_search(arr, low, high, key);
+       }
       }
 
 ### this 的指向有哪些？
 
-1.  函数里的 this：作为普通函数，this 指向 window。
-2.  对象的 this：当函数作为对象的方法被调用时，this 就会指向该对象.
-3.  call，apply 的 this：指向调用该方法的对象
-4.  箭头函数的 this：在箭头函数里面，没有 this ，箭头函数里面的 this 是继承外面的环境
-5.  构造函数的 this： 指向 new 之后的对象。
+1. 函数里的 this：作为普通函数，this 指向 window。
+2. 对象的 this：当函数作为对象的方法被调用时，this 就会指向该对象.
+3. call，apply 的 this：指向调用该方法的对象
+4. 箭头函数的 this：在箭头函数里面，没有 this ，箭头函数里面的 this 是继承外面的环境
+5. 构造函数的 this： 指向 new 之后的对象。
 
     请看下面的例子给出答案
 
         var boss1 = {
-        	name: 'boss1',
-        	returnThis () {
-        		return this
-        	}
+         name: 'boss1',
+         returnThis () {
+          return this
+         }
         }
         var boss2 = {
-        	name: 'boss2',
-        	returnThis () {
-        		return boss1.returnThis()
-        	}
+         name: 'boss2',
+         returnThis () {
+          return boss1.returnThis()
+         }
         }
         var boss3 = {
-        	name: 'boss3',
-        	returnThis () {
-        		var returnThis = boss1.returnThis
-        		return returnThis()
-        	}
+         name: 'boss3',
+         returnThis () {
+          var returnThis = boss1.returnThis
+          return returnThis()
+         }
         }
         boss1.returnThis() // boss1
         boss2.returnThis() // boss1
@@ -197,7 +198,7 @@
 
         // ----------
         function returnThis () {
-        	return this
+         return this
         }
         var boss1 = { name: 'boss1' }
         returnThis() // window
@@ -206,7 +207,7 @@
 
         // -------
         function returnThis () {
-        	return this
+         return this
         }
         var boss1 = { name: 'boss1'}
         var boss1returnThis = returnThis.bind(boss1)
@@ -216,7 +217,7 @@
 
         // --------
         function showThis () {
-        	console.log(this)
+         console.log(this)
         }
         showThis() // window
         new showThis() // showThis {}
@@ -229,15 +230,15 @@
 
         //---------
         function callback (cb) {
-        	cb()
+         cb()
         }
         callback(() => { console.log(this) }) // window
         var boss1 = {
-        	name: 'boss1',
-        	callback: callback,
-        	callback2 () {
-        		callback(() => { console.log(this) })
-        	}
+         name: 'boss1',
+         callback: callback,
+         callback2 () {
+          callback(() => { console.log(this) })
+         }
         }
         boss1.callback(() => { console.log(this) }) // window
         boss1.callback2(() => { console.log(this) }) // boss1
@@ -247,19 +248,19 @@
         returnThis() // window
         new returnThis() // TypeError
         var boss1 = {
-        	name: 'boss1',
-        	returnThis () {
-        		var func = () => this
-        		return func()
-        	}
+         name: 'boss1',
+         returnThis () {
+          var func = () => this
+          return func()
+         }
         }
         returnThis.call(boss1) // window
         var boss1returnThis = returnThis.bind(boss1)
         boss1returnThis() // window
         boss1.returnThis() // boss1
         var boss2 = {
-        	name: 'boss2',
-        	returnThis: boss1.returnThis
+         name: 'boss2',
+         returnThis: boss1.returnThis
         }
         boss2.returnThis() // boss2
 
@@ -282,19 +283,19 @@
 
 ### new 实现了哪些步骤？(=>二)
 
-1.  创建一个新对象，
-2.  将构造函数的作用域赋给新对象（this 指向新对象)。
-3.  执行构造函数的代码（为新对象添加属性或方法)。
-4.  返回新的对象。
+1. 创建一个新对象，
+2. 将构造函数的作用域赋给新对象（this 指向新对象)。
+3. 执行构造函数的代码（为新对象添加属性或方法)。
+4. 返回新的对象。
 
         function _new(Fn){
-        	let obj = {}
-        	var arg = Array.prototype.slice.call(arguments, 1); // 将类数组转化为数组，调用数组的方法，等价于 下面的写法
-        	// var arg = Array.prototype.slice.call(argument);arg.shift()
-        	obj.__proto__ = Fn.prototype; // 将obj的原型链__proto__指向构造函数的原型prototype
-        	obj.__proto__.constructor = Fn; // 在原型链 __proto__上设置构造函数的构造器constructor，为了实例化Fn
-        	Fn.apply(obj, arg); // 执行Fn，并将构造函数Fn执行obj
-        	return obj; // 返回结果
+         let obj = {}
+         var arg = Array.prototype.slice.call(arguments, 1); // 将类数组转化为数组，调用数组的方法，等价于 下面的写法
+         // var arg = Array.prototype.slice.call(argument);arg.shift()
+         obj.__proto__ = Fn.prototype; // 将obj的原型链__proto__指向构造函数的原型prototype
+         obj.__proto__.constructor = Fn; // 在原型链 __proto__上设置构造函数的构造器constructor，为了实例化Fn
+         Fn.apply(obj, arg); // 执行Fn，并将构造函数Fn执行obj
+         return obj; // 返回结果
         }
 
 ### call 和 apply 的定义和区别？(=>二)
@@ -315,23 +316,23 @@
 - call 的实现
 
       Function.prototype.myCall = function(){
-      	let [thisArg,...args] = [...arguments];
-      	if(!thisArg){
-      		thisArg = typeof window === 'undefined'? global : window;
-      	}
-      	const fn = Symbol('fn')  // 声明一个独有的Symbol属性, 防止fn覆盖已有属性
-      	thisArg.fn = this;
-      	let res = thisArg.fn(...args);
-      	delete thisArg.fn;
-      	return res;
+       let [thisArg,...args] = [...arguments];
+       if(!thisArg){
+        thisArg = typeof window === 'undefined'? global : window;
+       }
+       const fn = Symbol('fn')  // 声明一个独有的Symbol属性, 防止fn覆盖已有属性
+       thisArg.fn = this;
+       let res = thisArg.fn(...args);
+       delete thisArg.fn;
+       return res;
       }
 
       let obj = {
-      	name:'peter',
-      	num:2
+       name:'peter',
+       num:2
       }
       function foo(a,b){
-      	return `${a + b}, ${this.name}, ${this.num}`
+       return `${a + b}, ${this.name}, ${this.num}`
       }
       console.log(foo.call(obj,3,4,5)); // 7 peter, 2
       console.log(foo.myCall(obj,3,4,5)); // 7 peter, 2
@@ -339,19 +340,19 @@
 - apply 的实现
 
       Function.prototype.myApply = function(context,rest){
-      	let res;
-      	if(!context){
-      		context = typeof window === 'undefined'? global : window;
-      	}
-      	const fn = Symbol('fn')
-      	context.fn = this;
-      	if(rest){
-      		res = context.fn(...rest)
-      	}else{
-      		res = context.fn()
-      	}
-      	delete context.fn;
-      	return res;
+       let res;
+       if(!context){
+        context = typeof window === 'undefined'? global : window;
+       }
+       const fn = Symbol('fn')
+       context.fn = this;
+       if(rest){
+        res = context.fn(...rest)
+       }else{
+        res = context.fn()
+       }
+       delete context.fn;
+       return res;
       }
 
       console.log(foo.apply(obj,[3,4])); // 7, peter, 2
@@ -360,29 +361,29 @@
 ### bind 的简单实现
 
     Function.prototype.myBind = function(){
-    	let [thisArg,...args] = [...arguments];
-    	let res;
-    	if(!thisArg){
-    		thisArg = typeof window === 'undefined'? global : window;
-    	}
-    	thisArg.fn = this;
-    	return function(){
-    		let all = [...args,...arguments]
-    		res = thisArg.fn(...all)
-    		delete thisArg.fn;
-    		return res
-    	}
+     let [thisArg,...args] = [...arguments];
+     let res;
+     if(!thisArg){
+      thisArg = typeof window === 'undefined'? global : window;
+     }
+     thisArg.fn = this;
+     return function(){
+      let all = [...args,...arguments]
+      res = thisArg.fn(...all)
+      delete thisArg.fn;
+      return res
+     }
     }
     console.log(foo.myBind(obj,3)(3,4,5))//6, peter, 2
     console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
 
     Function.prototype.myBind = function(){
-    	let [thisArg,...args] = [...arguments];
+     let [thisArg,...args] = [...arguments];
       let self = this;
-    	if(!thisArg){
-    		thisArg = typeof window === 'undefined'? global : window;
-    	}
-    	return function(){
+     if(!thisArg){
+      thisArg = typeof window === 'undefined'? global : window;
+     }
+     return function(){
         return self.apply(thisArg,[...args,...arguments]);
       }
     }
@@ -390,8 +391,9 @@
     console.log(foo.bind(obj,3)(3,4,5)) // 6, peter, 2
 
 ### 检测是否是数组的方法
+
 - [] instanceof Array
-- [].__proto__.constructor === Array
+- [].**proto**.constructor === Array
 - Object.prototype.toString.call([]) === ['object Array']
 - Array.isArray([])
 
@@ -424,84 +426,84 @@
   - text-align + line-height
 
         .box{
-        	width:200px;
-        	height:200px;
-        	display:inline-block;
-        	text-align:center;
-        	line-height:100px;
+         width:200px;
+         height:200px;
+         display:inline-block;
+         text-align:center;
+         line-height:100px;
         }
         .children-box {
-        	width: 100px;
-        	height: 100px;
+         width: 100px;
+         height: 100px;
         }
 
   - position + calc
 
         .box{
-        	width:200px;
-        	height:200px;
-        	position:relative;
+         width:200px;
+         height:200px;
+         position:relative;
         }
         .children-box {
-        	width: 100px;
-        	height: 100px;
-        	position:absolute;
-        	left:calc(50% - 50px);
-        	top:calc(50% - 50px);
+         width: 100px;
+         height: 100px;
+         position:absolute;
+         left:calc(50% - 50px);
+         top:calc(50% - 50px);
         }
 
   - position + margin 负值
 
         .box {
-        	width: 200px;
-        	height: 200px;
-        	border: 1px solid red;
-        	position: relative;
+         width: 200px;
+         height: 200px;
+         border: 1px solid red;
+         position: relative;
         }
         .children-box {
-        	position: absolute;
-        	width: 100px;
-        	height: 100px;
-        	background: yellow;
-        	left: 50%;
-        	top: 50%;
-        	margin-left: -50px;
-        	margin-top: -50px;
+         position: absolute;
+         width: 100px;
+         height: 100px;
+         background: yellow;
+         left: 50%;
+         top: 50%;
+         margin-left: -50px;
+         margin-top: -50px;
         }
 
   - 绝对定位 + left/right/bottom/top + margin
 
         .box {
-        	width: 200px;
-        	height: 200px;
-        	border: 1px solid red;
-        	position: relative;
+         width: 200px;
+         height: 200px;
+         border: 1px solid red;
+         position: relative;
         }
         .children-box {
-        	position: absolute;
-        	top: 0;
-        	left: 0;
-        	right: 0;
-        	bottom: 0px;
-        	background: yellow;
-        	margin: auto;
-        	height: 100px;
-        	width: 100px;
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0px;
+         background: yellow;
+         margin: auto;
+         height: 100px;
+         width: 100px;
         }
 
   - grid
 
         .box {
-        		width: 200px;
-        		height: 200px;
-        		border: 1px solid red;
-        		display: grid;
+          width: 200px;
+          height: 200px;
+          border: 1px solid red;
+          display: grid;
         }
         .children-box {
-        		width: 100px;
-        		height: 100px;
-        		background: yellow;
-        		margin: auto;
+          width: 100px;
+          height: 100px;
+          background: yellow;
+          margin: auto;
         }
 
 - 元素的宽高未知
@@ -509,57 +511,57 @@
   - display:flex
 
         .box{
-        	display:flex;
-        	justify-content:center;
-        	align-items:center;
+         display:flex;
+         justify-content:center;
+         align-items:center;
         }
 
   - position + transform
 
         .box{
-        	position:absolute;
-        	top:50%;
-        	left:50%;
-        	transform:translate(-50%,-50%)
+         position:absolute;
+         top:50%;
+         left:50%;
+         transform:translate(-50%,-50%)
         }
 
   - display:table
 
         .box{
-        	text-align:center;
-        	display:table-cell;
-        	vertical-align: middle;
-        	text-align:center;
+         text-align:center;
+         display:table-cell;
+         vertical-align: middle;
+         text-align:center;
         }
         .children-box{
-        	display:inline-block;
+         display:inline-block;
         }
 
   - grid
 
         .box {
-        	width: 200px;
-        	height: 200px;
-        	border: 1px solid red;
-        	display: grid;
+         width: 200px;
+         height: 200px;
+         border: 1px solid red;
+         display: grid;
         }
         .children-box {
-        	background: yellow;
-        	align-self: center;
-        	justify-self: center;
+         background: yellow;
+         align-self: center;
+         justify-self: center;
         }
 
   - gird + margin 布局
 
         .box {
-        	width: 200px;
-        	height: 200px;
-        	border: 1px solid red;
-        	display: grid;
+         width: 200px;
+         height: 200px;
+         border: 1px solid red;
+         display: grid;
         }
         .children-box {
-        	background: yellow;
-        	margin: auto;
+         background: yellow;
+         margin: auto;
         }
 
 ### html5 和 css3 新增了哪些？
@@ -590,9 +592,9 @@
       - \<audio>\</audio>
 
             <audio controls>
-            	<source src="horse.ogg" type="audio/ogg">
-            	<source src="horse.wav" type="audio/ogg">
-            	<source src="horse.mp3" type="audio/mpeg">您的浏览器不支持 audio 元素。
+             <source src="horse.ogg" type="audio/ogg">
+             <source src="horse.wav" type="audio/ogg">
+             <source src="horse.mp3" type="audio/mpeg">您的浏览器不支持 audio 元素。
             </audio>
 
         1. control 属性供添加播放、暂停和音量控件。
@@ -602,11 +604,11 @@
 
       - \<video>\</video>
 
-            	<video width="320" height="240" controls>
-            		<source src="movie.mp4" type="video/mp4">
-            		<source src="movie.ogg" type="video/ogg">
-            	您的浏览器不支持Video标签。
-            	</video>
+             <video width="320" height="240" controls>
+              <source src="movie.mp4" type="video/mp4">
+              <source src="movie.ogg" type="video/ogg">
+             您的浏览器不支持Video标签。
+             </video>
 
         1. control 提供了 播放、暂停和音量控件来控制视频。也可以使用 dom 操作来控制视频的播放暂停，如 play() 和 pause() 方法.
         2. 同时 video 元素也提供了 width 和 height 属性控制视频的尺寸.如果设置的高度和宽度，所需的视频空间会在页面加载时保留。如果没有设置这些属性，浏览器不知道大小的视频，浏览器就不能再加载时保留特定的空间，页面就会根据原始视频的大小而改变。
@@ -635,27 +637,27 @@
 
     - drag 和 drop 拖拽
 
-      1.  即抓取对象以后拖到另一个位置。在 HTML5 中，拖放是标准的一部分，任何元素都能够拖放。即将元素添加 draggable，就变成可拖动元素。
-      2.  拖放的过程分为源对象和目标对象。源对象是指你即将拖动元素，而目标对象则是指拖动之后要放置的目标位置。
-      3.  对源对象操作的方法：I. ondragstart（用户开始拖动元素时触发）II.<font color='purple'> ondrag（ 元素正在拖动时触发）</font>III. ondragend （用户完成元素拖动后触发）
-      4.  放置目标对象的方法：I. ondragenter （当被鼠标拖动的对象进入其容器范围内时触发此事件）II. ondragover (当某被拖动的对象在另一对象容器范围内拖动时触发此事件) III. ondragleave (当被鼠标拖动的对象离开其容器范围内时触发此事件) IIII <font color="purple">ondrop (在一个拖动过程中，释放鼠标键时触发此事件)</font>
-      5.  通过 ev.dataTransfer.getData("Text") 方法获得被拖的数据。该方法将返回在 ev.dataTransfer.setData("Text",xxx)方法中设置为相同类型的任何数据。
-      6.  例子参考 'https://www.runoob.com/html/html5-draganddrop.html'
+      1. 即抓取对象以后拖到另一个位置。在 HTML5 中，拖放是标准的一部分，任何元素都能够拖放。即将元素添加 draggable，就变成可拖动元素。
+      2. 拖放的过程分为源对象和目标对象。源对象是指你即将拖动元素，而目标对象则是指拖动之后要放置的目标位置。
+      3. 对源对象操作的方法：I. ondragstart（用户开始拖动元素时触发）II.<font color='purple'> ondrag（ 元素正在拖动时触发）</font>III. ondragend （用户完成元素拖动后触发）
+      4. 放置目标对象的方法：I. ondragenter （当被鼠标拖动的对象进入其容器范围内时触发此事件）II. ondragover (当某被拖动的对象在另一对象容器范围内拖动时触发此事件) III. ondragleave (当被鼠标拖动的对象离开其容器范围内时触发此事件) IIII <font color="purple">ondrop (在一个拖动过程中，释放鼠标键时触发此事件)</font>
+      5. 通过 ev.dataTransfer.getData("Text") 方法获得被拖的数据。该方法将返回在 ev.dataTransfer.setData("Text",xxx)方法中设置为相同类型的任何数据。
+      6. 例子参考 'https://www.runoob.com/html/html5-draganddrop.html'
 
     - Geolocation 地理定位  
       用于定位用户的位置
 
     - Web Worker
 
-      1.  定义  
+      1. 定义  
           运行在后台的 JavaScript，不会影响页面的性能，Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
-      2.  Web Worker 有以下几个使用注意点
+      2. Web Worker 有以下几个使用注意点
           1. 必须同源。
           2. 不能操作 dom 对象。
           3. Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成
           4. Worker 线程不能执行 alert()方法和 confirm()方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求。
           5. Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。
-      3.  简单使用
+      3. 简单使用
 
           ```html
           <div id="num"></div>
@@ -667,20 +669,20 @@
           ```javasript
           var w = new Worker("worker.js");  // 需要在server服务下运行，虽然是本地文件。
           //子线程向主线程传递消息
-          	w.addEventListener("message", function (e) { //监听子线程的message事件
-          		document.getElementById("num").innerText = JSON.parse(e.data).num;
-          	})
-          	//主线程向子线程传递消息
-          	var btn = document.getElementsByTagName("button")[0];
-          	btn.onclick = function () {
-          		var num = document.getElementsByTagName("input")[0].value;
-          		w.postMessage(num); //向子线程发送message事件
+           w.addEventListener("message", function (e) { //监听子线程的message事件
+            document.getElementById("num").innerText = JSON.parse(e.data).num;
+           })
+           //主线程向子线程传递消息
+           var btn = document.getElementsByTagName("button")[0];
+           btn.onclick = function () {
+            var num = document.getElementsByTagName("input")[0].value;
+            w.postMessage(num); //向子线程发送message事件
 
-          	}
-          	var stopBtn = document.getElementsByTagName("button")[1];
-          	stopBtn.οnclick = function () {
-          		w.terminate(); //停止webworker
-          	}
+           }
+           var stopBtn = document.getElementsByTagName("button")[1];
+           stopBtn.οnclick = function () {
+            w.terminate(); //停止webworker
+           }
           ```
 
           ```javascript
@@ -711,11 +713,11 @@
 - 什么是标签语义化  
   用正确的标签做正确的事，把适当的标签用在合适的地方。是页面结构更加的清晰。
 - 标签语义化的作用
-  1.  使用 html 语义化，能使页面结构更清晰，便于解析。
-  2.  有利于 SEO。搜索引擎爬虫依赖于 html 标签来确定上下文和关键字权重。
-  3.  使用 html 语义化，在没有 css 样式的时候页面也能正确清晰的呈现
-  4.  有利于各种设备的解析，如盲人阅读器，屏幕阅读器
-  5.  有利于团队合作开发与维护。
+  1. 使用 html 语义化，能使页面结构更清晰，便于解析。
+  2. 有利于 SEO。搜索引擎爬虫依赖于 html 标签来确定上下文和关键字权重。
+  3. 使用 html 语义化，在没有 css 样式的时候页面也能正确清晰的呈现
+  4. 有利于各种设备的解析，如盲人阅读器，屏幕阅读器
+  5. 有利于团队合作开发与维护。
 - html5 标签有哪些？
   - \<title>\</title> 页面的标题，具有唯一性，标题的取名尽量包含网页几个关键字。
   - \<header>\</header> 网站的标志，主导航，搜索框等
@@ -771,13 +773,13 @@
 
       ```javascript
       function debounce(func, wait) {
-      	let timeout;
-      	return function () {
-      		if (timeout) clearTimeout(timeout);
-      		timeout = setTimeout(() => {
-      			func.apply(this, arguments)
-      		}, wait);
-      	}
+       let timeout;
+       return function () {
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => {
+         func.apply(this, arguments)
+        }, wait);
+       }
       }
 
       // 用debounce来包装scroll的回调
@@ -817,43 +819,43 @@
     };
 
     /* cancel = function () {
-  			console.log("立即取消等待");
-  			clearTimeout(timer);
-  	} */
+     console.log("立即取消等待");
+     clearTimeout(timer);
+   } */
   }
   ```
 
 - 节流  
   节流函数的作用是规定一个单位时间，在这个单位时间内最多只能触发一次函数执行，如果这个单位时间内多次触发函数，只能有一次生效。
 
-      	//	时间戳方式
-      	function throttle(func, wait) {
-      		let previous = 0;
-      		return function() {
-      			let now = Date.now();
-      			if (now - previous > wait) {
-      					func.apply(this, arguments);
-      					previous = now;
-      			}
-      		}
-      	}
+       // 时间戳方式
+       function throttle(func, wait) {
+        let previous = 0;
+        return function() {
+         let now = Date.now();
+         if (now - previous > wait) {
+           func.apply(this, arguments);
+           previous = now;
+         }
+        }
+       }
 
-      	// 定时器方式
-      	function throttle(func,wait){
-      		let timer;
-      		return function(){
-      			if(!timer){
-      				timer = setTimeout(()=>{
-      					func.apply(this,arguments);
-      					timer = null;
-      				},wait)
-      			}
-      		}
-      	}
+       // 定时器方式
+       function throttle(func,wait){
+        let timer;
+        return function(){
+         if(!timer){
+          timer = setTimeout(()=>{
+           func.apply(this,arguments);
+           timer = null;
+          },wait)
+         }
+        }
+       }
 
-      	// 用throttle来包装scroll的回调
-      	const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-      	document.addEventListener('scroll', better_scroll)
+       // 用throttle来包装scroll的回调
+       const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+       document.addEventListener('scroll', better_scroll)
 
       适用场景
       1. 按钮点击事件
@@ -862,6 +864,7 @@
       4. 计算鼠标移动的距离(mousemove)
 
 - throttle+立即执行
+
   ```javascript
   // 方法1
   function throttle(fn, wait, isImmediate) {
@@ -904,6 +907,7 @@
     };
   }
   ```
+
 - dobounce+throttle
   debounce 的问题在于它“太有耐心了”。试想，如果用户的操作十分频繁——他每次都不等 debounce 设置的 delay 时间结束就进行下一次操作，于是每次 debounce 都为该用户重新生成定时器，回调函数被延迟了不计其数次。频繁的延迟会导致用户迟迟得不到响应，用户同样会产生“这个页面卡死了”的观感。
 
@@ -956,8 +960,8 @@
   - Object.assign(newObj,oldObj) 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象
 
         let oldObj = {
-        	name:'peter',
-        	age:26
+         name:'peter',
+         age:26
         }
         let oldArr = [1,2,3,4,5]
         let newObj = Object.assign({},oldObj)
@@ -981,8 +985,8 @@
   - 通过 JSON.stringify()和 JSON.parse()
 
         let oldObj = {
-        	name:'peter',
-        	age:26
+         name:'peter',
+         age:26
         }
         let oldArr = [1,2,3,4,5]
         let newObj = JSON.parse(JSON.stringify(oldObj))
@@ -1002,44 +1006,44 @@
     - 方法一
 
           function deepClone(obj){
-          	if(obj instanceof RegExp) return new RegExp(obj);
-          	if(obj instanceof Date) return new Date(obj);
-          	let objClone = Array.isArray(obj)?[]:{};
-          	if(obj && typeof obj==="object"){
-          			for(key in obj){
-          					if(obj.hasOwnProperty(key)){
-          					//判断ojb子元素是否为对象，如果是，递归复制
-          							if(obj[key]&&typeof obj[key] ==="object"){
-          									objClone[key] = deepClone(obj[key]);
-          							}else{
-          									//如果不是，简单复制
-          									objClone[key] = obj[key];
-          							}
-          					}
-          			}
-          	}
-          	return objClone;
+           if(obj instanceof RegExp) return new RegExp(obj);
+           if(obj instanceof Date) return new Date(obj);
+           let objClone = Array.isArray(obj)?[]:{};
+           if(obj && typeof obj==="object"){
+             for(key in obj){
+               if(obj.hasOwnProperty(key)){
+               //判断ojb子元素是否为对象，如果是，递归复制
+                 if(obj[key]&&typeof obj[key] ==="object"){
+                   objClone[key] = deepClone(obj[key]);
+                 }else{
+                   //如果不是，简单复制
+                   objClone[key] = obj[key];
+                 }
+               }
+             }
+           }
+           return objClone;
           }
 
     - 方法二
 
           function deepClone(obj,hash = new WeakMap()){
-          	if(obj instanceof RegExp) return new RegExp(obj);
-          	if(obj instanceof Date) return new Date(obj);
-          	if(obj == null || typeof obj !== 'object'){
-          		return obj;// 如果不是复杂数据类型直接返回obj
-          	}
-          	if(hash.has(obj)){
-          		return hash.get(obj);
-          	}
-          	let t = new obj.constructor();
-          	hash.set(obj,t);
-          	for(let key in obj){
-          		if(obj.hasOwnProperty(key)){
-          			t[key] = deepClone(obj[key],hash)
-          		}
-          	}
-          	return t;
+           if(obj instanceof RegExp) return new RegExp(obj);
+           if(obj instanceof Date) return new Date(obj);
+           if(obj == null || typeof obj !== 'object'){
+            return obj;// 如果不是复杂数据类型直接返回obj
+           }
+           if(hash.has(obj)){
+            return hash.get(obj);
+           }
+           let t = new obj.constructor();
+           hash.set(obj,t);
+           for(let key in obj){
+            if(obj.hasOwnProperty(key)){
+             t[key] = deepClone(obj[key],hash)
+            }
+           }
+           return t;
           }
 
 ### 从浏览器地址栏输入 url 到显示页面的步骤
@@ -1069,7 +1073,7 @@
 
 ### 三次握手
 
-(转载与http://blog.itpub.net/31442725/viewspace-2645992/)
+(转载与<http://blog.itpub.net/31442725/viewspace-2645992/)>
 
 ![三次握手](/images/connect.png)
 
@@ -1089,7 +1093,7 @@
 
 ### 四次挥手
 
-(转载与http://blog.itpub.net/31442725/viewspace-2645992/)  
+(转载与<http://blog.itpub.net/31442725/viewspace-2645992/)>  
 ![四次挥手](/images/close.png)
 
 1. 第一次挥手：Client 发送一个 FIN，用来关闭 Client 到 Server 的数据传送，Client 进入 FIN_WAIT_1 状态。
@@ -1168,8 +1172,8 @@
 
     * ps:这些过程没有顺序之分，比如DOM或CSSOM被修改时，亦或是哪个过程会重复执行，这样才能计算出哪些像素需要在屏幕上进行重新渲染。而在实际情况中，JavaScript和CSS的某些操作往往会多次修改DOM或者CSSOM。
     * ps: DOMContentLoaded和Load的区别
-    	* DOMContentLoaded事件触发时，仅当DOM加载完成，不包括样式表，图片等，简称页面内容加载完成
-    	* load事件触发时，页面上所有的DOM，样式表，脚本，图片都已加载完成，简称页面资源加载完成
+     * DOMContentLoaded事件触发时，仅当DOM加载完成，不包括样式表，图片等，简称页面内容加载完成
+     * load事件触发时，页面上所有的DOM，样式表，脚本，图片都已加载完成，简称页面资源加载完成
 
     * 参考文献：（https://www.jianshu.com/p/e6252dc9be32）
 
@@ -1177,8 +1181,8 @@
 
 - 强制缓存： 缓存在未过有效期时，不需要请求资源
   - expires &nbsp;&nbsp;&nbsp; http1.0
-    1.  该字段表示缓存到期时间，即有效时间+当时服务器的时间，然后将这个时间设置在 header 中返回给服务器。因此，该时间是一个绝对时间.
-    2.  缺点：由于是绝对时间，用户可能会将客户端本地的时间进行修改，而导致浏览器判断缓存失效，重新请求该资源，同时，还导致客户端与服务端的时间不一致，致使缓存失效。
+    1. 该字段表示缓存到期时间，即有效时间+当时服务器的时间，然后将这个时间设置在 header 中返回给服务器。因此，该时间是一个绝对时间.
+    2. 缺点：由于是绝对时间，用户可能会将客户端本地的时间进行修改，而导致浏览器判断缓存失效，重新请求该资源，同时，还导致客户端与服务端的时间不一致，致使缓存失效。
   - cache-control&nbsp;&nbsp;&nbsp; http1.1
     1. 该字段表示资源缓存的最大有效时间，在该时间内，客户端不需要向服务器发送请求，因此是个相对时间。
     2. Cache-Control 的字段可以带的值：
@@ -1192,8 +1196,8 @@
     1. Last-Modified 是 服务器告知客户端，资源最后一次被修改的时间
     2. If-Modified-Since：再次请求时，请求头中带有该字段，服务器会将 If-Modified-Since 的值与 Last-Modified 字段进行对比，如果相等，则表示未修改，响应 304；反之，则表示修改了，响应 200 状态码，返回数据。
     3. 缺点：
-      - 如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。
-      - 如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
+    - 如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。
+    - 如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
   - Etag --- If-None-Match
     1. Etag 存储的是文件的特殊标识(一般都是 hash 生成的)，服务器存储着文件的 Etag 字段，可以在与每次客户端传送 If-no-match 的字段进行比较，如果相等，则表示未修改，响应 304；反之，则表示已修改，响应 200 状态码，返回数据。
 
@@ -1205,26 +1209,26 @@
 
 ### 移动端如何做适配？
 
-1.  html 文件添加 meta
+1. html 文件添加 meta
 
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        	// width    设置viewport宽度，为一个正整数，或字符串‘device-width’
-        	// device-width  设备宽度
-        	// height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
-        	// initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
-        	// minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
-        	// maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
-        	// user-scalable    是否允许手动缩放
+         // width    设置viewport宽度，为一个正整数，或字符串‘device-width’
+         // device-width  设备宽度
+         // height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
+         // initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
+         // minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
+         // maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
+         // user-scalable    是否允许手动缩放
 
-2.  head 添加 script
+2. head 添加 script
 
         // 初始化
         setHtmlFontSize(1920,1024,19.2);
         // 当屏幕宽度发生变化时，触发
         if(window.addEventListener){
-        	window.addEventListener('resize',function(){
-        		setHtmlFontSize(1920,1024,19.2);
-        	},false);
+         window.addEventListener('resize',function(){
+          setHtmlFontSize(1920,1024,19.2);
+         },false);
         }
         /**
         *
@@ -1233,63 +1237,63 @@
         * @param {*} piex 适配比例
         */
         function setHtmlFontSize(maxWidth,minWidth,piex) {
-        	var screenWidth = document.documentElement.clientWidth,
-        			deviceWidth;
-        	if(screenWidth >= 1500){
-        		deviceWidth = maxWidth;
-        	}else if(screenWidth < minWidth){
-        		deviceWidth = minWidth;
-        	}else {
-        		deviceWidth = screenWidth;
-        	}
-        	document.getElementsByTagName("html")[0].style.cssText = 'font-size:' + deviceWidth / piex + 'px !important';
+         var screenWidth = document.documentElement.clientWidth,
+           deviceWidth;
+         if(screenWidth >= 1500){
+          deviceWidth = maxWidth;
+         }else if(screenWidth < minWidth){
+          deviceWidth = minWidth;
+         }else {
+          deviceWidth = screenWidth;
+         }
+         document.getElementsByTagName("html")[0].style.cssText = 'font-size:' + deviceWidth / piex + 'px !important';
         }
 
 ### 实现一个函数判断数据类型
 
     function getType(obj) {
-    	if (obj === null) return String(obj);
-    	return typeof obj === 'object'
-    	? Object.prototype.toString.call(obj).replace('[object ', '').replace(']', '').toLowerCase()
-    	: typeof obj;
+     if (obj === null) return String(obj);
+     return typeof obj === 'object'
+     ? Object.prototype.toString.call(obj).replace('[object ', '').replace(']', '').toLowerCase()
+     : typeof obj;
     }
 
 ### 图片的懒加载和预加载
 
 - 预下载
 
-  1.  利用缓存的形式
+  1. 利用缓存的形式
 
           function loadImage(url, callback) {
-          	var img = new Image(); //创建一个Image对象，实现图片的预下载
-          	img.onload = function () { //图片下载完毕时将img.onload设为null，并异步调用callback函数。
-          		img.onload = null;
-          		callback(img);
-          	};
-          	img.src = url;
+           var img = new Image(); //创建一个Image对象，实现图片的预下载
+           img.onload = function () { //图片下载完毕时将img.onload设为null，并异步调用callback函数。
+            img.onload = null;
+            callback(img);
+           };
+           img.src = url;
           }
 
-  2.  css 方式
+  2. css 方式
 
           function preloader() {
-          	if (document.getElementById) {
-          		document.getElementById("preload-01").style.background = "url(http://domain.tld/image-01.png) no-repeat -9999px -9999px";
-          		document.getElementById("preload-02").style.background = "url(http://domain.tld/image-02.png) no-repeat -9999px -9999px";
-          		document.getElementById("preload-03").style.background = "url(http://domain.tld/image-03.png) no-repeat -9999px -9999px";
-          	}
+           if (document.getElementById) {
+            document.getElementById("preload-01").style.background = "url(http://domain.tld/image-01.png) no-repeat -9999px -9999px";
+            document.getElementById("preload-02").style.background = "url(http://domain.tld/image-02.png) no-repeat -9999px -9999px";
+            document.getElementById("preload-03").style.background = "url(http://domain.tld/image-03.png) no-repeat -9999px -9999px";
+           }
           }
           function addLoadEvent(func) {
-          	var oldonload = window.onload;
-          	if (typeof window.onload != 'function') {
-          		window.onload = func;
-          	} else {
-          		window.onload = function() {
-          			if (oldonload) {
-          				oldonload();
-          			}
-          			func();
-          		}
-          	}
+           var oldonload = window.onload;
+           if (typeof window.onload != 'function') {
+            window.onload = func;
+           } else {
+            window.onload = function() {
+             if (oldonload) {
+              oldonload();
+             }
+             func();
+            }
+           }
           }
           addLoadEvent(preloader);
 
@@ -1378,34 +1382,34 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 ### es5 实现 let
 
     function _let(count){
-    	(function(){
-    		for(var i = 0; i < count; i ++){
-    			console.log(i) // 0,1,2,3,4
-    		}
-    	})();
-    	console.log(i) // ReferenceError: i is not defined
+     (function(){
+      for(var i = 0; i < count; i ++){
+       console.log(i) // 0,1,2,3,4
+      }
+     })();
+     console.log(i) // ReferenceError: i is not defined
     }
     _let(5)
 
 ### es5 实现 const
 
     var _const = function(data,value){
-    	var _window = typeof window === 'undefined'? global : window; // 判断当前的环境
-    	_window[data] = value; // 把要定义的data挂载到_window下，并赋值value
-    	Object.defineProperty(_window,data,{
-    		enumerable:false,
-    		configurable:false,
-    		get:function(){
-    			return value
-    		},
-    		set:function(val){
-    			if(val != value){
-    				throw new TypeError('Assignment to constant variable')
-    			}else{
-    				return value
-    			}
-    		}
-    	})
+     var _window = typeof window === 'undefined'? global : window; // 判断当前的环境
+     _window[data] = value; // 把要定义的data挂载到_window下，并赋值value
+     Object.defineProperty(_window,data,{
+      enumerable:false,
+      configurable:false,
+      get:function(){
+       return value
+      },
+      set:function(val){
+       if(val != value){
+        throw new TypeError('Assignment to constant variable')
+       }else{
+        return value
+       }
+      }
+     })
     }
     _const('a', 10)
     console.log(a)
@@ -1413,35 +1417,35 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
 ### 手写 instanceof
 
-    	function _instanceOf(left,right){
-    		let proto = left.__proto;
-    		let prototype = right.prototype;
-    		while(true){
-    			if(proto == null){
-    				return false;
-    			}else if (proto === prototype){
-    				return true
-    			}
-    			proto = proto.__proto__;
-    		}
-    	}
+     function _instanceOf(left,right){
+      let proto = left.__proto;
+      let prototype = right.prototype;
+      while(true){
+       if(proto == null){
+        return false;
+       }else if (proto === prototype){
+        return true
+       }
+       proto = proto.__proto__;
+      }
+     }
 
 ### 手写函数柯里化
 
-    	const curry = fn=>{
-    		if (typeof fn !== "function") {
-    			throw Error("No function provided");
-    		}
-    		return function curriedFn(...args) {
-    			if (args.length < fn.length) {
-    				return function() {
-    					// let all = [...args,...arguments]
-    					return curriedFn.apply(null, args.concat([].slice.call(arguments)));
-    				};
-    			}
-    			return fn.apply(null, args);
-    		};
-    	}
+     const curry = fn=>{
+      if (typeof fn !== "function") {
+       throw Error("No function provided");
+      }
+      return function curriedFn(...args) {
+       if (args.length < fn.length) {
+        return function() {
+         // let all = [...args,...arguments]
+         return curriedFn.apply(null, args.concat([].slice.call(arguments)));
+        };
+       }
+       return fn.apply(null, args);
+      };
+     }
 
 ### 数组实现偏平化
 
@@ -1461,11 +1465,11 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
       let arr = [1,2,3,[4,5,6,[7,8,9]]]
       function flat(arr){
-      	let res = [];
-      	for(const item of arr){
-      		item instanceof Array ? res = res.concat(flat(item)):res.push(item)
-      	}
-      	return res
+       let res = [];
+       for(const item of arr){
+        item instanceof Array ? res = res.concat(flat(item)):res.push(item)
+       }
+       return res
       }
       console.log(flat(arr)) // [1,2,3,4,5,6,7,8,9]
 
@@ -1473,9 +1477,9 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
       let arr = [1,2,3,[4,5,6,[7,8,9]]]
       function flat(arr){
-      	return arr.reduce((prev, cur)=>{
-      		return prev.concat(cur instanceof Array?flat(cur):cur)
-      	},[])
+       return arr.reduce((prev, cur)=>{
+        return prev.concat(cur instanceof Array?flat(cur):cur)
+       },[])
       }
       console.log(flat(arr)) // [1,2,3,4,5,6,7,8,9]
 
@@ -1483,7 +1487,7 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
       let arr = [1,2,3,[4,5,6,[7,8,9]]]
       while (arr.some(Array.isArray)) {
-      	arr = [].concat(...arr);
+       arr = [].concat(...arr);
       }
       console.log(arr) // [1,2,3,4,5,6,7,8,9]
 
@@ -1705,7 +1709,9 @@ Promise.control(tasks,4).then((value)=>{
     console.timeEnd();
 })
 ```
+
 ### 基于Promise实现一个限制并发请求的函数2
+
 ```javascript
 // 并发请求限制
 function multiRequest(arr = [], maxNum) {
@@ -1763,6 +1769,7 @@ function multiRequest(arr = [], maxNum) {
 }
 
 ```
+
 ### 如何使 a==1 && a==2 && a==3 的值为 true
 
 - 隐式转换
@@ -1770,29 +1777,29 @@ function multiRequest(arr = [], maxNum) {
   valueOf/toString/Symbol.toPrimitive 方法都适用,只要一次返回 1，2，3 即可
 
       let a = {
-      	[Symbol.toPrimitive]:(function(hint){
-      		let i = 1;
-      		return function(){ // 闭包的特性，i不会被回收
-      			return i++
-      		}
-      	})()
+       [Symbol.toPrimitive]:(function(hint){
+        let i = 1;
+        return function(){ // 闭包的特性，i不会被回收
+         return i++
+        }
+       })()
       }
 
       let a = {
-      	i:1,
-      	toString:function(){
-      		return this.i++;
-      	}
+       i:1,
+       toString:function(){
+        return this.i++;
+       }
       }
 
 - 利用数据劫持(Proxy/Object.definedProperty）
 
       let i = 1;
       let a = new Proxy({},{
-      	i:1,
-      	get:function(){
-      		return ()=>this.i++;
-      	}
+       i:1,
+       get:function(){
+        return ()=>this.i++;
+       }
       })
 
 - 数组的 toString 接口默认调用数组的 join 方法，重新 join 方法
@@ -1803,31 +1810,31 @@ function multiRequest(arr = [], maxNum) {
 ### 异步下载 js 的方式
 
     * async和defer
-    	<script> 标签中增加 async(html5) 或者 defer(html4) 属性,脚本就会异步加载。
+     <script> 标签中增加 async(html5) 或者 defer(html4) 属性,脚本就会异步加载。
 
-    	defer 和 async 的区别在于：
+     defer 和 async 的区别在于：
 
-    	1. defer 要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），在window.onload 之前执行；
-    	2. async 一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。
-    	3. 如果有多个 defer 脚本，会按照它们在页面出现的顺序加载
-    	4. 多个 async 脚本不能保证加载顺序
+     1. defer 要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），在window.onload 之前执行；
+     2. async 一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。
+     3. 如果有多个 defer 脚本，会按照它们在页面出现的顺序加载
+     4. 多个 async 脚本不能保证加载顺序
 
     * 动态添加js
 
-    	let script = document.createElement('script');
-    	script.src = 'a.js';
-    	document.body.append(script);
+     let script = document.createElement('script');
+     script.src = 'a.js';
+     document.body.append(script);
 
     * xhr异步下载js
 
-    	let xhr = new XMLHttpRequest();
-    	xhr.open('get','a.js',true);
-    	xhr.send();
-    	xhr.onreadystatechange = function(){
-    		if(xhr.readyState == 4 && xhr.status == 200){
-    			eval(xhr.responeText)
-    		}
-    	}
+     let xhr = new XMLHttpRequest();
+     xhr.open('get','a.js',true);
+     xhr.send();
+     xhr.onreadystatechange = function(){
+      if(xhr.readyState == 4 && xhr.status == 200){
+       eval(xhr.responeText)
+      }
+     }
 
 ### Event Loop
 
@@ -1858,165 +1865,165 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 - 冒泡排序(O(n\*n))
 
       function sort(arr){
-      	for(var i = 0;i<arr.length - 1;i++){
-      		var isSort = true; // 用来是否排序的标示
-      		for(Var j = 0;j<arr.length - 1 - i;j++){
-      			if(arr[j] < arr[j+1]){
-      				[arr[j],arr[j+1]] = [arr[j+1],arr[j]]
-      				isSort = false;
-      			}
-      		}
-      		if(isSort){ // 如果当前是排好的直接break
-      			break;
-      		}
-      	}
+       for(var i = 0;i<arr.length - 1;i++){
+        var isSort = true; // 用来是否排序的标示
+        for(Var j = 0;j<arr.length - 1 - i;j++){
+         if(arr[j] < arr[j+1]){
+          [arr[j],arr[j+1]] = [arr[j+1],arr[j]]
+          isSort = false;
+         }
+        }
+        if(isSort){ // 如果当前是排好的直接break
+         break;
+        }
+       }
       }
 
 - 选择排序(O(n\*n))
 
       function sort(arr){
-      	for(var i = 0;i<arr.length;i++){
-      		var min = i;
-      		for(var j = i + 1;j<arr.length;j++){
-      			if(arr[min]>arr[j]){
-      				min = j
-      			}
-      		}
-      		[arr[i],arr[min]] = [arr[min],arr[i]]
-      	}
-      	return arr
+       for(var i = 0;i<arr.length;i++){
+        var min = i;
+        for(var j = i + 1;j<arr.length;j++){
+         if(arr[min]>arr[j]){
+          min = j
+         }
+        }
+        [arr[i],arr[min]] = [arr[min],arr[i]]
+       }
+       return arr
       }
 
 - 插入排序
 
       function sort(arr){
-      	var newArr = [arr[0]]
-      	for(var i = 1;i<arr.length;i++){
-      		for(var j = 0;j<=i;j++){
-      			if(newArr[j]>arr[i]){
-      				newArr.splice(j,0,arr[i]);
-      				break
-      			}else if(j==i){
-      				newArr.push(arr[i])
-      			}
-      		}
-      	}
-      	return newArr
+       var newArr = [arr[0]]
+       for(var i = 1;i<arr.length;i++){
+        for(var j = 0;j<=i;j++){
+         if(newArr[j]>arr[i]){
+          newArr.splice(j,0,arr[i]);
+          break
+         }else if(j==i){
+          newArr.push(arr[i])
+         }
+        }
+       }
+       return newArr
       }
 
       function sort(arr){
-      	for(var i = 1;i<arr.length;i++){
-      		var value = arr[i];
-      		for(var j = i+1;j>=0;j--){
-      			if(arr[j]>value){
-      				arr[j] = arr[j-1]
-      			}else{
-      				break
-      			}
-      		}
-      		arr[j] = value;
-      	}
-      	return arr
+       for(var i = 1;i<arr.length;i++){
+        var value = arr[i];
+        for(var j = i+1;j>=0;j--){
+         if(arr[j]>value){
+          arr[j] = arr[j-1]
+         }else{
+          break
+         }
+        }
+        arr[j] = value;
+       }
+       return arr
       }
 
 - 希尔排序
 
       function sort(arr){
-      	let len = arr.length,
-      			temp,
-      			gap = 1;
-      	while(gap < len/5){
-      		gap = gap * 5 + 1
-      	}
-      	for(gap;gap > 0;gap = Math.floor(gap / 5)){
-      		for(var i = gap;i<len;i++){
-      			temp = arr[i];
-      			for(var j = i - gap;j>=0 && arr[j] > temp;j -= gap){
-      				arr[j+gap] = arr[j]
-      			}
-      			arr[j+gap] = temp
-      		}
-      	}
-      	return arr
+       let len = arr.length,
+         temp,
+         gap = 1;
+       while(gap < len/5){
+        gap = gap * 5 + 1
+       }
+       for(gap;gap > 0;gap = Math.floor(gap / 5)){
+        for(var i = gap;i<len;i++){
+         temp = arr[i];
+         for(var j = i - gap;j>=0 && arr[j] > temp;j -= gap){
+          arr[j+gap] = arr[j]
+         }
+         arr[j+gap] = temp
+        }
+       }
+       return arr
       }
 
 - 归并排序
 
       function sort(arr){
-      	let len = arr.length;
-      	if(len<2){
-      		return arr;
-      	}
-      	let middle = Math.floor(len/2);
-      	let left = arr.slice(0,middle);
-      	let right = arr.slice(middle);
-      	return merge(left,right);
+       let len = arr.length;
+       if(len<2){
+        return arr;
+       }
+       let middle = Math.floor(len/2);
+       let left = arr.slice(0,middle);
+       let right = arr.slice(middle);
+       return merge(left,right);
       }
       function merge(left,right){
-      	let res = [];
-      	while(left.length&&right.length){
-      		if(left[0] <= right[0]){
-      			res.push(left.shift())
-      		}else{
-      			res.push(right.shift())
-      		}
-      	}
-      	while(left.length){
-      		res.push(left.shift())
-      	}
-      	while(right.length){
-      		res.push(right.shift())
-      	}
-      	return res
+       let res = [];
+       while(left.length&&right.length){
+        if(left[0] <= right[0]){
+         res.push(left.shift())
+        }else{
+         res.push(right.shift())
+        }
+       }
+       while(left.length){
+        res.push(left.shift())
+       }
+       while(right.length){
+        res.push(right.shift())
+       }
+       return res
       }
 
 - 快速排序
 
       function sort(arr){
-      	let left = [];
-      	let right = [];
-      	let middle = arr.splice(Math.floor(arr.length/2),1)[0];
-      	for(var i = 0;i<arr.length;i++){
-      		if(arr[i] > middle){
-      			right.push(arr[i])
-      		}else{
-      			left.push(arr[i])
-      		}
-      	}
-      	return sort(left).concat([middle],sort(right))
+       let left = [];
+       let right = [];
+       let middle = arr.splice(Math.floor(arr.length/2),1)[0];
+       for(var i = 0;i<arr.length;i++){
+        if(arr[i] > middle){
+         right.push(arr[i])
+        }else{
+         left.push(arr[i])
+        }
+       }
+       return sort(left).concat([middle],sort(right))
       }
 
 ### 前端优化
 
 - content 方面
-  1.  减少 HTTP 请求：合并文件、CSS 精灵、inline Image
-  2.  减少 DNS 查询：DNS 缓存、将资源分布到恰当数量的主机名
-  3.  优化图片，对于小图片可以使用 base64，能用 css 实现的就少用图片
+  1. 减少 HTTP 请求：合并文件、CSS 精灵、inline Image
+  2. 减少 DNS 查询：DNS 缓存、将资源分布到恰当数量的主机名
+  3. 优化图片，对于小图片可以使用 base64，能用 css 实现的就少用图片
 - Server 方面
-  1.  使用 CDN
-  2.  开启缓存
-  3.  对组件使用 Gzip 压缩
+  1. 使用 CDN
+  2. 开启缓存
+  3. 对组件使用 Gzip 压缩
 - js 或者 css 方面
-  1.  将样式表放到页面顶部，脚本放到页面底部
-  2.  将 javascript 和 css 从外部引入。
-  3.  压缩 javascript 和 css
-  4.  删除不需要的脚本，资源按需引入，路由按需下载
-  5.  避免使用 css 表达式，减少 DOM 访问
+  1. 将样式表放到页面顶部，脚本放到页面底部
+  2. 将 javascript 和 css 从外部引入。
+  3. 压缩 javascript 和 css
+  4. 删除不需要的脚本，资源按需引入，路由按需下载
+  5. 避免使用 css 表达式，减少 DOM 访问
 
 ### 闭包
 
 - 闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，通过另一个函数访问这个函数的局部变量,利用闭包可以突破作用链域。
 - 闭包的特性：
-  1.  函数内再嵌套函数
-  2.  内部函数可以引用外层的参数和变量
-  3.  参数和变量不会被垃圾回收机制回收
+  1. 函数内再嵌套函数
+  2. 内部函数可以引用外层的参数和变量
+  3. 参数和变量不会被垃圾回收机制回收
 - 闭包的优点：
-  1.  可以避免全局变量的污染
-  2.  一个是可以读取函数内部的变量，另一个就是让这些变量始终保持在内存中
-  3.  实现封装和缓存
+  1. 可以避免全局变量的污染
+  2. 一个是可以读取函数内部的变量，另一个就是让这些变量始终保持在内存中
+  3. 实现封装和缓存
 - 闭包的缺点：
-  1.  使用不当会导致内存泄漏，不用时及时赋值为null；
-  2.  消耗内存，浪费性能
+  1. 使用不当会导致内存泄漏，不用时及时赋值为null；
+  2. 消耗内存，浪费性能
 - 使用场景：
   1. setTimeout传参
   2. 回调
@@ -2029,7 +2036,7 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 
 - 原型
   原型有两种形式：prototype 和**proto**；对应的呈现方式不同。
-  　　* prototype：是函数的一个属性，这个属性的值是一个对象。所以一切的函数都有原型，这个原型就是 prototype。
+  　　*prototype：是函数的一个属性，这个属性的值是一个对象。所以一切的函数都有原型，这个原型就是 prototype。
   　　* \_\_proto\_\_：是对象的一个属性，同样的属性值也是一个对象。
 - 原型对象
   高程：无论什么时候，只要创建了一个函数，就会根据一组特定的规则为该函数创建一个 prototype 属性，这个属性指向函数的原型对象。在默认情况下，所有的原型对象都会自动获得一个 constructor（构造函数）属性，这个属性包含一个指向 prototype 属性所在函数的指针。
@@ -2042,14 +2049,14 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   采用原型链的形式实现继承
 
       function Animal(){
-      	this.type = 'animal';
+       this.type = 'animal';
       }
       Animal.prototype.feature = function(){
-      	alert(this.type);
+       alert(this.type);
       }
       function Cat(name,color){
-      	this.name = name;
-      	this.color = color;
+       this.name = name;
+       this.color = color;
       }
       Cat.prototype = new Animal();
 
@@ -2061,22 +2068,22 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 
   缺点：
 
-  1.  在原型链继承中，包含引用类型值的原型属性会被所有实例共享，如果某一个实例更改了属性或方法，会影响到原型属性，进而影响所有的实例
-  2.  没有办法在不影响所有对象实例的情况下，给超类型（Animal）的构造函数传递参数
+  1. 在原型链继承中，包含引用类型值的原型属性会被所有实例共享，如果某一个实例更改了属性或方法，会影响到原型属性，进而影响所有的实例
+  2. 没有办法在不影响所有对象实例的情况下，给超类型（Animal）的构造函数传递参数
 
 - 借用构造函数继承
   就是在子类型构造函数的内部使用 apply() 和 call() 方法调用超类型构造函数里的属性或方法。
 
       function Animal(name){
-      	this.name = name;
-      	this.size = ["large", "small"];
+       this.name = name;
+       this.size = ["large", "small"];
       }
       Animal.prototype.say = function(){
-      	alert(this.name);
+       alert(this.name);
       }
       function Cat(name,age){
-      	Animal.call(this,name);
-      	this.age = age;
+       Animal.call(this,name);
+       this.age = age;
 
       }
       var tom = new Cat('tom',18);
@@ -2095,20 +2102,20 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   原型链继承实现对原型属性和方法的继承，借用构造函数继承实现对实例属性的继承
 
       function Animal(name){
-      	this.name = name;
-      	this.size = ["large", "small"];
+       this.name = name;
+       this.size = ["large", "small"];
       }
       Animal.prototype.say = function(){
-      	alert(this.name);
+       alert(this.name);
       }
       function Cat(name,age){
-      	Animal.call(this,name); // 调用Animal的属性
-      	this.age = age;
+       Animal.call(this,name); // 调用Animal的属性
+       this.age = age;
       }
       Cat.prototype = new Animal(name); // 调用Ainaml的原型上的方法。
       Cat.prototype.constructor = Cat;  // 保证Cat的原型上的构造器对象还是指向Cat。
       Cat.prototype.skill = function(){
-      		alert('running');
+        alert('running');
       }
       var tom = new Cat('tom',18);
       var peter = new Cat('peter',22);
@@ -2129,16 +2136,16 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   此模式就是新对象是利用原要继承的对象挂载到原型上的原理，去使用原型上的属性和方法，然后修改其属性和方法。同样如果不修改属性值，会被所有实例共享。
 
       function object(o){
-      	function F(){};
-      	F.prototype = o;
-      	return new F();
+       function F(){};
+       F.prototype = o;
+       return new F();
       } // 等价于 Oject.create()
       var peter = {
-      	name:'peter',
-      	age:18,
-      	say:function(){
-      			alert(this.name);
-      	}
+       name:'peter',
+       age:18,
+       say:function(){
+         alert(this.name);
+       }
       }
       var tom = object(peter); // var tom = Object.create(peter)
       console.log(tom);  // F {}
@@ -2153,15 +2160,15 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   即创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后返回这个对象。该继承方式最大的特点就是封装成一个函数，在内部扩展对象的属性或方法。
 
       function inherit(o){
-      	var clone = Object.create(o);  // 通过调用函数创建一个对象
-      	clone.type = 'people';    // 扩展对象属性或方法
-      	clone.say=function(){
-      			alert(this.name);
-      	}
-      	return clone;
+       var clone = Object.create(o);  // 通过调用函数创建一个对象
+       clone.type = 'people';    // 扩展对象属性或方法
+       clone.say=function(){
+         alert(this.name);
+       }
+       return clone;
       }
       var peter = {
-      		name:'peter'
+        name:'peter'
       }
       var perterSon = inherit(peter);
       console.log(perterSon.type);    // people
@@ -2173,31 +2180,31 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
   通过借用构造函数来继承属性，用原型链的混成形式来继承方法。不必为了指定子类型的原型而调用超类型的构造函数。
 
       function inheritPrototype(sub,supers){
-      	var clone = Object.create(supers.prototype);
-      	clone.constructor = sub;
-      	sub.prototype = clone;
+       var clone = Object.create(supers.prototype);
+       clone.constructor = sub;
+       sub.prototype = clone;
       }
 
   这个函数实现了三个步骤：（先传两个参数，一个子类型构造函数 sub，一个超类型构造函数 super。）
 
-  1.  创建超类型原型的一个副本。
-  2.  为创建的副本添加 constructor 属性，从而弥补重写原型而失去的默认的 constructor 属性。
-  3.  将新创建的对象（副本）赋值给子类型的原型。
+  1. 创建超类型原型的一个副本。
+  2. 为创建的副本添加 constructor 属性，从而弥补重写原型而失去的默认的 constructor 属性。
+  3. 将新创建的对象（副本）赋值给子类型的原型。
 
           function Animal(name){
-          	this.name = name;
-          	this.size = ["large", "small"];
+           this.name = name;
+           this.size = ["large", "small"];
           }
           Animal.prototype.say = function(){
-          	alert(this.name);
+           alert(this.name);
           }
           function Cat(name,age){
-          	Animal.call(this,name);
-          	this.age = age;
+           Animal.call(this,name);
+           this.age = age;
           }
           inheritPrototype(Cat,Animal);
           Cat.prototype.skill = function(){
-          	alert('running')
+           alert('running')
           }
           var tom = new Cat('tom',18);
           console.log(tom); // Cat {name: "tom", size: Array(2), age: 18}
@@ -2209,29 +2216,29 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
     vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
 
     具体实现步骤：
-    	* 当把一个普通 Javascript 对象传给 Vue 实例来作为它的 data 选项时，Vue 将遍历它的属性，用 Object.defineProperty 都加上 setter和getter 这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
-    	* compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
-    	Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是:
-    		1. 在自身实例化时往属性订阅器(dep)里面添加自己
-    		2. 自身必须有一个update()方法
-    		3. 待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
-    	* MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果
+     * 当把一个普通 Javascript 对象传给 Vue 实例来作为它的 data 选项时，Vue 将遍历它的属性，用 Object.defineProperty 都加上 setter和getter 这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
+     * compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
+     Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是:
+      1. 在自身实例化时往属性订阅器(dep)里面添加自己
+      2. 自身必须有一个update()方法
+      3. 待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
+     * MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果
 
     代码实现：
 
-    		<input id="input"/>
+      <input id="input"/>
 
-    		const data = {};
-    		const input = document.getElementById('input');
-    		Object.defineProperty(data, 'text', {
-    			set(value) {
-    				input.value = value;
-    				this.value = value;
-    			}
-    		});
-    		input.onchange = function(e) {
-    			data.text = e.target.value;
-    		}
+      const data = {};
+      const input = document.getElementById('input');
+      Object.defineProperty(data, 'text', {
+       set(value) {
+        input.value = value;
+        this.value = value;
+       }
+      });
+      input.onchange = function(e) {
+       data.text = e.target.value;
+      }
 
 ### vue2.x 中如何监测数组变化
 
@@ -2257,10 +2264,12 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
     * destroyed： 在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
   keep-alive的情况下
-  - actived
-  - deactived
+
+- actived
+- deactived
   第一次走：created=>mounted=>actived
   走了缓存后：actived
+
 ### vue 的 computed 和 watch 的区别
 
 - ① 从属性名上，computed 是计算属性，也就是依赖其它的属性计算所得出最后的值。watch 是去监听一个值的变化，然后执行相对应的函数。
@@ -2269,56 +2278,57 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 - ④watch 和 computed 并没有哪个更底层，watch 内部调用的是 vm.$watch，它们的共同之处就是每个定义的属性都单独建立了一个 Watcher 对象。
 
       function defineReactive(data, key, val, fn) {
-      		let subs = [] // 新增
-      		Object.defineProperty(data, key, {
-      				configurable: true,
-      				enumerable: true,
-      				get: function() {
-      					// 新增
-      			if (data.$target) {
-      				subs.push(data.$target)
-      			}
-      			return val
-      		},
-      		set: function(newVal) {
-      			if (newVal === val) return
-      			fn && fn(newVal)
-      			// 新增
-      			if (subs.length) {
-      				// 用 setTimeout 因为此时 this.data 还没更新
-      				setTimeout(() => {
-      					subs.forEach(sub => sub())
-      				}, 0)
-      			}
-      			val = newVal
-      		},
-      	})
+        let subs = [] // 新增
+        Object.defineProperty(data, key, {
+          configurable: true,
+          enumerable: true,
+          get: function() {
+           // 新增
+         if (data.$target) {
+          subs.push(data.$target)
+         }
+         return val
+        },
+        set: function(newVal) {
+         if (newVal === val) return
+         fn && fn(newVal)
+         // 新增
+         if (subs.length) {
+          // 用 setTimeout 因为此时 this.data 还没更新
+          setTimeout(() => {
+           subs.forEach(sub => sub())
+          }, 0)
+         }
+         val = newVal
+        },
+       })
       }
       function computed(ctx, obj) {
-      	let keys = Object.keys(obj)
-      	let dataKeys = Object.keys(ctx.data)
-      	dataKeys.forEach(dataKey => {
-      		defineReactive(ctx.data, dataKey, ctx.data[dataKey])
-      	})
-      	let firstComputedObj = keys.reduce((prev, next) => {
-      		ctx.data.$target = function() {
-      			ctx.setData({ [next]: obj[next].call(ctx) })
-      		}
-      		prev[next] = obj[next].call(ctx)
-      		ctx.data.$target = null
-      		return prev
-      	}, {})
-      	ctx.setData(firstComputedObj)
+       let keys = Object.keys(obj)
+       let dataKeys = Object.keys(ctx.data)
+       dataKeys.forEach(dataKey => {
+        defineReactive(ctx.data, dataKey, ctx.data[dataKey])
+       })
+       let firstComputedObj = keys.reduce((prev, next) => {
+        ctx.data.$target = function() {
+         ctx.setData({ [next]: obj[next].call(ctx) })
+        }
+        prev[next] = obj[next].call(ctx)
+        ctx.data.$target = null
+        return prev
+       }, {})
+       ctx.setData(firstComputedObj)
       }
       function watch(ctx, obj) {
-      	Object.keys(obj).forEach(key => {
-      		defineReactive(ctx.data, key, ctx.data[key], function(value) {
-      			obj[key].call(ctx, value)
-      		})
-      	})
+       Object.keys(obj).forEach(key => {
+        defineReactive(ctx.data, key, ctx.data[key], function(value) {
+         obj[key].call(ctx, value)
+        })
+       })
       }
 
 ### vue 的路由模式
+
 - hash
   - 带#
   - window.localtion.hash获取
@@ -2333,15 +2343,15 @@ js 是个单线程，主要任务是为了处理用户的交互，一次事件�
 ### vue 的路由钩子(守卫)
 
 - 全局守卫
-  1.  router.beforeEach 全局前置守卫 进入路由之前
-  2.  router.beforeResolve 全局解析守卫(2.5.0+) 在 beforeRouteEnter 调用之后调用
-  3.  router.afterEach 全局后置钩子 进入路由之后
+  1. router.beforeEach 全局前置守卫 进入路由之前
+  2. router.beforeResolve 全局解析守卫(2.5.0+) 在 beforeRouteEnter 调用之后调用
+  3. router.afterEach 全局后置钩子 进入路由之后
 - 路由独享守卫
-  1.  beforeEnter 与全局前置守卫的方式一样，只不过只运用与一个路由
+  1. beforeEnter 与全局前置守卫的方式一样，只不过只运用与一个路由
 - 路由组建内守卫
-  1.  beforeRouteEnter 进入路由前, 在路由独享守卫后调用 不能 获取组件实例 this，组件实例还没被创建
-  2.  beforeRouteUpdate (2.2) 路由复用同一个组件时, 在当前路由改变，但是该组件被复用时调用 可以访问组件实例 this
-  3.  beforeRouteLeave 离开当前路由时, 导航离开该组件的对应路由时调用，可以访问组件实例 this
+  1. beforeRouteEnter 进入路由前, 在路由独享守卫后调用 不能 获取组件实例 this，组件实例还没被创建
+  2. beforeRouteUpdate (2.2) 路由复用同一个组件时, 在当前路由改变，但是该组件被复用时调用 可以访问组件实例 this
+  3. beforeRouteLeave 离开当前路由时, 导航离开该组件的对应路由时调用，可以访问组件实例 this
 
 ### vue 的组件传值
 
@@ -2405,7 +2415,7 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
 ### 安全
 
 - xss
-  1.  XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
+  1. XSS(Cross-Site Scripting，跨站脚本攻击)是一种代码注入攻击。攻击者在目标网站上注入恶意代码，当被攻击者登陆网站时就会执行这些恶意代码，这些脚本可以读取 cookie，session tokens，或者其它敏感的网站信息，对用户进行钓鱼欺诈，甚至发起蠕虫攻击等
       - 存储型 xss（常见于带有用户保存数据的网站功能，如论坛发帖、商品评论、用户私信等）
         1. 攻击者将恶意代码提交到目标网站的数据库中。
         2. 用户打开目标网站时，网站服务端将恶意代码从数据库取出，拼接在 HTML 中返回给浏览器。
@@ -2421,15 +2431,15 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
         - 用户打开带有恶意代码的 URL。
         - 用户浏览器接收到响应后解析执行，前端 JavaScript 取出 URL 中的恶意代码并执行。
         - 恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作
-  2.  预防措施
+  2. 预防措施
       - 转义字符过滤 html 代码
       - 过滤 SQL 代码
       - http-only
       - 前端能少使用innerhtml等，多使用createElement等
       - 采用验证码
 - CSRF
-  1.  CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的
-  2.  预防措施
+  1. CSRF（Cross-site request forgery）跨站请求伪造：攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的
+  2. 预防措施
       - 验证 HTTP Referer 字段
       - token
       - Get 请求不对数据进行修改
@@ -2486,34 +2496,34 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
 
 ### i++与++i 的区别
 
-    	var i = 1,j = 1;
-    	var _i = ++i;
-    	var _j = j++;
-    	console.log('前置 ','i',i,'_i',_i); // 前置  i 2 _i 2
-    	console.log('后置 ','j',j,'_j',_j); 后置  j 2 _j 1
+     var i = 1,j = 1;
+     var _i = ++i;
+     var _j = j++;
+     console.log('前置 ','i',i,'_i',_i); // 前置  i 2 _i 2
+     console.log('后置 ','j',j,'_j',_j); 后置  j 2 _j 1
 
 ### request 和 response 返回的 header 有哪些
 
 - 请求(客户端->服务端\[request])
-  1. Accept: _/_(客户端能接收的资源类型)
+  1. Accept: */*(客户端能接收的资源类型)
   2. Accept-Language: en-us(客户端接收的语言类型)
   3. Connection: Keep-Alive(维护客户端和服务端的连接关系)
   4. Host: localhost:8080(连接的目标主机和端口号)
-  5. Referer: http://localhost/links.asp(告诉服务器我来自于哪里)
+  5. Referer: <http://localhost/links.asp(告诉服务器我来自于哪里)>
   6. User-Agent: Mozilla/4.0(客户端版本号的名字)
   7. Accept-Encoding: gzip, deflate(客户端能接收的压缩数据的类型)
   8. If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT(缓存时间)
   9. Cookie(客户端暂存服务端的信息) xxxxx
 - 响应(服务端->客户端\[response])
   1. HTTP/1.1(响应采用的协议和版本号) 200(状态码) OK(描述信息)
-  2. Location:http://www.baidu.com(服务端需要客户端访问的页面路径)
+  2. Location:<http://www.baidu.com(服务端需要客户端访问的页面路径)>
   3. Server:apache tomcat(服务端的 Web 服务端名)
   4. Content-Encoding:gzip(服务端能够发送压缩编码类型)
   5. Content-Length: 80(服务端发送的压缩数据的长度)
   6. Content-Language: zh-cn(服务端发送的语言类型)
   7. Content-Type:text/html; charset=GB2312(服务端发送的类型及采用的编码方式)
   8. Last-Modified:Tue, 11 Jul 2000 18:23:51 GMT(服务端对该资源最后修改的时间)
-  9. Refresh: 1;url=http://www.it315.org(服务端要求客户端1秒钟后，刷新，然后访问指定的页面路径)
+  9. Refresh: 1;url=<http://www.it315.org(服务端要求客户端1秒钟后，刷新，然后访问指定的页面路径)>
   10. Content-Disposition: attachment;filename=aaa.zip(服务端要求客户端以下载文件的方式打开该文件)
   11. Transfer-Encoding:chunked(分块传递数据到客户端）
   12. Set-Cookie:SS=Q0=5Lb_nQ; path=/search(服务端发送到客户端的暂存数据)
@@ -2584,21 +2594,21 @@ JS 代码调用 DOM API 必须 挂起 JS 引擎、转换传入参数数据、激
 
 ```javascript
 <body>
-	<div onclick="clickFunc(event)" style="text-align:center;margin:15px;border:1px solid red;border-radius:3px;">
-		<div style="margin: 25px; border:1px solid royalblue;border-radius:3px;">
-			<div style="margin:25px;border:1px solid skyblue;border-radius:3px;">
-				<button style="margin:10px">
-					Button
-				</button>
-			</div>
-		</div>
-	</div>
-	<script>
-		function clickFunc(event) {
-			console.log(event.target);
-			console.log(event.currentTarget);
-		}
-	</script>
+ <div onclick="clickFunc(event)" style="text-align:center;margin:15px;border:1px solid red;border-radius:3px;">
+  <div style="margin: 25px; border:1px solid royalblue;border-radius:3px;">
+   <div style="margin:25px;border:1px solid skyblue;border-radius:3px;">
+    <button style="margin:10px">
+     Button
+    </button>
+   </div>
+  </div>
+ </div>
+ <script>
+  function clickFunc(event) {
+   console.log(event.target);
+   console.log(event.currentTarget);
+  }
+ </script>
 </body>
 ```
 
@@ -2639,6 +2649,7 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 ```
 
 ### react vs vue
+
 - 共同点
   1. 数据驱动视图
   2. 组件化
@@ -2646,34 +2657,34 @@ person.profession.name = "doctor"; // TypeError: Cannot assign to read only prop
 
 - 不同点
   1. 核心思想不同
-    - vue：灵活易用的渐进式框架，进行数据拦截/代理，它对侦测数据的变化更敏感、更精确。
-    - react：推崇函数式编程（纯组件），数据不可变以及单向数据流。（虽然可以双向，使用setState）
+  - vue：灵活易用的渐进式框架，进行数据拦截/代理，它对侦测数据的变化更敏感、更精确。
+  - react：推崇函数式编程（纯组件），数据不可变以及单向数据流。（虽然可以双向，使用setState）
   2. 组件写法差异
-    - Vue 推荐的做法是 template 的单文件组件格式(简单易懂，从传统前端转过来易于理解),即 html,css,JS 写在同一个文件(vue也支持JSX写法)
-    - React推荐的做法是JSX + inline style, 也就是把 HTML 和 CSS 全都写进 JavaScript 中,即 all in js; 
+  - Vue 推荐的做法是 template 的单文件组件格式(简单易懂，从传统前端转过来易于理解),即 html,css,JS 写在同一个文件(vue也支持JSX写法)
+  - React推荐的做法是JSX + inline style, 也就是把 HTML 和 CSS 全都写进 JavaScript 中,即 all in js;
   3. diff算法不同
-    - Vue：updateChildren是vue diff的核心, 过程可以概括为：
-      - 旧children和新children各有两个头尾的变量StartIdx和EndIdx，它们的2个变量相互比较，一共有4种比较方式。
-      - 如果4种比较都没匹配，如果设置了key，就会用key进行比较，在比较的过程中，变量会往中间靠，一旦StartIdx>EndIdx表明旧children和新children至少有一个已经遍历完了，就会结束比较。
-    - react首先对新集合进行遍历，for( name in nextChildren)。
-      - 通过唯一key来判断老集合中是否存在相同的节点。如果没有的话创建
-      - 如果有的话，if (preChild === nextChild )
-        - 会将节点在新集合中的位置和在老集合中lastIndex进行比较
-        - 如果if (child._mountIndex < lastIndex) 进行移动操作，否则不进行移动操作。
-      - 如果遍历的过程中，发现在新集合中没有，但在老集合中有的节点，会进行删除操作。
+  - Vue：updateChildren是vue diff的核心, 过程可以概括为：
+    - 旧children和新children各有两个头尾的变量StartIdx和EndIdx，它们的2个变量相互比较，一共有4种比较方式。
+    - 如果4种比较都没匹配，如果设置了key，就会用key进行比较，在比较的过程中，变量会往中间靠，一旦StartIdx>EndIdx表明旧children和新children至少有一个已经遍历完了，就会结束比较。
+  - react首先对新集合进行遍历，for( name in nextChildren)。
+    - 通过唯一key来判断老集合中是否存在相同的节点。如果没有的话创建
+    - 如果有的话，if (preChild === nextChild )
+      - 会将节点在新集合中的位置和在老集合中lastIndex进行比较
+      - 如果if (child._mountIndex < lastIndex) 进行移动操作，否则不进行移动操作。
+    - 如果遍历的过程中，发现在新集合中没有，但在老集合中有的节点，会进行删除操作。
   4. 响应式原理不同
-    - Vue：
+  - Vue：
       1. Vue依赖收集，自动优化，数据可变。
       2. Vue递归监听data的所有属性,直接修改。
       3. 当数据改变时，自动找到引用组件重新渲染。
-    - React基于状态机，手动优化，数据不可变，需要setState驱动新的state替换老的state。当数据改变时，以组件为根目录，默认全部重新渲染, 所以 React 中会需要 shouldComponentUpdate 这个生命周期函数方法来进行控制
+  - React基于状态机，手动优化，数据不可变，需要setState驱动新的state替换老的state。当数据改变时，以组件为根目录，默认全部重新渲染, 所以 React 中会需要 shouldComponentUpdate 这个生命周期函数方法来进行控制
 
 ### webpack
+
 - entry
 - output
 - loader
 - plugin
-
 
 - 作用
   - 模块打包
@@ -2693,13 +2704,16 @@ console.log(b.x); // {n:2}
 ```
 
 ### Async/Await 如何通过同步的方式实现异步？
+
 async/await 是参照 Generator 封装的一套异步处理方案，可以理解为 Generator 的语法糖,通过 generator 的自执行函数，来达到同步的方式。（关键字：单线程，promise，generator，iterator，单向链表）
 
 ### promise和async-await的区别
+
 - promise 是异步编程的解决方案，减少了代码量，提高了代码的可读性，有效的解决了异步的回调地狱的情况，可以链式调用。
 - async的用法，就是作为一个关键字放在函数名前面，调用该函数时会返回一个promise对象，可以使用then回调来返回，当遇到await的时候就先返回，等待异步操作完成，在实行后面的语句。async-await实际上是生成器generator的语法糖，async可以理解为星号，await为yield返回而已。
 
 ### vue3 新特性
+
 - ref() recieve() toRefs()
 - setup(props,context) { ... return {}}
 - fragement
@@ -2707,16 +2721,19 @@ async/await 是参照 Generator 封装的一套异步处理方案，可以理解
 - watch/watchEffect
 
 ### vue2和vue3的diff算法区别
+
 - vue2 是生成一个虚拟的dom树，每当数据发生变化，他都会找到不同的节点进行更新，是全量比较，但有的节点是不会发生变化的，但是还是会比较，因此浪费时间，消耗性能。
 - vue3 每次生成虚拟dom树的时候，会根据dom是否发生变化添加一个静态标记，所以在比较的时候会根据标记去比较。
 
 静态提升
+
 - vue2无论元素是否更新，每次都会创建，再渲染
 - vue3使用静态提升后，下次更新不会再次创建而是只创建一次之后复用
 
 事件侦听器缓存 cacheHandlers
 
 ### 写一个方法，求一个数组长度m,值是n
+
 ```javascript
 function fn(m,n){
   var arr = [];
@@ -2726,11 +2743,13 @@ function fn(m,n){
   return arr;
 }
 ```
+
 ```javascript
 function fn(m,n){
   return Array(n).fill(m);
 }
 ```
+
 ```javascript
 function fn(m,n){
   return Array(n).join(',').split(',').map(()=>{
@@ -2738,6 +2757,7 @@ function fn(m,n){
   })
 }
 ```
+
 ```javascript
 function fn(m,n){
   var arr = [];
@@ -2753,6 +2773,7 @@ function fn(m,n){
 ```
 
 ### es6的新特性
+
 - let/const
 - symbol
 - 解构赋值
@@ -2767,7 +2788,8 @@ function fn(m,n){
 - Object.assign/Object.entries/Object.keys/Object.values
 
 ### Map与WeakMap的区别
-- Map 
+
+- Map
   - Map键值对的集合，键可以是多个类型。
   - 会计入gc
 - WeakMap
@@ -2777,6 +2799,7 @@ function fn(m,n){
 weakSet只能接受对象，set类似于数组一样。
 
 ### webpack的魔法注释
+
 主要为了实现懒下载，在打包的时候会根据chunkName来打成一个块的文件，这样就达到了分割的效果，实现了按需下载。
 
 ### 手写ajax
@@ -2797,21 +2820,26 @@ xhr.onreadyStateChange = function(){
 ```
 
 ### 307/308
+
 - 307
 307 的定义实际上和 302 是一致的，唯一的区别在于，307 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
 - 308
 308 的定义实际上和 301 是一致的，唯一的区别在于，308 状态码不允许浏览器将原本为 POST 的请求重定向到 GET 请求上。
 
 ### BFC
+
 一个独立的区域，外部影响不了内部。
 浮动元素和绝对定位素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）
-* BFC触发条件
-  * 根元素
-  * 浮动元素：float 不为none的属性值
-  * 绝对定位元素：position (absolute、fixed)
-  * display为： inline-block、table-cells、flex
-  * overflow 除了visible以外的值 (hidden、auto、scroll)
+
+- BFC触发条件
+  - 根元素
+  - 浮动元素：float 不为none的属性值
+  - 绝对定位元素：position (absolute、fixed)
+  - display为： inline-block、table-cells、flex
+  - overflow 除了visible以外的值 (hidden、auto、scroll)
+
 ### 清除浮动
+
 - 兄弟之间 添加额外标签
   - clear:both
   - 缺点：增加额外的不必要的标签
@@ -2827,6 +2855,7 @@ xhr.onreadyStateChange = function(){
       zoom:1;// 触发haslayout
 
 ### 伪类/伪元素
+
 - 伪类
   伪类用于当已有元素处于的某个状态时，为其添加对应的样式
 - 伪元素
@@ -2837,15 +2866,17 @@ xhr.onreadyStateChange = function(){
   - ::first-line 该伪元素向文本的首行添加特殊样式
 
 ### position
-  - static 静态定位的元素不受 top、bottom、left 和 right 属性的影响,正常流
-  - relative 相对定位，受top、bottom、left 和 right 属性的影响，不会脱离文档流
-  - absolute 绝对定位，元素相对于最近的定位祖先（除 static 以外的任何元素）进行定位。如果绝对定位的元素没有祖先，它将使用文档主体（body），并随页面滚动一起移动
-  - fixed 相对于视口定位的，这意味着即使滚动页面，它也始终位于同一位置
-  - sticky 粘性定位，结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景
-    - 元素先按照普通文档流定位，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位。而后，元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
-    - 这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同
+
+- static 静态定位的元素不受 top、bottom、left 和 right 属性的影响,正常流
+- relative 相对定位，受top、bottom、left 和 right 属性的影响，不会脱离文档流
+- absolute 绝对定位，元素相对于最近的定位祖先（除 static 以外的任何元素）进行定位。如果绝对定位的元素没有祖先，它将使用文档主体（body），并随页面滚动一起移动
+- fixed 相对于视口定位的，这意味着即使滚动页面，它也始终位于同一位置
+- sticky 粘性定位，结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景
+  - 元素先按照普通文档流定位，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位。而后，元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
+  - 这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同
 
 ### 有没有看过vue源码？
+
 - nextTick
   - 能力检测(是否支持promise，MutationObserver，setImmediate,setTimeout)
   - 将传入cb压入callbacks数组中，同时接受第一个回调函数时执行能力检测，遍历数组，调用相应的回调函数。
@@ -2863,10 +2894,12 @@ xhr.onreadyStateChange = function(){
   - Watcher
 
 ### 置换元素/非置换元素
-* 置换元素
-  1. 一个内容 不受CSS视觉格式化模型控制，CSS渲染模型并不考虑对此内容的渲染，且元素本身一般拥有固有尺寸（宽度，高度，宽高比）的元素，被称之为置换元素。 
-  2. 置换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。 
-  3. 例如浏览器会根据img标签的src属性的值来读取图片信息并显示出来，而如果查看(X)HTML代码，则看不到图片的实际内容；又例如根据input标签的type属性来决定是显示输入框，还是单选按钮等。 
+
+- 置换元素
+  1. 一个内容 不受CSS视觉格式化模型控制，CSS渲染模型并不考虑对此内容的渲染，且元素本身一般拥有固有尺寸（宽度，高度，宽高比）的元素，被称之为置换元素。
+  2. 置换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。
+  3. 例如浏览器会根据img标签的src属性的值来读取图片信息并显示出来，而如果查看(X)HTML代码，则看不到图片的实际内容；又例如根据input标签的type属性来决定是显示输入框，还是单选按钮等。
   4. HTML中的img、input、textarea、select、object都是置换元素。这些元素往往没有实际的内容，即是一个空元素。
-* 非置换元素
+
+- 非置换元素
   HTML 的大多数元素是不可替换元素，即其内容直接表现给用户端（例如浏览器\<\span> hello world </\span>)
