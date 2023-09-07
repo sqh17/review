@@ -642,7 +642,7 @@
       3. 对源对象操作的方法：I. ondragstart（用户开始拖动元素时触发）II.<font color='purple'> ondrag（ 元素正在拖动时触发）</font>III. ondragend （用户完成元素拖动后触发）
       4. 放置目标对象的方法：I. ondragenter （当被鼠标拖动的对象进入其容器范围内时触发此事件）II. ondragover (当某被拖动的对象在另一对象容器范围内拖动时触发此事件) III. ondragleave (当被鼠标拖动的对象离开其容器范围内时触发此事件) IIII <font color="purple">ondrop (在一个拖动过程中，释放鼠标键时触发此事件)</font>
       5. 通过 ev.dataTransfer.getData("Text") 方法获得被拖的数据。该方法将返回在 ev.dataTransfer.setData("Text",xxx)方法中设置为相同类型的任何数据。
-      6. 例子参考 'https://www.runoob.com/html/html5-draganddrop.html'
+      6. 例子参考 '<https://www.runoob.com/html/html5-draganddrop.html>'
 
     - Geolocation 地理定位  
       用于定位用户的位置
@@ -1305,11 +1305,11 @@
 document type（文档类型）的简写，doctype 是一种标准通用标记语言的文档类型声明，目的是告诉浏览器要使用什么样的文档类型定义(DTD)来解析文档。XHTML1.0 提供了三种 DTD 声明可供选择，分别是：strict（严格模式）,frameset（框架模式）,tranisitional（混杂模式）  
 doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中省略了 doctype，浏览器会进入到混杂模式的状态也称之为兼容模式。在这种模式下有些样式，布局会和标准模式（或称严格模式）存在差异。标准，DOM 标准只规定了标准模式下的行为，没有对兼容模式做出规定，因此不同浏览器在兼容模式下的处理也是不同的，应用兼容模式比较困难，所以需要慎用。
 过渡的(Transitional，也叫混杂模式)：要求比较宽松，允许继续使用 HTML4.01 的标识  
-完整声明为 \<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-tranisitional.dtd"\> '
+完整声明为 \<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "<http://www.w3.org/TR/xhtml1/DTD/xhtml1-tranisitional.dtd"\>> '
 严格的(Strict)：要求严格的 DTD，不能使用任何表现层的标识和属性  
-完整声明为\<!DOCTYPE html PUBLIC "-W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"\>  
+完整声明为\<!DOCTYPE html PUBLIC "-W3C//DTD XHTML 1.0 Strict//EN" "<http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"\>>  
 框架的(Frameset)：专门针对框架页面设计使用的 DTD，如果页面中包含有框架，可以采用 DTD  
-完整声明为\<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"\>
+完整声明为\<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "<http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"\>>
 
 ### meta 的作用，包含什么？
 
@@ -1341,7 +1341,7 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
   C、Refresh(刷新)  
   说明：自动刷新并指向新页面。  
-  用法：\<meta http-equiv="Refresh" content="2；URL=http://www.root.net"\>  
+  用法：\<meta http-equiv="Refresh" content="2；URL=<http://www.root.net"\>>  
   注意：其中的 2 是指停留 2 秒钟后自动刷新到 URL 网址。
 
   D、Set-Cookie(cookie 设定)  
@@ -1377,7 +1377,7 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
   举例：\<meta name="robots" content="none"\>
   D、author(作者)  
   说明：标注网页的作者  
-  举例：\<meta name="author" content="sqh17@foxmail.com"\>
+  举例：\<meta name="author" content="<sqh17@foxmail.com>"\>
 
 ### es5 实现 let
 
@@ -2875,7 +2875,7 @@ xhr.onreadyStateChange = function(){
   - 元素先按照普通文档流定位，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位。而后，元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
   - 这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同
 
-### 有没有看过vue源码？
+### 有没有看过vue2源码？
 
 - nextTick
   - 能力检测(是否支持promise，MutationObserver，setImmediate,setTimeout)
@@ -2903,3 +2903,75 @@ xhr.onreadyStateChange = function(){
 
 - 非置换元素
   HTML 的大多数元素是不可替换元素，即其内容直接表现给用户端（例如浏览器\<\span> hello world </\span>)
+
+### 最长递增子序列
+
+- 解法1-动态规划
+
+```javascript
+var lengthOfLIS = function(nums) {
+    if(nums.length<=0) return 0
+    let dp = new Array(nums.length).fill(1)
+    for (let i = 0; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1)
+            }
+        }
+    }
+    return Math.max(...dp)
+};
+```
+
+- 解法2-贪心+二分查找
+
+```javascript
+function getSequence(arr) {
+  const len = arr.length
+  const min_arr = [0] // 存储最小的索引，以索引0为基准
+  const prev_arr = arr.slice() // 储存前面的索引，slice为浅复制一个新的数组
+  let last_index
+  let start
+  let end
+  let middle
+  for (let i = 0; i < len; i++) {
+    let arrI = arr[i]
+    // 1. 如果当前n比min_arr最后一项大
+    last_index = min_arr[min_arr.length - 1]
+    if (arr[last_index] < arrI) {
+      min_arr.push(i)
+      prev_arr[i] = last_index // 前面的索引
+      continue
+    }
+    // 2. 如果当前n比min_arr最后一项小（二分类查找）
+    start = 0
+    end = min_arr.length - 1
+    while(start < end) {
+      middle = (start + end) >> 1 // 相当于Math.floor((start + end)/2)
+      if (arr[min_arr[middle]] < arrI) {
+        start = middle + 1
+      } else  {
+        end = middle
+      }
+    }
+    if (arr[min_arr[end]] > arrI) {
+      min_arr[end] = i
+      if (end > 0) {
+        prev_arr[i] = min_arr[end - 1] // 前面的索引
+      }
+    }
+  }
+
+  // 从最后一项往前查找
+  let result = []
+  let i = min_arr.length
+  let last = min_arr[i - 1]
+  while(i-- > 0) {
+    result[i] = last
+    last = prev_arr[last]
+  }
+
+  return result.length
+}
+
+```
