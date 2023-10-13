@@ -170,6 +170,7 @@
 3. call，apply 的 this：指向调用该方法的对象
 4. 箭头函数的 this：在箭头函数里面，没有 this ，箭头函数里面的 this 是继承外面的环境
 5. 构造函数的 this： 指向 new 之后的对象。
+6. bind函数可以将根据一个函数生成一个新的函数，并且该函数的this绑定到指定的对象上（新生成的函数绑定了固定的this，再次bind生成的函数不会重新绑定this，很类似箭头函数，不过二者存在很大不同）
 
     请看下面的例子给出答案
 
@@ -271,11 +272,11 @@
 - 箭头函数常用于回调函数中，包括事件处理器或定时器
 - 箭头函数和 var self = this，都试图取代传统的 this 运行机制，将 this 的绑定拉回到词法作用域
 - 特性
-  - 没有原型
+  - 没有原型，因为他设计的初衷就是把this的指向拉回当前外层的作用域，继承外部的原型链
   - 没有 super
   - 没有 this
     this 绑定的就是最近一层非箭头函数的 this
-  - 没有 arguments
+  - 没有 arguments,因为它是继承了外部作用域的上下文，可以直接访问外部作用域
     可以通过 rest 参数的形式访问参数
   - 不能通过 new 关键字调用 - 一个函数内部有两个方法：[\[Call]] 和 [\[Construct]]，在通过 new 进行函数调用时，会执行 [\[construct]] 方法，创建一个实例对象，然后再执行这个函数体，将函数的 this 绑定在这个实例对象上
     当直接调用时，执行 [\[Call]] 方法，直接执行函数体 - 箭头函数没有 [\[Construct]] 方法，不能被用作构造函数调用，当使用 new 进行函数调用时会报错。
@@ -284,19 +285,32 @@
 ### new 实现了哪些步骤？(=>二)
 
 1. 创建一个新对象，
-2. 将构造函数的作用域赋给新对象（this 指向新对象)。
-3. 执行构造函数的代码（为新对象添加属性或方法)。
-4. 返回新的对象。
+2. 将新创建的对象的原型（proto）指向构造函数的prototype属性。
+3. 将构造函数的this指向新创建的对象。
+4. 执行构造函数的代码，初始化新对象的属性和方法
+5. 如果构造函数返回一个对象，则返回该对象；否则，返回新创建的对象。
 
-        function _new(Fn){
-         let obj = {}
-         var arg = Array.prototype.slice.call(arguments, 1); // 将类数组转化为数组，调用数组的方法，等价于 下面的写法
-         // var arg = Array.prototype.slice.call(argument);arg.shift()
-         obj.__proto__ = Fn.prototype; // 将obj的原型链__proto__指向构造函数的原型prototype
-         obj.__proto__.constructor = Fn; // 在原型链 __proto__上设置构造函数的构造器constructor，为了实例化Fn
-         Fn.apply(obj, arg); // 执行Fn，并将构造函数Fn执行obj
-         return obj; // 返回结果
-        }
+源码简单实现：
+
+  ```javascript
+  function _new(Fn){
+    let obj = {}
+    var arg = Array.prototype.slice.call(arguments, 1); // 将类数组转化为数组，调用数组的方法，等价于 下面的写法
+    // var arg = Array.prototype.slice.call(argument);arg.shift()
+    obj.__proto__ = Fn.prototype; // 将obj的原型链__proto__指向构造函数的原型prototype
+    obj.__proto__.constructor = Fn; // 在原型链 __proto__上设置构造函数的构造器constructor，为了实例化Fn
+    Fn.apply(obj, arg); // 执行Fn，并将构造函数Fn执行obj
+    return obj; // 返回结果
+  }
+  ```
+
+  ```javascript
+  function _new(constructor, ...args){
+    let obj = Object.create(constructor.prototype) // 创建一个新的空对象，将其原型指向构造函数的prototype属性
+    const res = constructor.apply(obj, args) // 将构造函数的this指向新对象，并执行构造函数
+    return res !== null && typeof res === 'object' ? res : obj // 如果构造函数返回一个对象，则返回该对象；否则返回新创建的对象
+  }
+  ```
 
 ### call 和 apply 的定义和区别？(=>二)
 
@@ -771,27 +785,27 @@
 - 防抖  
   就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
 
-      ```javascript
-      function debounce(func, wait) {
-       let timeout;
-       return function () {
+    ```javascript
+    function debounce(func, wait) {
+      let timeout;
+      return function () {
         if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {
-         func.apply(this, arguments)
+          func.apply(this, arguments)
         }, wait);
-       }
       }
+    }
 
-      // 用debounce来包装scroll的回调
-      const better_scroll = debounce(() => console.log('触发了滚动事件'), 1000)
-      document.addEventListener('click', better_scroll)
-      ```
+    // 用debounce来包装scroll的回调
+    const better_scroll = debounce(() => console.log('触发了滚动事件'), 1000)
+    document.addEventListener('click', better_scroll)
+    ```
 
-      适用场景：
+    适用场景：
 
-      1. 搜索框输入查询
-      2. 按钮提交事件
-      3. 浏览器窗口缩放，resize事件(如窗口停止改变大小之后重新计算布局)等
+    1. 搜索框输入查询
+    2. 按钮提交事件
+    3. 浏览器窗口缩放，resize事件(如窗口停止改变大小之后重新计算布局)等
 
 - 防抖+立即执行
 
@@ -828,40 +842,42 @@
 - 节流  
   节流函数的作用是规定一个单位时间，在这个单位时间内最多只能触发一次函数执行，如果这个单位时间内多次触发函数，只能有一次生效。
 
-       // 时间戳方式
-       function throttle(func, wait) {
-        let previous = 0;
-        return function() {
-         let now = Date.now();
-         if (now - previous > wait) {
-           func.apply(this, arguments);
-           previous = now;
-         }
+    ```javascript
+    // 时间戳方式
+    function throttle(func, wait) {
+      let previous = 0;
+      return function() {
+        let now = Date.now();
+        if (now - previous > wait) {
+          func.apply(this, arguments);
+          previous = now;
         }
-       }
+      }
+    }
 
-       // 定时器方式
-       function throttle(func,wait){
-        let timer;
-        return function(){
-         if(!timer){
+    // 定时器方式
+    function throttle(func,wait){
+      let timer;
+      return function(){
+        if(!timer){
           timer = setTimeout(()=>{
-           func.apply(this,arguments);
-           timer = null;
+            func.apply(this,arguments);
+            timer = null;
           },wait)
-         }
         }
-       }
+      }
+    }
 
-       // 用throttle来包装scroll的回调
-       const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-       document.addEventListener('scroll', better_scroll)
+    // 用throttle来包装scroll的回调
+    const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+    document.addEventListener('scroll', better_scroll)
+    ```
 
-      适用场景
-      1. 按钮点击事件
-      2. 拖拽事件
-      3. onscroll
-      4. 计算鼠标移动的距离(mousemove)
+    适用场景
+    1. 按钮点击事件
+    2. 拖拽事件
+    3. onscroll
+    4. 计算鼠标移动的距离(mousemove)
 
 - throttle+立即执行
 
@@ -944,7 +960,7 @@
     };
   }
   // 用新的throttle包装scroll的回调
-  const better_scroll = throttle(() => console.log("触发了滚动事件"), 1000);
+  const better_scroll = throttleDebounce(() => console.log("触发了滚动事件"), 1000);
   document.addEventListener("scroll", better_scroll);
   ```
 
@@ -1005,46 +1021,50 @@
 
     - 方法一
 
-          function deepClone(obj){
-           if(obj instanceof RegExp) return new RegExp(obj);
-           if(obj instanceof Date) return new Date(obj);
-           let objClone = Array.isArray(obj)?[]:{};
-           if(obj && typeof obj==="object"){
-             for(key in obj){
-               if(obj.hasOwnProperty(key)){
-               //判断ojb子元素是否为对象，如果是，递归复制
-                 if(obj[key]&&typeof obj[key] ==="object"){
-                   objClone[key] = deepClone(obj[key]);
-                 }else{
-                   //如果不是，简单复制
-                   objClone[key] = obj[key];
-                 }
-               }
-             }
-           }
-           return objClone;
+      ```javascript
+      function deepClone(obj){
+        if(obj instanceof RegExp) return new RegExp(obj);
+        if(obj instanceof Date) return new Date(obj);
+        let objClone = Array.isArray(obj)?[]:{};
+        if(obj && typeof obj==="object"){
+          for(key in obj){
+            if(obj.hasOwnProperty(key)){
+            //判断ojb子元素是否为对象，如果是，递归复制
+              if(obj[key]&&typeof obj[key] ==="object"){
+                objClone[key] = deepClone(obj[key]);
+              }else{
+                //如果不是，简单复制
+                objClone[key] = obj[key];
+              }
+            }
           }
+        }
+        return objClone;
+      }
+      ```
 
     - 方法二
 
-          function deepClone(obj,hash = new WeakMap()){
-           if(obj instanceof RegExp) return new RegExp(obj);
-           if(obj instanceof Date) return new Date(obj);
-           if(obj == null || typeof obj !== 'object'){
-            return obj;// 如果不是复杂数据类型直接返回obj
-           }
-           if(hash.has(obj)){
-            return hash.get(obj);
-           }
-           let t = new obj.constructor();
-           hash.set(obj,t);
-           for(let key in obj){
-            if(obj.hasOwnProperty(key)){
-             t[key] = deepClone(obj[key],hash)
-            }
-           }
-           return t;
-          }
+      ```javascript
+      function deepClone(obj,hash = new WeakMap()){
+        if(obj instanceof RegExp) return new RegExp(obj);
+        if(obj instanceof Date) return new Date(obj);
+        if(obj == null || typeof obj !== 'object'){
+        return obj;// 如果不是复杂数据类型直接返回obj
+        }
+        if(hash.has(obj)){
+        return hash.get(obj);
+        }
+        let t = new obj.constructor();
+        hash.set(obj,t);
+        for(let key in obj){
+        if(obj.hasOwnProperty(key)){
+          t[key] = deepClone(obj[key],hash)
+        }
+        }
+        return t;
+      }
+      ```
 
 ### 从浏览器地址栏输入 url 到显示页面的步骤
 
@@ -1055,7 +1075,7 @@
 5. 浏览器拿到完整的 html 页面代码，解析 HTML 文档，构建 DOM 树，下载资源，构造 CSSOM 树，执行 js 脚本，这些操作没有严格的先后顺序
 6. 浏览器根据拿到的资源对页面进行渲染，把一个完整的页面呈现出来
 
-首先，会在本地检查是否有缓存资源，若有，直接读取缓存资源，若没有，那么直接进到网络请求进程，第一步需要进行 DNS 解析，将域名解析成 ip 地址，如果请求协议是 https，那么还需要建立 SSL/TSL 链接。ip 地址和服务器通过三次握手建立 TCP 通道，浏览器会构建请求体，请求头，以及和该域名相关的 cookie 等数据附加到请求头重，然后向服务器发起构建亲故，数据在进入服务端之前，可能会进入到负载均衡的服务器，该作用就是向请求分发到多台服务器上，以便快速响应。之后服务端就返回一个 html 文件，其次，浏览器会判断状态码是什么，若是 4 开头的或 5 开头的，就报错，若是 200 则继续进行，若是 301 则重定向，浏览器就开始解析文件，如果是 GZIP 格式，则先解压一下，通过文件的编码格式解码文件。文件解码之后，会开始渲染，将 html 文件构建成 dom 树，若有 css 文件，则进行 cssom 树，若遇到 js 文件，先判断是否有 async 和 defer，前者是并经下载和执行 js，后者是等到页面渲染完运行 js，如果没有则阻塞渲染等待 js 执行完再继续渲染，dom 树和 cssom 树合并成 render 树，然后浏览器就调用 GPU 进行绘制。
+首先浏览器开始解析输入的 URL。它将检查协议（如 HTTP 或 HTTPS）、域名和可能的端口号等组成部分，先检测是否启用缓存验证，若启用会在本地检查是否有缓存资源，若有，直接读取缓存资源，若没有，那么直接进到网络请求进程，第一步需要进行 DNS 解析，将域名解析成 ip 地址，如果请求协议是 https，那么还需要建立 SSL/TSL 链接。ip 地址和服务器通过三次握手建立 TCP 通道，浏览器会构建请求体，请求头，以及和该域名相关的 cookie 等数据附加到请求头中，然后向服务器发起构建请求，数据在进入服务端之前，可能会进入到负载均衡的服务器，该作用就是向请求分发到多台服务器上，以便快速响应。之后服务端就返回一个 html 文件，其次，浏览器会判断状态码是什么，若是 4 开头的或 5 开头的，就报错，若是 200 则继续进行，若是 301 则重定向，浏览器就开始解析文件，如果是 GZIP 格式，则先解压一下，通过文件的编码格式解码文件。文件解码之后，会开始渲染，将 html 文件构建成 dom 树，在解析dom树中若有 css 文件，则进行css解析，形成 cssom 树，若遇到 js 文件，先判断是否有 async 和 defer，前者是并经下载和执行 js，后者是等到页面渲染完运行 js，如果没有则阻塞渲染等待 js 执行完再继续渲染，再者dom 树和 cssom 树合并成 render 树，进行布局计算，让每个节点都存在于相应的位置，然后浏览器就会根据节点等进行渲染，浏览器使用图形设备接口（例如GPU）来加速绘制操作，最后显示在页面上。
 
 ### 字段理解
 
@@ -1114,9 +1134,9 @@
    - 100 Continue 继续，一般在发送 post 请求时，已发送了 http header 之后服务端将返回此信息，表示确认，之后发送具体参数信息
 2. 2xx 成功状态码
 
-- 200 OK 正常返回信息
-  - 201 Created 请求成功并且服务器创建了新的资源
-  - 202 Accepted 服务器已接受请求，但尚未处理
+    - 200 OK 正常返回信息
+    - 201 Created 请求成功并且服务器创建了新的资源
+    - 202 Accepted 服务器已接受请求，但尚未处理
 
 3. 3xx 重定向
    - 301 Moved Permanently 请求的网页已永久移动到新位置。
@@ -1838,7 +1858,7 @@ function multiRequest(arr = [], maxNum) {
 
 ### Event Loop
 
-js 是个单线程，主要任务是为了处理用户的交互，一次事件循环职能处理一个事件响应，在事件循环中，若遇到像异步交互，定时器之类的，会压入事件队列中，等待 js 引擎空闲的时候去执行，当然 js 引擎执行过程中有优先级之分，首先 js 引擎在一次事件循环中，会先执行 js 线程的主任务，然后会去查找是否有微任务 microtask（promise），如果有那就优先执行微任务，如果没有，在去查找宏任务 macrotask（setTimeout、setInterval）进行执行
+js 是个单线程，主要任务是为了处理用户的交互，一次事件循环只能处理一个事件响应，在事件循环中，若遇到像异步交互，定时器之类的，会压入事件队列中，等待 js 引擎空闲的时候去执行，当然 js 引擎执行过程中有优先级之分，首先 js 引擎在一次事件循环中，会先执行 js 线程的主任务，然后会去查找是否有微任务 microtask（promise），如果有那就优先执行微任务，如果没有，在去查找宏任务 macrotask（setTimeout、setInterval）进行执行
 
 ![Event Loop](/images/eventLoop.png)
 
