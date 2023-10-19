@@ -1437,7 +1437,8 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
 
 ### 手写 instanceof
 
-     function _instanceOf(left,right){
+    ```typescript
+    function _instanceOf(left,right){
       let proto = left.__proto;
       let prototype = right.prototype;
       while(true){
@@ -1449,6 +1450,22 @@ doctype 在 html 中的作用是触发浏览器的标准模式，如果 html 中
        proto = proto.__proto__;
       }
      }
+
+     function _instanceof(left, right) {
+      // let _proto = left.__proto__; // 不是官方认同的
+      let _proto = Object.getPrototypeOf(left)
+      let prototype = right.prototype;
+
+      if (_proto === null) {
+        return false;
+      } else {
+        if (_proto === prototype) {
+          return true;
+        }
+        return _instanceof(_proto, prototype); // 递归调用，并返回结果
+      }
+    }
+    ```
 
 ### 手写函数柯里化
 
@@ -2424,6 +2441,14 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
   - 第三方模块按需导入
   - 长列表滚动到可视区域动态加载图片
   - 懒加载
+
+  1. 合理使用computed属性
+  2. 合理使用v-if和v-show
+  3. 使用按需加载，第三方模块按需导入
+  4. 合理使用异步组件
+  5. 列表性能优化，虚拟滚动
+  6. 使用路由懒加载
+  7. 合理使用keep-alive，缓存请求数据
 - 打包优化
   - 压缩代码
   - Tree Shaking/Scope Hoisting
@@ -2431,6 +2456,13 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
   - 多线程打包 happypack
   - splitChunks 抽离公共文件
   - sourceMap 优化
+
+  1. 代码缓存，添加contenthash
+  2. 代码压缩
+  3. 资源优化，图片
+  4. 代码拆分 splitChunks
+  5. 模块分析，分析文件的大小
+  6. 并行构建，happypack
 
 ### 安全
 
@@ -2482,6 +2514,8 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
 - mkdir 目录名 创建目录
 - touch 文件名.后缀名 添加文件
 - rm (-rf) 删除文件（目录）
+- scp 上传文件至服务器
+- which 找出可执行文件
 - cat (-n) 文件名 查勘文件的内容 （显示行号）
 - vim 文件名 编辑文件的内容
   - i 切换到输入模式，以输入字符

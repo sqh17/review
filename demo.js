@@ -111,3 +111,33 @@ function debounce_throttle(func, delay){
   }
 }
 
+
+function flat(arr) {
+  let res = []
+  for(let i = 0; i<arr.length;i++){
+    if(arr[i] instanceof Array){
+      res = res.concat(flat(arr[i]))
+    }
+    else{
+      res.push(arr[i])
+    }
+  }
+  return res
+}
+// console.log(flat([1,2,[3,4,[5,6,[7,8,[9,10]]]],11]))
+
+
+function _instanceof(left, right){
+  let _proto = left.__proto__
+  let prototype = right.prototype
+  if(_proto === null || typeof _proto !== 'object'){
+    return false
+  }else{
+    if(_proto === prototype){
+      return true
+    }
+    return _instanceof(_proto.__proto__,prototype)
+  }
+
+}
+console.log(_instanceof([1,23,4], Object))
