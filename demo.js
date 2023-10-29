@@ -141,3 +141,42 @@ function _instanceof(left, right){
 
 }
 console.log(_instanceof([1,23,4], Object))
+
+function sort(arr){
+  for(let i = 0;i<arr.length - 1; i++){
+    let isSort = false
+    for(let j = 0; j<arr.length - 1 - i; j++){
+      if(arr[j+1] > arr[j]){
+        [arr[j+1],arr[j]] = [arr[j],arr[j+1]]
+        isSort = true
+      }
+    }
+    if(!isSort) break
+  }
+  return arr
+}
+
+function sort1(arr){
+  for(let i = 0;i<arr.length-1;i++){
+    let min = i;
+    for(let j = i+1;j<arr.length;j++){
+      if(arr[min] > arr[j]){
+        min = j
+      }
+    }
+    [arr[min], arr[i]] = [arr[i], arr[min]]
+  }
+  return arr
+}
+function sort2(arr){
+  let left = [], right = [],
+  middle = arr.splice(Math.floor(arr.length/2), 1);
+  for(let i = 0; i<arr.length;i++){
+    if(arr[i]>middle){
+      right.push(arr[i])
+    }else{
+      left.push(arr[i])
+    }
+  }
+  return sort(left).concat([middle],sort(right))
+}
