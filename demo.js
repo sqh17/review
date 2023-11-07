@@ -32,6 +32,7 @@ function deepClone(obj){
   return newObj
 }
 
+
 // 模拟new
 function _new(constructor, ...args){
   let obj = Object.create(constructor.prototype)

@@ -182,3 +182,80 @@
 
 6. 上机题
   略
+
+#### 1101面试
+
+1. 对es6的Map理解
+  比普通对象多了键名的多样性，键名可以是任何数据类型，括对象、函数、NaN 等，保持插入顺序，提供了一些方法，使Map的使用更加方便
+2. for in和for of的区别
+  for in是对普通对象的遍历，其中也可遍历数组(数组也是对象的一种),注意，for in能遍历对象原型链上的可枚举属性
+  for of是可迭代对象的遍历，其中包括数组、字符串、Set、Map，for...of 只能迭代实现了迭代器协议（Iterable Protocol）的对象，它会按照对象的迭代顺序逐个遍历元素。对于普通对象而言，无法使用 for...of 遍历，需要将其转换为可迭代对象（如使用 Object.keys()、Object.values() 或 Object.entries()）
+3. cache-control：no-store
+  浏览器不要缓存该响应以及该响应对应的页面或资源  
+4. 负载均衡（url到页面渲染）？
+  负载均衡器可以将请求分发到多个服务器上，以平衡服务器上的负载，并不是快速响应，快速响应是cdn做的，cdn具有地理位置分布，内容缓存，智能路由，负载均衡
+5. 屏幕适配
+  主要结合meta的设置和js方法
+
+    ```javascript
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    function setHtmlFontSize(maxWidth,minWidth,piex) {
+      var screenWidth = document.documentElement.clientWidth,
+        deviceWidth;
+      if(screenWidth >= 1500){
+      deviceWidth = maxWidth;
+      }else if(screenWidth < minWidth){
+      deviceWidth = minWidth;
+      }else {
+      deviceWidth = screenWidth;
+      }
+      document.getElementsByTagName("html")[0].style.cssText = 'font-size:' + deviceWidth / piex + 'px !important';
+    }
+    ```
+
+6. css动画
+CSS动画主要有两种形式：关键帧动画（Keyframe Animations）和过渡动画（Transitions）
+过渡动画是关键帧动画的一种简化形式，使用起来更简单快捷。过渡动画适用于一些简单的状态转换，而关键帧动画则适用于更复杂、精细度更高的动画效果
+7. webview
+8. options复杂请求是什么
+OPTIONS 方法通常用于 CORS（跨域资源共享）中的预检请求，也称为复杂请求，预检请求的目的是询问服务器是否允许实际请求（比如 POST、PUT、DELETE）的发送
+跨域请求是指浏览器向不同于当前页面所在域的服务器发送请求。为了确保安全，浏览器会在发送复杂请求之前先发送一个 OPTIONS 请求，以检查服务器是否允许该跨域请求
+触发条件
+    1. 使用自定义请求头（比如 Content-Type: application/json）。
+    2. 使用了非简单请求方法（比如 PUT、DELETE）。
+    3. 发送跨域请求时携带了身份凭证（如 cookies）
+1. 微前端了解吗，js隔离/css隔离怎么处理
+2. express和koa的区别
+3. 洋葱模型的原理
+4. async和defer区别
+两者都是异步加载，区别在于就是async不会阻塞html的解析和渲染，脚本的加载和html加载是并行进行的，他俩谁先加载完就先执行谁，执行js的话会暂停dom渲染，defer是在dom解析完后按照顺序执行脚本，即在domContentload事件之前完成
+
+#### 1106面试
+
+1. react的生命周期
+2. react用的哪个版本，有什么不一样的地方
+3. for in 和 for of
+    1. 遍历对象类型：
+        * for…in 循环用于遍历对象的可枚举属性。它会遍历对象的原型链上的所有可枚举属性（包括继承的属性），并返回属性名，
+        * for…of 循环用于遍历可迭代对象，如字符串、数组、Set、Map、Generator 等。它会遍历对象的元素值，而不是属性名。
+    2. 遍历顺序：for in没有顺序，for of有顺序
+    3. 遍历结果：for in是键名，for of是值
+4. vue-router的原理
+基于 Vue.js 的核心思想——组件化开发。它通过监听 URL 变化，根据路由配置匹配对应的组件，并动态渲染到指定容器中，实现前端路由的跳转和导航。
+主要流程如下：
+    * 定义路由配置
+    * 创建router实例
+    * 注入router
+    * 监听url的变化
+    * 路由匹配
+    * 渲染组件
+    * 导航控制
+
+5. vue的computed和watch的区别
+6. webpack的loader有哪些
+babel-loader将es6语法转为es5语法
+css-loader加载css文件并解析import的css文件，最终返回css码
+ts-loader将加载js一样加载ts
+html-loader将html导出字符串，需要传入静态资源的引用路径
+less-loader/sass-loader/stylus-loader/postcss-loader编译对应的css预处理器
+vue-loader加载vue文件并编译

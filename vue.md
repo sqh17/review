@@ -1,5 +1,38 @@
 # vue相关
 
+- [vue相关](#vue相关)
+  - [Virtual Dom 的优势在哪里](#virtual-dom-的优势在哪里)
+  - [vue 的生命周期](#vue-的生命周期)
+  - [vue 的 data 为什么是个函数](#vue-的-data-为什么是个函数)
+  - [vue2.x 中如何监测数组变化](#vue2x-中如何监测数组变化)
+  - [Vue2.x 响应式数据原理](#vue2x-响应式数据原理)
+  - [vue 的 computed 和 watch 的区别](#vue-的-computed-和-watch-的区别)
+  - [vue 的路由模式](#vue-的路由模式)
+  - [vue的router和route的区别](#vue的router和route的区别)
+  - [vue 的路由钩子(守卫)](#vue-的路由钩子守卫)
+  - [vue 的组件传值](#vue-的组件传值)
+  - [vue中key 的作用](#vue中key-的作用)
+    - [vue2](#vue2)
+    - [vue3](#vue3)
+  - [vuex 是什么？怎么使用？哪种功能场景使用它？](#vuex-是什么怎么使用哪种功能场景使用它)
+  - [做过哪些 Vue 的性能优化](#做过哪些-vue-的性能优化)
+  - [react vs vue](#react-vs-vue)
+  - [有没有看过vue2源码？](#有没有看过vue2源码)
+  - [vue3的特性](#vue3的特性)
+  - [vue3相对于vue2的区别](#vue3相对于vue2的区别)
+  - [vue绑定原理](#vue绑定原理)
+  - [vue2和vue3的diff算法区别](#vue2和vue3的diff算法区别)
+  - [vue3 setup](#vue3-setup)
+  - [vue3的watch和watchEffect的区别](#vue3的watch和watcheffect的区别)
+  - [v-model原理](#v-model原理)
+    - [vue2](#vue2-1)
+    - [vue3](#vue3-1)
+  - [v-model自定义组件的实现](#v-model自定义组件的实现)
+  - [keep-alive原理](#keep-alive原理)
+    - [vue是如何收集依赖的](#vue是如何收集依赖的)
+  - [vue的template到render的过程](#vue的template到render的过程)
+  - [vue实例挂载的过程](#vue实例挂载的过程)
+
 ### Virtual Dom 的优势在哪里
 
 DOM 引擎、JS 引擎 相互独立，但又工作在同一线程（主线程）
@@ -147,7 +180,7 @@ vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过Obj
 
 1. router是vue-router的一个路由实例，允许你在 Vue 应用中定义和管理不同页面之间的路由，并提供路由导航、参数传递、动态路由匹配等功能
 2. route是指代路由对象的一个概念，在路由切换时提供当前路由的信息
-3. 通过 vue-router 配置路由规则和路由导航，同时通过 route 访问当前路由的详细信息，以实现页面间的路由跳转和参数传递
+3. 通过 vue-router 配置路由规则和路由导航，同时通过 route 访问当前路由的详细信息，以实现页面间的router路由跳转和参数传递
 
 ### vue 的路由钩子(守卫)
 
@@ -343,8 +376,14 @@ setup是个语法糖，用于替代 Vue 2 中的 beforeCreate 和 created 钩子
 
 ### v-model原理
 
+#### vue2
+
 v-model实际上就是一个语法糖，它会根据标签的不同，自动转换成不同的属性，比如input标签，会转换成value和input事件，select标签会转换成value和change事件，textarea标签会转换成value和input事件。
 他将这些表单元素的值和data里的对象进行绑定，当表单元素的值发生变化的时候，会触发对应的事件，从而改变data里的值，当data里的值发生变化的时候，会触发对应的事件，从而改变表单元素的值，这样实现了双向绑定。
+
+#### vue3
+
+vue3中兼容vue2的做法，可以支持表单类型的自定义组件，通过modelValue和update:modelValue来实现双向绑定，也可以支持自定义事件，通过emit触发自定义事件，从而实现双向绑定。
 
 ### v-model自定义组件的实现
 

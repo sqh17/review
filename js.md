@@ -1,5 +1,78 @@
 # js汇总
 
+- [js汇总](#js汇总)
+    - [什么是二分查找，思路是什么？实现方式有哪些？](#什么是二分查找思路是什么实现方式有哪些)
+    - [this 的指向有哪些？](#this-的指向有哪些)
+    - [箭头函数](#箭头函数)
+    - [new 实现了哪些步骤？(=\>二)](#new-实现了哪些步骤二)
+    - [call 和 apply 的定义和区别？(=\>二)](#call-和-apply-的定义和区别二)
+    - [call 和 aplly 的简单原生实现](#call-和-aplly-的简单原生实现)
+    - [bind 的简单实现](#bind-的简单实现)
+    - [检测是否是数组的方法](#检测是否是数组的方法)
+    - [原型，原型对象，原型链](#原型原型对象原型链)
+    - [constructor/proto/prototype的关系](#constructorprotoprototype的关系)
+    - [对继承的理解](#对继承的理解)
+    - [es5 的继承](#es5-的继承)
+    - [请用一句话描述 try catch 能捕获到哪些 JS 异常](#请用一句话描述-try-catch-能捕获到哪些-js-异常)
+    - [js 动画和 css 动画的优缺点](#js-动画和-css-动画的优缺点)
+    - [i++与++i 的区别](#i与i-的区别)
+    - [闭包](#闭包)
+    - [sessionStorage，localStorage，cookie 的区别(=\>九)](#sessionstoragelocalstoragecookie-的区别九)
+    - [token、cookie、session 三者的理解](#tokencookiesession-三者的理解)
+    - [防抖和节流](#防抖和节流)
+    - [浅拷贝和深拷贝](#浅拷贝和深拷贝)
+    - [如何实现浅拷贝和深拷贝](#如何实现浅拷贝和深拷贝)
+    - [从浏览器地址栏输入 url 到显示页面的步骤](#从浏览器地址栏输入-url-到显示页面的步骤)
+    - [浏览器拿到 html 代码后如何解析和渲染页面](#浏览器拿到-html-代码后如何解析和渲染页面)
+    - [浏览器渲染原理及流程](#浏览器渲染原理及流程)
+    - [字段理解](#字段理解)
+    - [三次握手](#三次握手)
+      - [简单来说，就是](#简单来说就是)
+    - [四次挥手](#四次挥手)
+    - [为什么需要三次握手和四次挥手，而不是二次握手，三次挥手](#为什么需要三次握手和四次挥手而不是二次握手三次挥手)
+    - [HTTP 状态码以及含义](#http-状态码以及含义)
+    - [http 与 https 的区别](#http-与-https-的区别)
+    - [http2.0 的新特性](#http20-的新特性)
+    - [浏览器缓存](#浏览器缓存)
+    - [浏览器行为会引起缓存的变化](#浏览器行为会引起缓存的变化)
+    - [request 和 response 返回的 header 有哪些](#request-和-response-返回的-header-有哪些)
+    - [content-type](#content-type)
+    - [GC 垃圾回收](#gc-垃圾回收)
+    - [实现一个函数判断数据类型](#实现一个函数判断数据类型)
+    - [图片的懒加载和预加载](#图片的懒加载和预加载)
+    - [es5 实现 let](#es5-实现-let)
+    - [es5 实现 const](#es5-实现-const)
+    - [手写 instanceof](#手写-instanceof)
+    - [手写函数柯里化](#手写函数柯里化)
+    - [数组实现偏平化](#数组实现偏平化)
+    - [promise 的实现](#promise-的实现)
+    - [基于Promise实现一个限制并发请求的函数1](#基于promise实现一个限制并发请求的函数1)
+    - [基于Promise实现一个限制并发请求的函数2](#基于promise实现一个限制并发请求的函数2)
+    - [如何使 a==1 \&\& a==2 \&\& a==3 的值为 true](#如何使-a1--a2--a3-的值为-true)
+    - [异步下载 js 的方式](#异步下载-js-的方式)
+    - [如何把一个字符串当成js执行（动态执行js）](#如何把一个字符串当成js执行动态执行js)
+    - [Event Loop](#event-loop)
+    - [内存中的栈和堆](#内存中的栈和堆)
+    - [十大排序算法](#十大排序算法)
+    - [common.js 和 es6 中模块引入的区别](#commonjs-和-es6-中模块引入的区别)
+    - [event.target/event.currentTarget](#eventtargeteventcurrenttarget)
+    - [深冻结对象](#深冻结对象)
+    - [一道经典面试题](#一道经典面试题)
+    - [Async/Await 如何通过同步的方式实现异步？](#asyncawait-如何通过同步的方式实现异步)
+    - [promise和async-await的区别](#promise和async-await的区别)
+    - [写一个方法，求一个数组长度m,值是n](#写一个方法求一个数组长度m值是n)
+    - [es6的新特性](#es6的新特性)
+    - [Map与WeakMap的区别](#map与weakmap的区别)
+    - [手写ajax](#手写ajax)
+    - [最长递增子序列](#最长递增子序列)
+    - [preload和prefecth](#preload和prefecth)
+    - [将以下class类转成构造函数模式的写法](#将以下class类转成构造函数模式的写法)
+    - [面试题](#面试题)
+    - [面试题](#面试题-1)
+    - [新版本发布后，怎么用技术手段通知用户刷新页面](#新版本发布后怎么用技术手段通知用户刷新页面)
+    - [知不知道最新的 url 参数获取的 API](#知不知道最新的-url-参数获取的-api)
+    - [proxy和defineProperty的区别](#proxy和defineproperty的区别)
+
 ### 什么是二分查找，思路是什么？实现方式有哪些？
 
 - 二分查找：就是在一个已排序的数组中通过值去查找索引。
@@ -327,6 +400,10 @@ let arr = [] // 测试数据
 3. prototype是函数所独有的，它是从一个函数指向一个对象。它的含义是函数的原型对象，也就是这个函数（其实所有函数都可以作为构造函数）所创建的实例的原型对象
 可以看图
 ![constructor/proto/prototype的关系](./images/20190311194017886.png)
+
+### 对继承的理解
+
+继承就是对象之间的对属性和方法的一种共享机制，通过创建一个对象，从另一个对象里去继承其方法和属性，在js中，继承基本上是通过原型链实现的
 
 ### es5 的继承
 
@@ -1013,6 +1090,7 @@ let arr = [] // 测试数据
   - cache-control&nbsp;&nbsp;&nbsp; http1.1
     1. 该字段表示资源缓存的最大有效时间，在该时间内，客户端不需要向服务器发送请求，因此是个相对时间。
     2. Cache-Control 的字段可以带的值：
+       - no-store：浏览器不要缓存该响应以及该响应对应的页面或资源
        - max-age：即最大有效时间（max-age=222200）
        - no-cache：表示没有缓存，即告诉浏览器该资源并没有设置缓存
        - s-maxage：同 max-age，但是仅用于共享缓存，如 CDN 缓存
@@ -2054,7 +2132,7 @@ xhr.onreadyStateChange = function(){
 }
 ```
 
-#### 最长递增子序列
+### 最长递增子序列
 
 - 解法1-动态规划
 
@@ -2226,3 +2304,7 @@ console.log(++[[]][+[]] + [+[]]) // '10'
 ### 知不知道最新的 url 参数获取的 API
 
 new URLSearchParams(window.location.search)
+
+### proxy和defineProperty的区别
+
+defineProperty是提供对对象的get，set的操作，而proxy是可以提供更多，对对象的基本操作的拦截，在对proxy的定义中，有一句话是它可以拦截和重新定义对对象的基本操作，比如说set，get，has，delete，在这些方法里拦截并做其中的操作，在对对象的基本操作里也有defineProperty的操作，内部就存在的。这样就导致了vue2和vue3的响应式原理就不一样，defineProperty对数组进行重组，其本质就是对原型上方法进行操作，拦截有限，而proxy就没有这个问题，因为数组也是对象，proxy也能拦截。
