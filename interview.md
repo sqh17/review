@@ -259,3 +259,24 @@ ts-loader将加载js一样加载ts
 html-loader将html导出字符串，需要传入静态资源的引用路径
 less-loader/sass-loader/stylus-loader/postcss-loader编译对应的css预处理器
 vue-loader加载vue文件并编译
+
+#### 1110面试
+
+##### 一面
+
+1. 对event-loop的理解
+2. event-loop引出的代码题，说出执行顺序
+3. 说说你影响最深刻的项目
+4. 对闭包的理解
+5. 内存泄漏引出的垃圾回收机制
+6. 斐波那契数列
+7. 斐波那契数列会导致爆栈，怎么处理
+8. 做过哪些性能优化
+
+##### 二面
+
+1. 站在架构角度上讲，你会怎么负责这个项目，并提升用户体验，开放性思维
+2. vue2和vue3的区别，相比于vue2有哪些提升
+3. vue3的服务端渲染你了解过吗
+4. vue的nextTick，源码了解吗，为什么会直接采用promise.then
+5. 我看你的介绍中提到了docker和k8s，这俩有什么区别
