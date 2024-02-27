@@ -270,8 +270,35 @@ vue-loader加载vue文件并编译
 4. 对闭包的理解
 5. 内存泄漏引出的垃圾回收机制
 6. 斐波那契数列
+
+```javascript
+function fn(n){
+  if(n === 1 || n === 0) return n
+  else {
+    return fn(n-1) + fn(n-2)
+  }
+}
+```
+
 7. 斐波那契数列会导致爆栈，怎么处理
+
+```javascript
+function fn(n){
+  let current = 0;
+  let next = 1
+  for(let i = 0; i<n;i++){
+    [current, next] = [next, current+next]
+  }
+  return current
+}
+```
+
 8. 做过哪些性能优化
+
+      * webpack启动慢
+      * webpack打包慢
+      * 首页加载慢
+      * 数据过多导致渲染慢
 
 ##### 二面
 
